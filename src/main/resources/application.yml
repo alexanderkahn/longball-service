@@ -1,0 +1,21 @@
+server:
+  port: 443
+application:
+  version: @application.version@
+  buildDate: @application.buildDate@
+oauth:
+  issuer:
+    algorithm: RS256
+    keystore:
+      url: https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
+    claims:
+      aud: longball-7517e
+      iss: https://securetoken.google.com/longball-7517e
+---
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/longball
+server:
+  port: 9090

@@ -1,0 +1,58 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+group 'net.alexanderkahn.longball.service'
+version '0.0.1-SNAPSHOT'
+
+buildscript {
+    ext {
+        kotlinVersion = '1.1.0'
+        springBootVersion = '1.4.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('net.alexanderkahn.base:service-base:0.0.1-SNAPSHOT')
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+springBoot {
+    mainClass = "net.alexanderkahn.longball.service.LongballServiceApplication"
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+            "application.version": version,
+            "application.buildDate": ZonedDateTime.now(ZoneOffset.UTC).format(ISO_OFFSET_DATE_TIME)
+    ]
+}
+
+bootRun {
+    systemProperty 'spring.profiles.active', System.properties['spring.profiles.active']
+}
