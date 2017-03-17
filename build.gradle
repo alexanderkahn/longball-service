@@ -37,17 +37,15 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile('net.alexanderkahn.base:service-base:0.0.1-SNAPSHOT')
+    compile('net.alexanderkahn.base:service-base:0.0.2-SNAPSHOT')
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-springBoot {
-    mainClass = "net.alexanderkahn.longball.service.LongballServiceApplication"
-}
 
 processResources {
     filter ReplaceTokens, tokens: [
+            "application.name": project.name,
             "application.version": version,
             "application.buildDate": ZonedDateTime.now(ZoneOffset.UTC).format(ISO_OFFSET_DATE_TIME)
     ]
@@ -55,4 +53,8 @@ processResources {
 
 bootRun {
     systemProperty 'spring.profiles.active', System.properties['spring.profiles.active']
+}
+
+springBoot {
+    mainClass = "net.alexanderkahn.longball.service.LongballServiceApplication"
 }

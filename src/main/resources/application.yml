@@ -1,6 +1,7 @@
 server:
   port: 443
 application:
+  name: @application.name@
   version: @application.version@
   buildDate: @application.buildDate@
 oauth:
@@ -14,8 +15,11 @@ oauth:
 ---
 spring:
   profiles: dev
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/longball
+data:
+  mongodb:
+    uri: mongodb://localhost:27017/longball
 server:
   port: 9090
+oauth:
+  test:
+    bypassToken: raspberries
