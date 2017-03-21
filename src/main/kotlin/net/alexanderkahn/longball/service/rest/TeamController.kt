@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.service.rest
 
+import net.alexanderkahn.longball.service.model.RosterPlayer
 import net.alexanderkahn.longball.service.model.Team
 import net.alexanderkahn.longball.service.service.TeamService
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,5 +24,10 @@ class TeamController(@Autowired private val teamService: TeamService) {
     @GetMapping("/{id}")
     fun get(@PathVariable id: String): Team {
         return teamService.get(id)
+    }
+
+    @GetMapping("/{id}/roster")
+    fun getRoster(@PathVariable id: String, pageable: Pageable): Page<RosterPlayer> {
+        return teamService.getRoster(id, pageable)
     }
 }
