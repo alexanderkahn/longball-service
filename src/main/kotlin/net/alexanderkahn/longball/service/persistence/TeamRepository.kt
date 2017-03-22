@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.persistence
 
-import net.alexanderkahn.longball.service.model.Team
+import net.alexanderkahn.longball.service.persistence.model.PersistenceTeam
 import org.springframework.data.repository.PagingAndSortingRepository
 
-interface TeamRepository: PagingAndSortingRepository<Team, String>
+interface TeamRepository: PagingAndSortingRepository<PersistenceTeam, String>

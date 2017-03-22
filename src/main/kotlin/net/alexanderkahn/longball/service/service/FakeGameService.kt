@@ -10,8 +10,8 @@ import java.util.*
 @Service
 class FakeGameService {
 
-    private val fakeGame = Game(awayTeam = Team("AWAY", "Away", "Team"),
-            homeTeam = Team("HOME", "Home", "Team"),
+    private val fakeGame = Game(awayTeam = Team("1", "AWAY", "Away", "Team"),
+            homeTeam = Team("2", "HOME", "Home", "Team"),
             startTime = ZonedDateTime.now())
 
     fun get(id: String): Game {
