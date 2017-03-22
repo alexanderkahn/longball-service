@@ -6,7 +6,7 @@ import net.alexanderkahn.longball.service.persistence.model.PersistenceTeam
 class TeamAssembler: Assembler<Team, PersistenceTeam> {
     override fun toModel(persistenceObject: PersistenceTeam): Team {
         if (persistenceObject.id == null) {
-            throw UnsupportedOperationException("Cannot convert team without Id")
+            throw UnsupportedOperationException("Cannot convert unsaved team")
         }
         return Team(id = persistenceObject.id,
                 abbreviation = persistenceObject.abbreviation,

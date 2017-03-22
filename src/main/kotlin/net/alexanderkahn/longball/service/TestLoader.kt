@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.service
 
-import net.alexanderkahn.longball.service.model.Player
 import net.alexanderkahn.longball.service.persistence.PlayerRepository
 import net.alexanderkahn.longball.service.persistence.RosterPlayerRepository
 import net.alexanderkahn.longball.service.persistence.TeamRepository
+import net.alexanderkahn.longball.service.persistence.model.PersistencePlayer
 import net.alexanderkahn.longball.service.persistence.model.PersistenceRosterPlayer
 import net.alexanderkahn.longball.service.persistence.model.PersistenceTeam
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,7 +32,7 @@ class TestLoader(
     private fun loadTeamWithPlayers(location: String) {
         val team: PersistenceTeam = PersistenceTeam(abbreviation = location.toUpperCase(), location = location, nickname = "Team")
         teamRepository.save(team)
-        val awayPlayers: List<Player> = (1..9).map { Player(location, it.toString()) }
+        val awayPlayers: List<PersistencePlayer> = (1..9).map { PersistencePlayer(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
             playerRepository.save(player)
             rosterPlayerRepository.save(PersistenceRosterPlayer(teamId = team.id!!, playerId = player.id!!, jerseyNumber = Random().nextInt(99).toShort(),startDate = Instant.now()))

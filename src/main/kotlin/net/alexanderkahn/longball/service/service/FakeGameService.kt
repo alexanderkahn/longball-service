@@ -23,8 +23,8 @@ class FakeGameService {
     }
 
     fun getStatus(gameId: String): GameStatus {
-        val appearance = PlateAppearance(Player("Pitch", "Guy"), Player("Bat", "man"), PlateAppearanceCount(3, 0))
-        val basePath = BasePath(Base(Player("First", "Base")), Base(null), Base(Player("Third", "Base")))
+        val appearance = PlateAppearance(Player("1", "Pitch", "Guy"), Player("2", "Bat", "man"), PlateAppearanceCount(3, 0))
+        val basePath = BasePath(Base(Player("3", "First", "Base")), Base(null), Base(Player("4", "Third", "Base")))
         val innings = (1..4).map { Inning(Random().nextInt(5), Random().nextInt(5)) }
         return GameStatus(appearance, basePath, InningSummary(innings))
     }
