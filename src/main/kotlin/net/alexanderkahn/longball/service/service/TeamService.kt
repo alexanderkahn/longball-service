@@ -2,8 +2,8 @@ package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.longball.service.model.RosterPlayer
 import net.alexanderkahn.longball.service.model.Team
-import net.alexanderkahn.longball.service.persistence.RosterPlayerRepository
-import net.alexanderkahn.longball.service.persistence.TeamRepository
+import net.alexanderkahn.longball.service.persistence.repository.RosterPlayerRepository
+import net.alexanderkahn.longball.service.persistence.repository.TeamRepository
 import net.alexanderkahn.longball.service.persistence.assembler.RosterPlayerAssembler
 import net.alexanderkahn.longball.service.persistence.assembler.TeamAssembler
 import org.springframework.beans.factory.annotation.Autowired

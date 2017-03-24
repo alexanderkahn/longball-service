@@ -4,7 +4,7 @@ import java.time.OffsetDateTime
 import javax.persistence.*
 
 @Entity(name = "roster_player")
-data class PersistenceRosterPlayer constructor(
+data class PersistenceRosterPlayer(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,

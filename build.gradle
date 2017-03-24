@@ -39,6 +39,7 @@ repositories {
 dependencies {
     compile('net.alexanderkahn.base:service-base:0.0.2-SNAPSHOT')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+    compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.hibernate:hibernate-java8:5.1.0.Final')

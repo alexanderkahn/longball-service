@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.service.rest
 
 import net.alexanderkahn.longball.service.model.Game
 import net.alexanderkahn.longball.service.model.GameStatus
-import net.alexanderkahn.longball.service.service.FakeGameService
+import net.alexanderkahn.longball.service.service.GameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/games")
-class GameController(@Autowired private val gameService: FakeGameService) {
+class GameController(@Autowired private val gameService: GameService) {
 
     @GetMapping
     fun getGames(pageable: Pageable): Page<Game> {
-        return gameService.getAll()
+        return gameService.getAll(pageable)
     }
 
     @GetMapping("/{id}")
@@ -27,6 +27,6 @@ class GameController(@Autowired private val gameService: FakeGameService) {
 
     @GetMapping("/{id}/status")
     fun getGameStatus(@PathVariable id: Long): GameStatus {
-        return gameService.getStatus(id)
+        return gameService.getFakeStatus(id)
     }
 }

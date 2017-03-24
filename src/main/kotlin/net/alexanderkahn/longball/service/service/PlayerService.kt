@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.longball.service.model.Player
-import net.alexanderkahn.longball.service.persistence.PlayerRepository
 import net.alexanderkahn.longball.service.persistence.assembler.PlayerAssembler
+import net.alexanderkahn.longball.service.persistence.repository.PlayerRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

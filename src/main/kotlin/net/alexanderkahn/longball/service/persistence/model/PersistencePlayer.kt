@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.service.persistence.model
 import javax.persistence.*
 
 @Entity(name = "player")
-data class PersistencePlayer constructor(
+data class PersistencePlayer(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
