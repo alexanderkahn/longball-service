@@ -2,7 +2,6 @@ package net.alexanderkahn.longball.service.persistence.assembler
 
 import net.alexanderkahn.longball.service.model.RosterPlayer
 import net.alexanderkahn.longball.service.persistence.model.PersistenceRosterPlayer
-import java.util.*
 
 class RosterPlayerAssembler:  Assembler<RosterPlayer, PersistenceRosterPlayer> {
 
@@ -14,8 +13,8 @@ class RosterPlayerAssembler:  Assembler<RosterPlayer, PersistenceRosterPlayer> {
                 persistenceObject.team.id,
                 persistenceObject.player.id,
                 persistenceObject.jerseyNumber,
-                persistenceObject.startDate.atZone(TimeZone.getDefault().toZoneId()),
-                persistenceObject.endDate?.atZone(TimeZone.getDefault().toZoneId()))
+                persistenceObject.startDate.toZonedDateTime(),
+                persistenceObject.endDate?.toZonedDateTime())
     }
 
     override fun toPersistence(modelObject: RosterPlayer): PersistenceRosterPlayer {

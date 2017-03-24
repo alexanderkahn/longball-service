@@ -1,15 +1,11 @@
 package net.alexanderkahn.longball.service.persistence.model
 
-import org.springframework.data.annotation.PersistenceConstructor
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity(name = "player")
-data class PersistencePlayer @PersistenceConstructor constructor(
+data class PersistencePlayer constructor(
         @Id
-        @GeneratedValue
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
 
         @Column(nullable = false)

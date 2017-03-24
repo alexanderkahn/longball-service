@@ -1,17 +1,12 @@
 package net.alexanderkahn.longball.service.persistence.model
 
-import org.springframework.data.annotation.PersistenceConstructor
-import java.time.Instant
+import java.time.OffsetDateTime
 import javax.persistence.*
 
-@Table(
-        uniqueConstraints=
-        arrayOf(UniqueConstraint(name = "uk_team_player", columnNames=arrayOf("team_id", "player_id")))
-)
 @Entity(name = "roster_player")
-data class PersistenceRosterPlayer @PersistenceConstructor constructor(
+data class PersistenceRosterPlayer constructor(
         @Id
-        @GeneratedValue
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
 
         @ManyToOne
@@ -26,7 +21,7 @@ data class PersistenceRosterPlayer @PersistenceConstructor constructor(
         val jerseyNumber: Short,
 
         @Column(nullable = false)
-        val startDate: Instant,
+        val startDate: OffsetDateTime,
 
         @Column(nullable = true)
-        val endDate: Instant? = null)
+        val endDate: OffsetDateTime? = null)
