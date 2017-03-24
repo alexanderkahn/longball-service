@@ -7,12 +7,12 @@ import java.util.*
 class RosterPlayerAssembler:  Assembler<RosterPlayer, PersistenceRosterPlayer> {
 
     override fun toModel(persistenceObject: PersistenceRosterPlayer): RosterPlayer {
-        if (persistenceObject.id == null) {
+        if (persistenceObject.id == null || persistenceObject.team.id == null || persistenceObject.player.id == null) {
             throw UnsupportedOperationException("Cannot convert unsaved RosterPlayer")
         }
         return RosterPlayer(persistenceObject.id,
-                persistenceObject.teamId,
-                persistenceObject.playerId,
+                persistenceObject.team.id,
+                persistenceObject.player.id,
                 persistenceObject.jerseyNumber,
                 persistenceObject.startDate.atZone(TimeZone.getDefault().toZoneId()),
                 persistenceObject.endDate?.atZone(TimeZone.getDefault().toZoneId()))

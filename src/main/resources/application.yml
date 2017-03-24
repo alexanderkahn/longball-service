@@ -15,6 +15,17 @@ oauth:
 ---
 spring:
   profiles: dev
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate.ddl-auto: create-drop
+  database:
+    driverClassName: org.postgresql.Driver
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/longball
+    username: postgres
+    password: password
 data:
   mongodb:
     uri: mongodb://localhost:27017/longball

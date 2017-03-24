@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
 
-interface RosterPlayerRepository: PagingAndSortingRepository<PersistenceRosterPlayer, String> {
+interface RosterPlayerRepository: PagingAndSortingRepository<PersistenceRosterPlayer, Long> {
 
-    fun findByTeamId(teamId: String, pageable: Pageable): Page<PersistenceRosterPlayer>
+    fun findByTeamId(teamId: Long, pageable: Pageable): Page<PersistenceRosterPlayer>
 }
 

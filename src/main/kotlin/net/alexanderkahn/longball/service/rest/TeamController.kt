@@ -22,12 +22,12 @@ class TeamController(@Autowired private val teamService: TeamService) {
     }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: String): Team {
+    fun get(@PathVariable id: Long): Team {
         return teamService.get(id)
     }
 
     @GetMapping("/{id}/roster")
-    fun getRoster(@PathVariable id: String, pageable: Pageable): Page<RosterPlayer> {
+    fun getRoster(@PathVariable id: Long, pageable: Pageable): Page<RosterPlayer> {
         return teamService.getRoster(id, pageable)
     }
 }

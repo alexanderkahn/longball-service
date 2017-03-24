@@ -20,7 +20,7 @@ class PlayerController(@Autowired private val playerService: PlayerService) {
     }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: String): Player {
+    fun get(@PathVariable id: Long): Player {
         return playerService.get(id)
     }
 }

@@ -1,6 +1,19 @@
 package net.alexanderkahn.longball.service.persistence.model
 
-import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.PersistenceConstructor
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 
-data class PersistencePlayer @PersistenceConstructor constructor(@Id val id: String? = null, val first: String, val last: String)
+@Entity(name = "player")
+data class PersistencePlayer @PersistenceConstructor constructor(
+        @Id
+        @GeneratedValue
+        val id: Long? = null,
+
+        @Column(nullable = false)
+        val first: String,
+
+        @Column(nullable = false)
+        val last: String)

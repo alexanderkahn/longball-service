@@ -10,11 +10,11 @@ import java.util.*
 @Service
 class FakeGameService {
 
-    private val fakeGame = Game(awayTeam = Team("1", "AWAY", "Away", "Team"),
-            homeTeam = Team("2", "HOME", "Home", "Team"),
+    private val fakeGame = Game(awayTeam = Team(1, "AWAY", "Away", "Team"),
+            homeTeam = Team(2, "HOME", "Home", "Team"),
             startTime = ZonedDateTime.now())
 
-    fun get(id: String): Game {
+    fun get(id: Long): Game {
         return fakeGame
     }
 
@@ -22,9 +22,9 @@ class FakeGameService {
         return PageImpl<Game>(arrayListOf(fakeGame))
     }
 
-    fun getStatus(gameId: String): GameStatus {
-        val appearance = PlateAppearance(Player("1", "Pitch", "Guy"), Player("2", "Bat", "man"), PlateAppearanceCount(3, 0))
-        val basePath = BasePath(Base(Player("3", "First", "Base")), Base(null), Base(Player("4", "Third", "Base")))
+    fun getStatus(gameId: Long): GameStatus {
+        val appearance = PlateAppearance(Player(1, "Pitch", "Guy"), Player(2, "Bat", "man"), PlateAppearanceCount(3, 0))
+        val basePath = BasePath(Base(Player(3, "First", "Base")), Base(null), Base(Player(4, "Third", "Base")))
         val innings = (1..4).map { Inning(Random().nextInt(5), Random().nextInt(5)) }
         return GameStatus(appearance, basePath, InningSummary(innings))
     }

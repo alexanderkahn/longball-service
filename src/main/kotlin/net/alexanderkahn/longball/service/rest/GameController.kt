@@ -21,12 +21,12 @@ class GameController(@Autowired private val gameService: FakeGameService) {
     }
 
     @GetMapping("/{id}")
-    fun getGame(@PathVariable id: String): Game {
+    fun getGame(@PathVariable id: Long): Game {
         return gameService.get(id)
     }
 
     @GetMapping("/{id}/status")
-    fun getGameStatus(@PathVariable id: String): GameStatus {
+    fun getGameStatus(@PathVariable id: Long): GameStatus {
         return gameService.getStatus(id)
     }
 }

@@ -35,7 +35,7 @@ class TestLoader(
         val awayPlayers: List<PersistencePlayer> = (1..9).map { PersistencePlayer(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
             playerRepository.save(player)
-            rosterPlayerRepository.save(PersistenceRosterPlayer(teamId = team.id!!, playerId = player.id!!, jerseyNumber = Random().nextInt(99).toShort(),startDate = Instant.now()))
+            rosterPlayerRepository.save(PersistenceRosterPlayer(team = team, player = player, jerseyNumber = Random().nextInt(99).toShort(),startDate = Instant.now()))
         }
     }
 }

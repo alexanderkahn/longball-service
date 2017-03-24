@@ -22,12 +22,12 @@ class TeamService(@Autowired private val teamRepository: TeamRepository, @Autowi
         return teams.map { teamAssembler.toModel(it)}
     }
 
-    fun get(id: String): Team {
+    fun get(id: Long): Team {
         val team = teamRepository.findOne(id)
         return teamAssembler.toModel(team)
     }
 
-    fun getRoster(teamId: String, pageable: Pageable): Page<RosterPlayer> {
+    fun getRoster(teamId: Long, pageable: Pageable): Page<RosterPlayer> {
         val teams = rosterPlayerRespository.findByTeamId(teamId, pageable)
         return teams.map { rosterPlayerAssembler.toModel(it) }
     }

@@ -18,7 +18,7 @@ class PlayerService(@Autowired private val playerRepository: PlayerRepository) {
         return players.map { playerAssembler.toModel(it) }
     }
 
-    fun get(id: String): Player {
+    fun get(id: Long): Player {
         val player = playerRepository.findOne(id)
         return playerAssembler.toModel(player)
     }
