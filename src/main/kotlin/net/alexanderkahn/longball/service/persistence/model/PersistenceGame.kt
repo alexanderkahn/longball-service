@@ -10,6 +10,10 @@ data class PersistenceGame(
         val id: Long? = null,
 
         @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_league"), nullable = false)
+        val league: PersistenceLeague,
+
+        @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_away_team"), nullable = false)
         val awayTeam: PersistenceTeam,
 
