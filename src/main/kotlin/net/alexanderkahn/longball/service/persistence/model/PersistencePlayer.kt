@@ -12,4 +12,5 @@ data class PersistencePlayer(
         val first: String,
 
         @Column(nullable = false)
-        val last: String)
+        val last: String
+)

@@ -6,11 +6,5 @@ data class InningDetails(val inning: Int, val half: InningHalf) {
 
 }
 
-class RosterEvent: GameEvent
-
-open class GameplayEvent(val baseRunningEvents: List<BaseRunningEvent>)
-
-class PitchEvent(val pitch: Pitch, baseRunningEvents: List<BaseRunningEvent>): GameplayEvent(baseRunningEvents)
-
 
 

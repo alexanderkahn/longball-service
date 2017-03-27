@@ -1,8 +1,11 @@
 package net.alexanderkahn.longball.service
 
+import net.alexanderkahn.longball.service.model.FieldPosition
+import net.alexanderkahn.longball.service.model.InningHalf
 import net.alexanderkahn.longball.service.persistence.model.*
 import net.alexanderkahn.longball.service.persistence.repository.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.util.*
@@ -13,22 +16,14 @@ class TestLoader(
         @Autowired private val teamRepository: TeamRepository,
         @Autowired private val playerRepository: PlayerRepository,
         @Autowired private val rosterPlayerRepository: RosterPlayerRepository,
-        @Autowired private val gameRepository: GameRepository
+        @Autowired private val gameRepository: GameRepository,
+        @Autowired private val lineupPositionRepository: LineupPositionRepository
 ) {
     fun loadData() {
-        deleteEverything()
         val league = loadLeague()
         val awayTeam = loadTeamWithPlayers("Away")
         val homeTeam = loadTeamWithPlayers("Home")
         createGame(league, awayTeam, homeTeam)
-    }
-
-    private fun deleteEverything() {
-        leagueRepository.deleteAll()
-        teamRepository.deleteAll()
-        playerRepository.deleteAll()
-        rosterPlayerRepository.deleteAll()
-        gameRepository.deleteAll()
     }
 
     private fun loadLeague(): PersistenceLeague {
@@ -51,5 +46,16 @@ class TestLoader(
     private fun createGame(league: PersistenceLeague, awayTeam: PersistenceTeam, homeTeam: PersistenceTeam) {
         val game: PersistenceGame = PersistenceGame(null, league, awayTeam, homeTeam, OffsetDateTime.now())
         gameRepository.save(game)
+        createLineup(game, awayTeam, InningHalf.TOP)
+        createLineup(game, homeTeam, InningHalf.BOTTOM)
+    }
+
+    private fun createLineup(game: PersistenceGame, team: PersistenceTeam, inningHalf: InningHalf) {
+        val rosterPlayers = rosterPlayerRepository.findByTeamId(team.id!!, PageRequest(0, 20))
+        var counter = 0
+        FieldPosition.values().forEach { it ->
+            val lPosition = PersistenceLineupPosition(null, game, rosterPlayers.content[counter].player, inningHalf, (++counter).toLong(), it)
+            lineupPositionRepository.save(lPosition)
+        }
     }
 }

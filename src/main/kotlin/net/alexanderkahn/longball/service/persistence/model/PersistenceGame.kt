@@ -22,4 +22,5 @@ data class PersistenceGame(
         val homeTeam: PersistenceTeam,
 
         @Column(nullable = false)
-        val startTime: OffsetDateTime)
+        val startTime: OffsetDateTime
+)

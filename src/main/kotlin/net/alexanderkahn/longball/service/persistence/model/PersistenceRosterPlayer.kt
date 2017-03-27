@@ -24,4 +24,5 @@ data class PersistenceRosterPlayer(
         val startDate: OffsetDateTime,
 
         @Column(nullable = true)
-        val endDate: OffsetDateTime? = null)
+        val endDate: OffsetDateTime? = null
+)

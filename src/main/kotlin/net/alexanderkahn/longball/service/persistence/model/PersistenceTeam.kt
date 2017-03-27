@@ -12,4 +12,5 @@ data class PersistenceTeam(
         val abbreviation: String,
 
         @Column(nullable = false)
-        val location: String, val nickname: String)
+        val location: String, val nickname: String
+)

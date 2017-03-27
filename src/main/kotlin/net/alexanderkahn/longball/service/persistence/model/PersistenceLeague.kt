@@ -10,4 +10,5 @@ data class PersistenceLeague(
         val id: Long?,
 
         @Column(nullable = false)
-        val name: String)
+        val name: String
+)
