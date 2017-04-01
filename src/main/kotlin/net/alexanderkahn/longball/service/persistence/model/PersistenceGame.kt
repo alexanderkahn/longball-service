@@ -7,7 +7,10 @@ import javax.persistence.*
 data class PersistenceGame(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long? = null,
+        override val id: Long? = null,
+
+        @Embedded
+        override val owner: EmbeddableUser,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_league"), nullable = false)
@@ -23,4 +26,4 @@ data class PersistenceGame(
 
         @Column(nullable = false)
         val startTime: OffsetDateTime
-)
+): OwnedIdentifiable

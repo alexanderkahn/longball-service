@@ -7,8 +7,11 @@ data class PersistenceLeague(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long?,
+        override val id: Long?,
+
+        @Embedded
+        override val owner: EmbeddableUser,
 
         @Column(nullable = false)
         val name: String
-)
+): OwnedIdentifiable

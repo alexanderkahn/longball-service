@@ -4,13 +4,15 @@ import net.alexanderkahn.longball.service.model.FieldPosition
 import net.alexanderkahn.longball.service.model.InningHalf
 import javax.persistence.*
 
-//TODO: I don't love this.
 @Entity(name = "lineup_position")
 data class PersistenceLineupPosition(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long?,
+        override val id: Long?,
+
+        @Embedded
+        override val owner: EmbeddableUser,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
@@ -28,4 +30,4 @@ data class PersistenceLineupPosition(
 
         @Column(nullable = false)
         val fieldPosition: FieldPosition
-)
+): OwnedIdentifiable

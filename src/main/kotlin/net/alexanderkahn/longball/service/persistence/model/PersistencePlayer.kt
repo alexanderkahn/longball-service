@@ -6,11 +6,14 @@ import javax.persistence.*
 data class PersistencePlayer(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long? = null,
+        override val id: Long? = null,
+
+        @Embedded
+        override val owner: EmbeddableUser,
 
         @Column(nullable = false)
         val first: String,
 
         @Column(nullable = false)
         val last: String
-)
+): OwnedIdentifiable

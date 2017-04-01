@@ -6,8 +6,11 @@ import javax.persistence.*
 @Entity(name = "roster_player")
 data class PersistenceRosterPlayer(
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        override @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long? = null,
+
+        @Embedded
+        override val owner: EmbeddableUser,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_team"), nullable = false)
@@ -25,4 +28,4 @@ data class PersistenceRosterPlayer(
 
         @Column(nullable = true)
         val endDate: OffsetDateTime? = null
-)
+): OwnedIdentifiable
