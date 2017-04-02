@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository, @Autowired private val lineupPositionRepository: LineupPositionRepository) {
@@ -30,10 +29,9 @@ class GameService(@Autowired private val gameRepository: GameRepository, @Autowi
         return positions.map { it.toModel() }
     }
 
-    fun getFakeStatus(gameId: Long): GameStatus {
-        val appearance = PlateAppearance(Player(1, "Pitch", "Guy"), Player(2, "Bat", "man"), PlateAppearanceCount(3, 0))
-        val basePath = BasePath(Base(Player(3, "First", "Base")), Base(null), Base(Player(4, "Third", "Base")))
-        val innings = (1..4).map { Inning(Random().nextInt(5), Random().nextInt(5)) }
-        return GameStatus(appearance, basePath, InningSummary(innings))
+    fun getCurrentPlateAppearance(gameId: Long): PlateAppearance {
+        val basePath = listOf(BaseRunner(Base.FIRST, 3), BaseRunner(Base.THIRD, 4))
+        val appearance = PlateAppearance(1, 2, basePath, PlateAppearanceCount(3, 0))
+        return appearance
     }
 }

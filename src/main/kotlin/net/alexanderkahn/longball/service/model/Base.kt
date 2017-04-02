@@ -1,3 +1,8 @@
 package net.alexanderkahn.longball.service.model
 
-data class Base(val onBase: Player?)
+enum class Base {
+    FIRST,
+    SECOND,
+    THIRD,
+    HOME
+}

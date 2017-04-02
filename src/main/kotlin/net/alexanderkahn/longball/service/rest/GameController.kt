@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.service.rest
 
 import net.alexanderkahn.longball.service.model.Game
-import net.alexanderkahn.longball.service.model.GameStatus
 import net.alexanderkahn.longball.service.model.InningHalf
 import net.alexanderkahn.longball.service.model.LineupPosition
+import net.alexanderkahn.longball.service.model.PlateAppearance
 import net.alexanderkahn.longball.service.service.GameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -37,8 +37,8 @@ class GameController(@Autowired private val gameService: GameService) {
         return gameService.getLineupPositions(pageable, id, InningHalf.BOTTOM)
     }
 
-    @GetMapping("/{id}/status")
-    fun getGameStatus(@PathVariable id: Long): GameStatus {
-        return gameService.getFakeStatus(id)
+    @GetMapping("/{id}/plateappearance")
+    fun getGameStatus(@PathVariable id: Long): PlateAppearance {
+        return gameService.getCurrentPlateAppearance(id)
     }
 }
