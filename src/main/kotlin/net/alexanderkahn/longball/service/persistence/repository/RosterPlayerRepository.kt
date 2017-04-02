@@ -1,12 +1,13 @@
 package net.alexanderkahn.longball.service.persistence.repository
 
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.PersistenceRosterPlayer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.PagingAndSortingRepository
 
-interface RosterPlayerRepository: PagingAndSortingRepository<PersistenceRosterPlayer, Long> {
+interface RosterPlayerRepository: LongballRepository<PersistenceRosterPlayer> {
 
-    fun findByTeamId(teamId: Long, pageable: Pageable): Page<PersistenceRosterPlayer>
+    fun findByOwnerAndTeamId(owner: EmbeddableUser, teamId: Long, pageable: Pageable): Page<PersistenceRosterPlayer>
+
 }
 

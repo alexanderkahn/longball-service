@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.service
 
 import net.alexanderkahn.base.servicebase.security.jwt.jwtTestUser
-import net.alexanderkahn.base.servicebase.service.UserService
+import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.FieldPosition
 import net.alexanderkahn.longball.service.model.InningHalf
 import net.alexanderkahn.longball.service.persistence.assembler.toPersistence
@@ -15,7 +15,6 @@ import java.util.*
 
 @Service
 class TestLoader(
-        @Autowired private val userService: UserService,
         @Autowired private val leagueRepository: LeagueRepository,
         @Autowired private val teamRepository: TeamRepository,
         @Autowired private val playerRepository: PlayerRepository,
@@ -23,10 +22,10 @@ class TestLoader(
         @Autowired private val gameRepository: GameRepository,
         @Autowired private val lineupPositionRepository: LineupPositionRepository
 ) { init {
-    userService.setCurrentUser(jwtTestUser())
+    UserContext.setCurrentUser(jwtTestUser())
 }
 
-    private val owner = userService.getCurrentUser().toPersistence()
+    private val owner = UserContext.getCurrentUser().toPersistence()
 
     fun loadData() {
         val league = loadLeague()
@@ -60,7 +59,7 @@ class TestLoader(
     }
 
     private fun createLineup(game: PersistenceGame, team: PersistenceTeam, inningHalf: InningHalf) {
-        val rosterPlayers = rosterPlayerRepository.findByTeamId(team.id!!, PageRequest(0, 20))
+        val rosterPlayers = rosterPlayerRepository.findByOwnerAndTeamId(UserContext.getPersistenceUser(), team.id!!, PageRequest(0, 20))
         var counter = 0
         FieldPosition.values().forEach { it ->
             val lPosition = PersistenceLineupPosition(null, owner, game, rosterPlayers.content[counter].player, inningHalf, (++counter).toLong(), it)
