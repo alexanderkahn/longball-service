@@ -2,8 +2,7 @@ package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.*
-import net.alexanderkahn.longball.service.persistence.assembler.GameAssembler
-import net.alexanderkahn.longball.service.persistence.assembler.LineupPositionAssembler
+import net.alexanderkahn.longball.service.persistence.assembler.toModel
 import net.alexanderkahn.longball.service.persistence.repository.GameRepository
 import net.alexanderkahn.longball.service.persistence.repository.LineupPositionRepository
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
@@ -16,21 +15,19 @@ import java.util.*
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository, @Autowired private val lineupPositionRepository: LineupPositionRepository) {
 
-    private val gameAssembler: GameAssembler = GameAssembler()
-    private val lineupPositionAssembler: LineupPositionAssembler = LineupPositionAssembler()
-
     fun get(id: Long): Game {
-        return gameAssembler.toModel(gameRepository.findByIdAndOwner(id, UserContext.getPersistenceUser()))
+        val game = gameRepository.findByIdAndOwner(id, UserContext.getPersistenceUser())
+        return game.toModel()
     }
 
     fun getAll(pageable: Pageable): Page<Game> {
         val games = gameRepository.findByOwner(pageable, UserContext.getPersistenceUser())
-        return games.map { gameAssembler.toModel(it) }
+        return games.map { it.toModel() }
     }
 
     fun getLineupPositions(pageable: Pageable, gameId: Long, inningHalf: InningHalf): Page<LineupPosition> {
         val positions = lineupPositionRepository.findByOwnerAndGameIdAndInningHalf(pageable, UserContext.getPersistenceUser(), gameId, inningHalf)
-        return positions.map { lineupPositionAssembler.toModel(it) }
+        return positions.map { it.toModel() }
     }
 
     fun getFakeStatus(gameId: Long): GameStatus {
