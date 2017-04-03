@@ -55,12 +55,11 @@ fun PersistenceTeam.toModel(): Team {
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PersistencePlateAppearance.toModel(): PlateAppearance {
-    if (id == null || batter.id == null) {
+fun PersistencePlateAppearance.toModel(pitcher: PersistencePlayer): PlateAppearance {
+    if (id == null || pitcher.id == null ||  batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
-    //TODO: pitcher Id
     //TODO: onBase
     //TODO: pitch count
-    return PlateAppearance(0, batter.id, listOf(), PlateAppearanceCount(0, 0))
+    return PlateAppearance(pitcher.id, batter.id, listOf(), PlateAppearanceCount(0, 0))
 }

@@ -1,10 +1,7 @@
 package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.base.servicebase.service.UserContext
-import net.alexanderkahn.longball.service.model.Game
-import net.alexanderkahn.longball.service.model.InningHalf
-import net.alexanderkahn.longball.service.model.LineupPosition
-import net.alexanderkahn.longball.service.model.PlateAppearance
+import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.persistence.assembler.toModel
 import net.alexanderkahn.longball.service.persistence.model.PersistenceGame
 import net.alexanderkahn.longball.service.persistence.model.PersistencePlateAppearance
@@ -45,13 +42,20 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     fun getCurrentPlateAppearance(gameId: Long): PlateAppearance {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
-        var appearance = plateAppearanceRepository.findLastByOwnerAndGame(UserContext.getPersistenceUser(), game)
+        val appearance = getOrCreatePlateAppearance(game)
+        val oppositeHalf = InningHalf.values().filter { it != appearance.half }.first()
+        val currentPitcher = getPlayerByPosition(game, oppositeHalf, FieldPosition.PITCHER)
+        return appearance.toModel(currentPitcher)
+    }
+
+    private fun getOrCreatePlateAppearance(game: PersistenceGame): PersistencePlateAppearance {
+        var appearance: PersistencePlateAppearance? = plateAppearanceRepository.findLastByOwnerAndGame(UserContext.getPersistenceUser(), game)
         if (appearance == null) {
             val batter = getBatterAtLineupPosition(game, InningHalf.TOP, 0)
             appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter)
             plateAppearanceRepository.save(appearance)
         }
-        return appearance.toModel()
+        return appearance
     }
 
     private fun getBatterAtLineupPosition(game: PersistenceGame, inningHalf: InningHalf, battingOrderNumber: Int): PersistencePlayer {
@@ -59,5 +63,9 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val players = lineupPositionRepository.findByOwnerAndGameAndInningHalf(pageable, UserContext.getPersistenceUser(), game, inningHalf)
         val batter = players.content[battingOrderNumber].player
         return batter
+    }
+
+    private fun getPlayerByPosition(game: PersistenceGame, inningHalf: InningHalf, fieldPosition:FieldPosition): PersistencePlayer {
+        return lineupPositionRepository.findFirstByOwnerAndGameAndInningHalfAndFieldPosition(UserContext.getPersistenceUser(), game, inningHalf, fieldPosition).player
     }
 }

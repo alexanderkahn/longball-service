@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.service.persistence.repository
 
+import net.alexanderkahn.longball.service.model.FieldPosition
 import net.alexanderkahn.longball.service.model.InningHalf
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.PersistenceGame
@@ -11,4 +12,5 @@ interface LineupPositionRepository: LongballRepository<PersistenceLineupPosition
 
     fun findByOwnerAndGameAndInningHalf(pageable: Pageable, owner: EmbeddableUser, game: PersistenceGame, inningHalf: InningHalf): Page<PersistenceLineupPosition>
 
+    fun findFirstByOwnerAndGameAndInningHalfAndFieldPosition(owner: EmbeddableUser, game: PersistenceGame, inningHalf: InningHalf, fieldPosition: FieldPosition): PersistenceLineupPosition
 }
