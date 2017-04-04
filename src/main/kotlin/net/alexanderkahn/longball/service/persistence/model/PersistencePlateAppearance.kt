@@ -27,6 +27,6 @@ data class PersistencePlateAppearance(
         val batter: PersistencePlayer,
 
         @OneToMany(mappedBy = "plateAppearance")
-        val events: List<PersistenceGameplayEvent>
+        val events: MutableList<PersistenceGameplayEvent>
 
         ): OwnedIdentifiable

@@ -18,4 +18,8 @@ data class PersistenceGameplayEvent(
 
         @Column(nullable = false)
         val pitch: Pitch
-): OwnedIdentifiable
+): OwnedIdentifiable {
+        override fun toString(): String {
+                return "PersistenceGameplayEvent(id=$id, owner=$owner, pitch=$pitch)"
+        }
+}

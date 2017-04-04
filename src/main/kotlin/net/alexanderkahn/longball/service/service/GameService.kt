@@ -50,14 +50,16 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent) {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
         val appearance = getOrCreatePlateAppearance(game)
-        gameplayEventRepository.save(gameplayEvent.toPersistence(null, appearance))
+        val pxEvent = gameplayEvent.toPersistence(null, appearance)
+        appearance.events.add(pxEvent)
+        gameplayEventRepository.save(pxEvent)
     }
 
     private fun getOrCreatePlateAppearance(game: PersistenceGame): PersistencePlateAppearance {
         var appearance: PersistencePlateAppearance? = plateAppearanceRepository.findLastByOwnerAndGame(UserContext.getPersistenceUser(), game)
         if (appearance == null) {
             val batter = getBatterAtLineupPosition(game, InningHalf.TOP, 0)
-            appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter, emptyList())
+            appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter, mutableListOf())
             plateAppearanceRepository.save(appearance)
         }
         return appearance
