@@ -3,13 +3,11 @@ package net.alexanderkahn.longball.service.service
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.persistence.assembler.toModel
+import net.alexanderkahn.longball.service.persistence.assembler.toPersistence
 import net.alexanderkahn.longball.service.persistence.model.PersistenceGame
 import net.alexanderkahn.longball.service.persistence.model.PersistencePlateAppearance
 import net.alexanderkahn.longball.service.persistence.model.PersistencePlayer
-import net.alexanderkahn.longball.service.persistence.repository.GameRepository
-import net.alexanderkahn.longball.service.persistence.repository.LineupPositionRepository
-import net.alexanderkahn.longball.service.persistence.repository.PlateAppearanceRepository
-import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
+import net.alexanderkahn.longball.service.persistence.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -19,7 +17,8 @@ import org.springframework.stereotype.Service
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val lineupPositionRepository: LineupPositionRepository,
-                  @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) {
+                  @Autowired private val plateAppearanceRepository: PlateAppearanceRepository,
+                  @Autowired private val gameplayEventRepository: GameplayEventRepository) {
 
     //TODO: league rules
     private val FAKE_LEAGUE_ROSTER_LENGTH = 9
@@ -48,11 +47,17 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         return appearance.toModel(currentPitcher)
     }
 
+    fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent) {
+        val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
+        val appearance = getOrCreatePlateAppearance(game)
+        gameplayEventRepository.save(gameplayEvent.toPersistence(null, appearance))
+    }
+
     private fun getOrCreatePlateAppearance(game: PersistenceGame): PersistencePlateAppearance {
         var appearance: PersistencePlateAppearance? = plateAppearanceRepository.findLastByOwnerAndGame(UserContext.getPersistenceUser(), game)
         if (appearance == null) {
             val batter = getBatterAtLineupPosition(game, InningHalf.TOP, 0)
-            appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter)
+            appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter, emptyList())
             plateAppearanceRepository.save(appearance)
         }
         return appearance

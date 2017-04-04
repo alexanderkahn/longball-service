@@ -1,17 +1,11 @@
 package net.alexanderkahn.longball.service.rest
 
-import net.alexanderkahn.longball.service.model.Game
-import net.alexanderkahn.longball.service.model.InningHalf
-import net.alexanderkahn.longball.service.model.LineupPosition
-import net.alexanderkahn.longball.service.model.PlateAppearance
+import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.service.GameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/games")
@@ -39,6 +33,12 @@ class GameController(@Autowired private val gameService: GameService) {
 
     @GetMapping("/{id}/plateappearance")
     fun getGameStatus(@PathVariable id: Long): PlateAppearance {
+        return gameService.getCurrentPlateAppearance(id)
+    }
+
+    @PostMapping("/{id}/plateappearance/event")
+    fun addGameplayEvent(@PathVariable id: Long, @RequestBody gameplayEvent: GameplayEvent): PlateAppearance {
+        gameService.addGameplayEvent(id, gameplayEvent)
         return gameService.getCurrentPlateAppearance(id)
     }
 }

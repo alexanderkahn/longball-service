@@ -56,10 +56,27 @@ fun PersistenceTeam.toModel(): Team {
 }
 
 fun PersistencePlateAppearance.toModel(pitcher: PersistencePlayer): PlateAppearance {
-    if (id == null || pitcher.id == null ||  batter.id == null) {
+    if (id == null || pitcher.id == null || batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
     //TODO: onBase
-    //TODO: pitch count
-    return PlateAppearance(pitcher.id, batter.id, listOf(), PlateAppearanceCount(0, 0))
+    return PlateAppearance(pitcher.id, batter.id, listOf(), toPlateAppearanceCount(events))
+}
+
+private fun toPlateAppearanceCount(gameplayEvents: List<PersistenceGameplayEvent>): PlateAppearanceCount {
+    var balls = 0
+    var strikes = 0
+    gameplayEvents.map { it.pitch }.forEach {
+        when(it) {
+            Pitch.BALL -> balls++
+            Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING -> strikes++
+            else -> throw NotImplementedError("This type of pitch isn't supported yet")
+        }
+    }
+    return PlateAppearanceCount(balls, strikes)
+}
+
+private fun Pitch.isStrike(): Boolean {
+    //TODO: not always with the foul tip
+    return arrayOf(Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING, Pitch.FOUL_TIP).contains(this)
 }

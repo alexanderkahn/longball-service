@@ -24,6 +24,9 @@ data class PersistencePlateAppearance(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false)
-        val batter: PersistencePlayer
+        val batter: PersistencePlayer,
+
+        @OneToMany(mappedBy = "plateAppearance")
+        val events: List<PersistenceGameplayEvent>
 
         ): OwnedIdentifiable
