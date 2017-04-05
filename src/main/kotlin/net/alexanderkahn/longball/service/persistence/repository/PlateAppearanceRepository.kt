@@ -5,5 +5,5 @@ import net.alexanderkahn.longball.service.persistence.model.PersistenceGame
 import net.alexanderkahn.longball.service.persistence.model.PersistencePlateAppearance
 
 interface PlateAppearanceRepository: LongballRepository<PersistencePlateAppearance> {
-    fun findLastByOwnerAndGame(owner: EmbeddableUser, game: PersistenceGame): PersistencePlateAppearance?
+    fun findFirstByOwnerAndGameOrderByIdDesc(owner: EmbeddableUser, game: PersistenceGame): PersistencePlateAppearance?
 }

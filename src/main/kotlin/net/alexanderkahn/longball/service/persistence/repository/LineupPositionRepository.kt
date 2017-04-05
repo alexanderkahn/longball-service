@@ -12,5 +12,7 @@ interface LineupPositionRepository: LongballRepository<PersistenceLineupPosition
 
     fun findByOwnerAndGameAndInningHalf(pageable: Pageable, owner: EmbeddableUser, game: PersistenceGame, inningHalf: InningHalf): Page<PersistenceLineupPosition>
 
+    fun findFirstByOwnerAndGameAndInningHalfAndBattingOrder(owner: EmbeddableUser, game: PersistenceGame, inningHalf: InningHalf, battingOrder: Short): PersistenceLineupPosition
+
     fun findFirstByOwnerAndGameAndInningHalfAndFieldPosition(owner: EmbeddableUser, game: PersistenceGame, inningHalf: InningHalf, fieldPosition: FieldPosition): PersistenceLineupPosition
 }

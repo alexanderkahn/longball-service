@@ -62,7 +62,7 @@ class TestLoader(
         val rosterPlayers = rosterPlayerRepository.findByOwnerAndTeamId(UserContext.getPersistenceUser(), team.id!!, PageRequest(0, 20))
         var counter = 0
         FieldPosition.values().forEach { it ->
-            val lPosition = PersistenceLineupPosition(null, owner, game, rosterPlayers.content[counter].player, inningHalf, (++counter).toLong(), it)
+            val lPosition = PersistenceLineupPosition(null, owner, game, rosterPlayers.content[counter].player, inningHalf, (++counter).toShort(), it)
             lineupPositionRepository.save(lPosition)
         }
     }

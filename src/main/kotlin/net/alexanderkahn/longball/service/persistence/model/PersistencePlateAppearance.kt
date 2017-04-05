@@ -23,8 +23,8 @@ data class PersistencePlateAppearance(
         val half: InningHalf,
 
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false)
-        val batter: PersistencePlayer,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_position"), nullable = false)
+        val batter: PersistenceLineupPosition,
 
         @OneToMany(mappedBy = "plateAppearance")
         val events: MutableList<PersistenceGameplayEvent>

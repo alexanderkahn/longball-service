@@ -60,13 +60,13 @@ fun PersistencePlateAppearance.toModel(pitcher: PersistencePlayer): PlateAppeara
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
     //TODO: onBase
-    return PlateAppearance(pitcher.id, batter.id, listOf(), toPlateAppearanceCount(events))
+    return PlateAppearance(pitcher.id, batter.id, listOf(), this.events.toPlateAppearanceCount())
 }
 
-private fun toPlateAppearanceCount(gameplayEvents: List<PersistenceGameplayEvent>): PlateAppearanceCount {
+fun List<PersistenceGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
     var balls = 0
     var strikes = 0
-    gameplayEvents.map { it.pitch }.forEach {
+    this.map { it.pitch }.forEach {
         when(it) {
             Pitch.BALL -> balls++
             Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING -> strikes++
@@ -74,9 +74,4 @@ private fun toPlateAppearanceCount(gameplayEvents: List<PersistenceGameplayEvent
         }
     }
     return PlateAppearanceCount(balls, strikes)
-}
-
-private fun Pitch.isStrike(): Boolean {
-    //TODO: not always with the foul tip
-    return arrayOf(Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING, Pitch.FOUL_TIP).contains(this)
 }

@@ -17,7 +17,10 @@ data class PersistenceGameplayEvent(
         val plateAppearance: PersistencePlateAppearance,
 
         @Column(nullable = false)
-        val pitch: Pitch
+        val pitch: Pitch,
+
+        @OneToOne(mappedBy = "gameplayEvent")
+        var result: PxGameplayEventResult? = null
 ): OwnedIdentifiable {
         override fun toString(): String {
                 return "PersistenceGameplayEvent(id=$id, owner=$owner, pitch=$pitch)"

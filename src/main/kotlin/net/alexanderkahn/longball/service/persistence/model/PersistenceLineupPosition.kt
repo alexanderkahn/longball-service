@@ -26,7 +26,7 @@ data class PersistenceLineupPosition(
         val inningHalf: InningHalf,
 
         @Column(nullable = false)
-        val battingOrder: Long,
+        val battingOrder: Short,
 
         @Column(nullable = false)
         val fieldPosition: FieldPosition
