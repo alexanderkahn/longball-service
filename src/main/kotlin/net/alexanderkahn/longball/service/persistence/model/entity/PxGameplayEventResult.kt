@@ -1,6 +1,8 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence.model.entity
 
 import net.alexanderkahn.longball.service.model.AtBatResult
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import javax.persistence.*
 
 @Entity(name = "gameplay_event_result")
@@ -14,7 +16,7 @@ data class PxGameplayEventResult(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_gameplay_event"), nullable = false)
-        val gameplayEvent: PersistenceGameplayEvent,
+        val gameplayEvent: PxGameplayEvent,
 
         @Column(nullable = false)
         val atBatResult: AtBatResult

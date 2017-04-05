@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.League
-import net.alexanderkahn.longball.service.persistence.assembler.toModel
+import net.alexanderkahn.longball.service.service.assembler.toModel
 import net.alexanderkahn.longball.service.persistence.repository.LeagueRepository
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
 import org.springframework.beans.factory.annotation.Autowired

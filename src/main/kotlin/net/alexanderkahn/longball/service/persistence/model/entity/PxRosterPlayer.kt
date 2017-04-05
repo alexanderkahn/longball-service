@@ -1,12 +1,15 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence.model.entity
 
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import java.time.OffsetDateTime
 import javax.persistence.*
+import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "roster_player")
-data class PersistenceRosterPlayer(
+data class PxRosterPlayer(
         @Id
-        override @GeneratedValue(strategy = GenerationType.IDENTITY)
+        override @GeneratedValue(strategy = IDENTITY)
         val id: Long? = null,
 
         @Embedded
@@ -14,11 +17,11 @@ data class PersistenceRosterPlayer(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_team"), nullable = false)
-        val team: PersistenceTeam,
+        val team: PxTeam,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false)
-        val player: PersistencePlayer,
+        val player: PxPlayer,
 
         @Column(nullable = false)
         val jerseyNumber: Short,

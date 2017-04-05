@@ -1,5 +1,5 @@
 package net.alexanderkahn.longball.service.persistence.repository
 
-import net.alexanderkahn.longball.service.persistence.model.PersistenceTeam
+import net.alexanderkahn.longball.service.persistence.model.entity.PxTeam
 
-interface TeamRepository: LongballRepository<PersistenceTeam>
+interface TeamRepository: LongballRepository<PxTeam>

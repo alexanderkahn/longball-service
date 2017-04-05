@@ -1,11 +1,14 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence.model.entity
 
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import javax.persistence.*
+import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "team")
-data class PersistenceTeam(
+data class PxTeam(
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = IDENTITY)
         override val id: Long? = null,
 
         @Embedded

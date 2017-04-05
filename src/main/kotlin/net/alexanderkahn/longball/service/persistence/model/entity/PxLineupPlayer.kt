@@ -1,14 +1,17 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence.model.entity
 
 import net.alexanderkahn.longball.service.model.FieldPosition
 import net.alexanderkahn.longball.service.model.InningHalf
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import javax.persistence.*
+import javax.persistence.GenerationType.IDENTITY
 
-@Entity(name = "lineup_position")
-data class PersistenceLineupPosition(
+@Entity(name = "lineup_player")
+data class PxLineupPlayer(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = IDENTITY)
         override val id: Long?,
 
         @Embedded
@@ -16,11 +19,11 @@ data class PersistenceLineupPosition(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
-        val game: PersistenceGame,
+        val game: PxGame,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false)
-        val player: PersistencePlayer,
+        val player: PxPlayer,
 
         @Column(nullable = false)
         val inningHalf: InningHalf,

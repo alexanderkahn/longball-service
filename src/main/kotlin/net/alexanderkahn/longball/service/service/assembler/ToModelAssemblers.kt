@@ -1,42 +1,43 @@
-package net.alexanderkahn.longball.service.persistence.assembler
+package net.alexanderkahn.longball.service.service.assembler
 
 import net.alexanderkahn.base.servicebase.model.User
 import net.alexanderkahn.longball.service.model.*
-import net.alexanderkahn.longball.service.persistence.model.*
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.model.entity.*
 
 fun User.toPersistence(): EmbeddableUser {
     return EmbeddableUser(issuer, userId)
 }
 
-fun PersistenceGame.toModel(): Game {
+fun PxGame.toModel(): Game {
     if (id == null || league.id == null || awayTeam.id == null || homeTeam.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved Game")
     }
     return Game(id, league.id, awayTeam.id, homeTeam.id, startTime.toZonedDateTime())
 }
 
-fun PersistenceLeague.toModel(): League {
+fun PxLeague.toModel(): League {
     if (id == null) {
         throw UnsupportedOperationException("Cannot convert unsa")
     }
     return League(id, name)
 }
 
-fun PersistenceLineupPosition.toModel(): LineupPosition {
+fun PxLineupPlayer.toModel(): LineupPlayer {
     if (id == null || game.id == null || player.id == null) {
-        throw UnsupportedOperationException("Cannot convert unsaved LineupPosition")
+        throw UnsupportedOperationException("Cannot convert unsaved LineupPlayer")
     }
-    return LineupPosition(player.id, battingOrder, fieldPosition)
+    return LineupPlayer(player.id, battingOrder, fieldPosition)
 }
 
-fun PersistencePlayer.toModel(): Player {
+fun PxPlayer.toModel(): Player {
     if (id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved Player")
     }
     return Player(id, first, last)
 }
 
-fun PersistenceRosterPlayer.toModel(): RosterPlayer {
+fun PxRosterPlayer.toModel(): RosterPlayer {
     if (id == null || team.id == null || player.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved RosterPlayer")
     }
@@ -48,14 +49,14 @@ fun PersistenceRosterPlayer.toModel(): RosterPlayer {
             endDate?.toZonedDateTime())
 }
 
-fun PersistenceTeam.toModel(): Team {
+fun PxTeam.toModel(): Team {
     if (id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved team")
     }
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PersistencePlateAppearance.toModel(pitcher: PersistencePlayer): PlateAppearance {
+fun PxPlateAppearance.toModel(pitcher: PxPlayer): PlateAppearance {
     if (id == null || pitcher.id == null || batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
@@ -63,7 +64,7 @@ fun PersistencePlateAppearance.toModel(pitcher: PersistencePlayer): PlateAppeara
     return PlateAppearance(pitcher.id, batter.id, listOf(), this.events.toPlateAppearanceCount())
 }
 
-fun List<PersistenceGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
+fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
     var balls = 0
     var strikes = 0
     this.map { it.pitch }.forEach {

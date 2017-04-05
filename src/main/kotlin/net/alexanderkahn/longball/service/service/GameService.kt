@@ -2,10 +2,10 @@ package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.*
-import net.alexanderkahn.longball.service.persistence.assembler.toModel
-import net.alexanderkahn.longball.service.persistence.assembler.toPersistence
-import net.alexanderkahn.longball.service.persistence.assembler.toPlateAppearanceCount
-import net.alexanderkahn.longball.service.persistence.model.*
+import net.alexanderkahn.longball.service.service.assembler.toModel
+import net.alexanderkahn.longball.service.service.assembler.toPersistence
+import net.alexanderkahn.longball.service.service.assembler.toPlateAppearanceCount
+import net.alexanderkahn.longball.service.persistence.model.entity.*
 import net.alexanderkahn.longball.service.persistence.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository,
-                  @Autowired private val lineupPositionRepository: LineupPositionRepository,
+                  @Autowired private val lineupPlayerRepository: LineupPlayerRepository,
                   @Autowired private val plateAppearanceRepository: PlateAppearanceRepository,
                   @Autowired private val gameplayEventRepository: GameplayEventRepository,
                   @Autowired private val gameplayEventResultRepository: GameplayEventResultRepository) {
@@ -29,10 +29,10 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         return games.map { it.toModel() }
     }
 
-    fun getLineupPositions(pageable: Pageable, gameId: Long, inningHalf: InningHalf): Page<LineupPosition> {
+    fun getLineupPlayers(pageable: Pageable, gameId: Long, inningHalf: InningHalf): Page<LineupPlayer> {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
-        val positions = lineupPositionRepository.findByOwnerAndGameAndInningHalf(pageable, UserContext.getPersistenceUser(), game, inningHalf)
-        return positions.map { it.toModel() }
+        val players = lineupPlayerRepository.findByOwnerAndGameAndInningHalf(pageable, UserContext.getPersistenceUser(), game, inningHalf)
+        return players.map { it.toModel() }
     }
 
     fun getCurrentPlateAppearance(gameId: Long): PlateAppearance {
@@ -52,13 +52,13 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         processEventResult(appearance.events)
     }
 
-    private fun processEventResult(events: List<PersistenceGameplayEvent>) {
+    private fun processEventResult(events: List<PxGameplayEvent>) {
         if (shouldAddResult(events)) {
             addResult(events.last())
         }
     }
 
-    private fun shouldAddResult(events: List<PersistenceGameplayEvent>): Boolean {
+    private fun shouldAddResult(events: List<PxGameplayEvent>): Boolean {
         val count = events.toPlateAppearanceCount()
         return count.strikes >= LeagueRuleSet.STRIKES_PER_OUT ||
                 count.balls >= LeagueRuleSet.BALLS_PER_WALK
@@ -66,14 +66,14 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     //TODO: this could be an extension function. Lots of this stuff should eventually go into either top-level functions
     //TODO: or a new class
-    private fun addResult(lastEvent: PersistenceGameplayEvent) {
+    private fun addResult(lastEvent: PxGameplayEvent) {
         val atBatResult = getAtBatResult(lastEvent)
         val result = PxGameplayEventResult(null, UserContext.getPersistenceUser(), lastEvent, atBatResult)
         gameplayEventResultRepository.save(result)
         lastEvent.result = result
     }
 
-    private fun getAtBatResult(lastEvent: PersistenceGameplayEvent): AtBatResult {
+    private fun getAtBatResult(lastEvent: PxGameplayEvent): AtBatResult {
         when(lastEvent.pitch) {
             Pitch.BALL -> return AtBatResult.BASE_ON_BALLS
             Pitch.STRIKE_SWINGING -> return AtBatResult.STRIKEOUT_SWINGING
@@ -82,27 +82,27 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         }
     }
 
-    private fun getOrCreatePlateAppearance(game: PersistenceGame): PersistencePlateAppearance {
-        var appearance: PersistencePlateAppearance? = plateAppearanceRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.getPersistenceUser(), game)
+    private fun getOrCreatePlateAppearance(game: PxGame): PxPlateAppearance {
+        var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.getPersistenceUser(), game)
         if (appearance == null) {
-            val batter = getBatterAtLineupPosition(game, InningHalf.TOP, 1)
-            appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter, mutableListOf())
+            val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1)
+            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter, mutableListOf())
             plateAppearanceRepository.save(appearance)
         } else if (appearance.events.isNotEmpty() && appearance.events.last().result != null) {
-            val batter = getBatterAtLineupPosition(game, appearance.half, ((appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1).toShort())
-            appearance = PersistencePlateAppearance(null, UserContext.getPersistenceUser(), game, appearance.inning, appearance.half, batter, mutableListOf())
+            val batter = getPlayerByBattingOrder(game, appearance.half, ((appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1).toShort())
+            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, appearance.inning, appearance.half, batter, mutableListOf())
             plateAppearanceRepository.save(appearance)
 
         }
         return appearance
     }
 
-    private fun getBatterAtLineupPosition(game: PersistenceGame, inningHalf: InningHalf, battingOrder: Short): PersistenceLineupPosition {
-        return lineupPositionRepository.findFirstByOwnerAndGameAndInningHalfAndBattingOrder(UserContext.getPersistenceUser(), game, inningHalf, battingOrder)
+    private fun getPlayerByBattingOrder(game: PxGame, inningHalf: InningHalf, battingOrder: Short): PxLineupPlayer {
+        return lineupPlayerRepository.findFirstByOwnerAndGameAndInningHalfAndBattingOrder(UserContext.getPersistenceUser(), game, inningHalf, battingOrder)
     }
 
-    private fun getPlayerByPosition(game: PersistenceGame, inningHalf: InningHalf, fieldPosition:FieldPosition): PersistencePlayer {
-        return lineupPositionRepository.findFirstByOwnerAndGameAndInningHalfAndFieldPosition(UserContext.getPersistenceUser(), game, inningHalf, fieldPosition).player
+    private fun getPlayerByPosition(game: PxGame, inningHalf: InningHalf, fieldPosition:FieldPosition): PxPlayer {
+        return lineupPlayerRepository.findFirstByOwnerAndGameAndInningHalfAndFieldPosition(UserContext.getPersistenceUser(), game, inningHalf, fieldPosition).player
     }
 }
 

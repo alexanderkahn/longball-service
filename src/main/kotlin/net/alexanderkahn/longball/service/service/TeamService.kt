@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.service.service
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.RosterPlayer
 import net.alexanderkahn.longball.service.model.Team
-import net.alexanderkahn.longball.service.persistence.assembler.toModel
+import net.alexanderkahn.longball.service.service.assembler.toModel
 import net.alexanderkahn.longball.service.persistence.repository.RosterPlayerRepository
 import net.alexanderkahn.longball.service.persistence.repository.TeamRepository
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser

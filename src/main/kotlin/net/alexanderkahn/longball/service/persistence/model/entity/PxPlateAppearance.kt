@@ -1,12 +1,15 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence.model.entity
 
 import net.alexanderkahn.longball.service.model.InningHalf
+import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import javax.persistence.*
+import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "plate_appearance")
-data class PersistencePlateAppearance(
+data class PxPlateAppearance(
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = IDENTITY)
         override val id: Long?,
 
         @Embedded
@@ -14,7 +17,7 @@ data class PersistencePlateAppearance(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
-        val game: PersistenceGame,
+        val game: PxGame,
 
         @Column(nullable = false)
         val inning: Short,
@@ -23,10 +26,10 @@ data class PersistencePlateAppearance(
         val half: InningHalf,
 
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_position"), nullable = false)
-        val batter: PersistenceLineupPosition,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false)
+        val batter: PxLineupPlayer,
 
         @OneToMany(mappedBy = "plateAppearance")
-        val events: MutableList<PersistenceGameplayEvent>
+        val events: MutableList<PxGameplayEvent>
 
         ): OwnedIdentifiable
