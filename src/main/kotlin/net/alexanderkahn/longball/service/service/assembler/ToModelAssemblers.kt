@@ -56,12 +56,12 @@ fun PxTeam.toModel(): Team {
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PxPlateAppearance.toModel(pitcher: PxPlayer): PlateAppearance {
+fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Short): PlateAppearance {
     if (id == null || pitcher.id == null || batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
     //TODO: onBase
-    return PlateAppearance(pitcher.id, batter.id, Inning(half, inning), listOf(), this.events.toPlateAppearanceCount())
+    return PlateAppearance(pitcher.id, batter.id, Inning(half, inning), outs, listOf(), this.events.toPlateAppearanceCount())
 }
 
 fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {

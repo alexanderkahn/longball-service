@@ -2,11 +2,11 @@ package net.alexanderkahn.longball.service.service
 
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.*
+import net.alexanderkahn.longball.service.persistence.model.entity.*
+import net.alexanderkahn.longball.service.persistence.repository.*
 import net.alexanderkahn.longball.service.service.assembler.toModel
 import net.alexanderkahn.longball.service.service.assembler.toPersistence
 import net.alexanderkahn.longball.service.service.assembler.toPlateAppearanceCount
-import net.alexanderkahn.longball.service.persistence.model.entity.*
-import net.alexanderkahn.longball.service.persistence.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -40,7 +40,8 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val appearance = getOrCreatePlateAppearance(game)
         val oppositeHalf = InningHalf.values().filter { it != appearance.half }.first()
         val currentPitcher = getPlayerByPosition(game, oppositeHalf, FieldPosition.PITCHER)
-        return appearance.toModel(currentPitcher)
+        val outs: Short = getOuts(appearance.inning, appearance.half)
+        return appearance.toModel(currentPitcher, outs)
     }
 
     fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent) {
@@ -95,6 +96,13 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
         }
         return appearance
+    }
+
+    private fun getOuts(inning: Short, half: InningHalf): Short {
+        return plateAppearanceRepository.findByOwnerAndInningAndHalf(UserContext.getPersistenceUser(), inning, half)
+                .map { it.events }.flatten()
+                .filter { it.result?.atBatResult in arrayOf(AtBatResult.STRIKEOUT_LOOKING, AtBatResult.STRIKEOUT_SWINGING) }
+                .count().toShort()
     }
 
     private fun getPlayerByBattingOrder(game: PxGame, inningHalf: InningHalf, battingOrder: Short): PxLineupPlayer {
