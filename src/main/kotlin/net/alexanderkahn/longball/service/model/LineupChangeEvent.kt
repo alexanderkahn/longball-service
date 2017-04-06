@@ -1,3 +1,3 @@
 package net.alexanderkahn.longball.service.model
 
-class RosterEvent: GameEvent
+class LineupChangeEvent : GameEvent

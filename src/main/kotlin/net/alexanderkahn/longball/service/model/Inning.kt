@@ -1,3 +1,3 @@
 package net.alexanderkahn.longball.service.model
 
-data class Inning(val top: Int, val bottom: Int)
+data class Inning(val half: InningHalf, val inning: Short)
