@@ -25,7 +25,6 @@ spring:
     platform: postgres
     url: jdbc:postgresql://localhost:5432/longball
     username: postgres
-    password: password
 data:
   mongodb:
     uri: mongodb://localhost:27017/longball

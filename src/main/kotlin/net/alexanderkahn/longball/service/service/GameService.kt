@@ -17,7 +17,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val lineupPlayerRepository: LineupPlayerRepository,
                   @Autowired private val plateAppearanceRepository: PlateAppearanceRepository,
                   @Autowired private val gameplayEventRepository: GameplayEventRepository,
-                  @Autowired private val gameplayEventResultRepository: GameplayEventResultRepository) {
+                  @Autowired private val plateAppearanceResultRepository: PlateAppearanceResultRepository) {
 
     fun get(id: Long): Game {
         val game = gameRepository.findByIdAndOwner(id, UserContext.getPersistenceUser())
@@ -50,12 +50,12 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val pxEvent = gameplayEvent.toPersistence(null, appearance)
         appearance.events.add(pxEvent)
         gameplayEventRepository.save(pxEvent)
-        processEventResult(appearance.events)
+        processAppearanceResult(appearance)
     }
 
-    private fun processEventResult(events: List<PxGameplayEvent>) {
-        if (shouldAddResult(events)) {
-            addResult(events.last())
+    private fun processAppearanceResult(appearance: PxPlateAppearance) {
+        if (shouldAddResult(appearance.events)) {
+            addResult(appearance)
         }
     }
 
@@ -67,18 +67,17 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     //TODO: this could be an extension function. Lots of this stuff should eventually go into either top-level functions
     //TODO: or a new class
-    private fun addResult(lastEvent: PxGameplayEvent) {
-        val atBatResult = getAtBatResult(lastEvent)
-        val result = PxGameplayEventResult(null, UserContext.getPersistenceUser(), lastEvent, atBatResult)
-        gameplayEventResultRepository.save(result)
-        lastEvent.result = result
+    private fun addResult(appearance: PxPlateAppearance) {
+        val plateAppearanceResult = getPlateAppearanceResult(appearance.events.last())
+        val result = PxPlateAppearanceResult(null, UserContext.getPersistenceUser(), appearance, plateAppearanceResult)
+        plateAppearanceResultRepository.save(result)
     }
 
-    private fun getAtBatResult(lastEvent: PxGameplayEvent): AtBatResult {
+    private fun getPlateAppearanceResult(lastEvent: PxGameplayEvent): PlateAppearanceResult {
         when(lastEvent.pitch) {
-            Pitch.BALL -> return AtBatResult.BASE_ON_BALLS
-            Pitch.STRIKE_SWINGING -> return AtBatResult.STRIKEOUT_SWINGING
-            Pitch.STRIKE_LOOKING -> return AtBatResult.STRIKEOUT_LOOKING
+            Pitch.BALL -> return PlateAppearanceResult.BASE_ON_BALLS
+            Pitch.STRIKE_SWINGING -> return PlateAppearanceResult.STRIKEOUT_SWINGING
+            Pitch.STRIKE_LOOKING -> return PlateAppearanceResult.STRIKEOUT_LOOKING
             else -> throw NotImplementedError()
         }
     }
@@ -87,11 +86,11 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.getPersistenceUser(), game)
         if (appearance == null) {
             val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1)
-            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter, mutableListOf())
+            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter)
             plateAppearanceRepository.save(appearance)
-        } else if (appearance.events.isNotEmpty() && appearance.events.last().result != null) {
+        } else if (appearance.events.isNotEmpty() && appearance.result != null) {
             val batter = getPlayerByBattingOrder(game, appearance.half, ((appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1).toShort())
-            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, appearance.inning, appearance.half, batter, mutableListOf())
+            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, appearance.inning, appearance.half, batter)
             plateAppearanceRepository.save(appearance)
 
         }
@@ -100,8 +99,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     private fun getOuts(inning: Short, half: InningHalf): Short {
         return plateAppearanceRepository.findByOwnerAndInningAndHalf(UserContext.getPersistenceUser(), inning, half)
-                .map { it.events }.flatten()
-                .filter { it.result?.atBatResult in arrayOf(AtBatResult.STRIKEOUT_LOOKING, AtBatResult.STRIKEOUT_SWINGING) }
+                .filter { it.result?.plateAppearanceResult in arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING) }
                 .count().toShort()
     }
 

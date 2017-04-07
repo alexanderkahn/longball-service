@@ -1,13 +1,13 @@
 package net.alexanderkahn.longball.service.persistence.model.entity
 
-import net.alexanderkahn.longball.service.model.Pitch
+import net.alexanderkahn.longball.service.model.PlateAppearanceResult
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
-@Entity(name = "gameplay_event")
-data class PxGameplayEvent(
+@Entity(name = "plate_appearance_result")
+data class PxPlateAppearanceResult(
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long?,
@@ -15,14 +15,11 @@ data class PxGameplayEvent(
         @Embedded
         override val owner: EmbeddableUser,
 
-        @ManyToOne
+        @OneToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_plate_appearance"), nullable = false)
         val plateAppearance: PxPlateAppearance,
 
         @Column(nullable = false)
-        val pitch: Pitch
-): OwnedIdentifiable {
-        override fun toString(): String {
-                return "PxGameplayEvent(id=$id, owner=$owner, pitch=$pitch)"
-        }
-}
+        val plateAppearanceResult: PlateAppearanceResult
+
+): OwnedIdentifiable

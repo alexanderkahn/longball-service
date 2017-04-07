@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.model
 
-enum class AtBatResult {
+enum class PlateAppearanceResult {
     STRIKEOUT_LOOKING,
     STRIKEOUT_SWINGING,
     BASE_ON_BALLS
