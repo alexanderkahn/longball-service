@@ -7,5 +7,5 @@ import net.alexanderkahn.longball.service.persistence.model.entity.PxPlateAppear
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
 
 fun GameplayEvent.toPersistence(id: Long?, appearance: PxPlateAppearance): PxGameplayEvent {
-    return PxGameplayEvent(id, UserContext.getPersistenceUser(), appearance, pitch)
+    return PxGameplayEvent(id, appearance, pitch, UserContext.getPersistenceUser())
 }

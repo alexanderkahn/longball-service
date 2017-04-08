@@ -1,12 +1,11 @@
 package net.alexanderkahn.longball.service.persistence.model.entity
 
+import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
+import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
+import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
-import javax.persistence.Id
 
 @Entity(name = "league")
 data class PxLeague(
@@ -15,9 +14,9 @@ data class PxLeague(
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long?,
 
-        @Embedded
-        override val owner: EmbeddableUser,
+        @Column(nullable = false)
+        val name: String,
 
-        @javax.persistence.Column(nullable = false)
-        val name: String
+        @Embedded
+        override val owner: EmbeddableUser = UserContext.getPersistenceUser()
 ): OwnedIdentifiable

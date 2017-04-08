@@ -61,7 +61,7 @@ fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Short): PlateAppearance {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
     //TODO: onBase
-    return PlateAppearance(pitcher.id, batter.id, Inning(half, inning), outs, listOf(), this.events.toPlateAppearanceCount())
+    return PlateAppearance(pitcher.id, batter.id, Inning(half, inning), outs, listOf(), events.toPlateAppearanceCount(), result?.plateAppearanceResult)
 }
 
 fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {

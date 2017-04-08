@@ -1,6 +1,5 @@
 package net.alexanderkahn.longball.service.service
 
-import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.persistence.model.entity.*
 import net.alexanderkahn.longball.service.persistence.repository.*
@@ -83,7 +82,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     //TODO: or a new class
     private fun addResult(appearance: PxPlateAppearance): PxPlateAppearanceResult {
         val plateAppearanceResult = getPlateAppearanceResult(appearance.events.last())
-        return PxPlateAppearanceResult(null, UserContext.getPersistenceUser(), appearance, plateAppearanceResult)
+        return PxPlateAppearanceResult(null, appearance, plateAppearanceResult)
 
     }
 
@@ -97,14 +96,14 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     private fun getOrCreatePlateAppearance(game: PxGame): PxPlateAppearance {
-        var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByGameAndOwnerOrderByIdDesc(game, UserContext.getPersistenceUser())
+        var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByGameAndOwnerOrderByIdDesc(game)
         if (appearance == null) {
             val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1)
-            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter)
+            appearance = PxPlateAppearance(null, game, 1, InningHalf.TOP, batter)
             plateAppearanceRepository.save(appearance)
         } else if (appearance.events.isNotEmpty() && appearance.result != null) {
             val batter = getPlayerByBattingOrder(game, appearance.half, ((appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1).toShort())
-            appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, appearance.inning, appearance.half, batter)
+            appearance = PxPlateAppearance(null, game, appearance.inning, appearance.half, batter)
             plateAppearanceRepository.save(appearance)
 
         }
