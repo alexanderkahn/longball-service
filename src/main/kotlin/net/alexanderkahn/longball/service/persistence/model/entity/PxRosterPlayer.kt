@@ -23,7 +23,7 @@ class PxRosterPlayer(
         val player: PxPlayer,
 
         @Column(nullable = false)
-        val jerseyNumber: Short,
+        val jerseyNumber: Int,
 
         @Column(nullable = false)
         val startDate: OffsetDateTime,

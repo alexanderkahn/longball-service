@@ -102,7 +102,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
             appearance = PxPlateAppearance(null, game, 1, InningHalf.TOP, batter)
             plateAppearanceRepository.save(appearance)
         } else if (appearance.events.isNotEmpty() && appearance.result != null) {
-            val batter = getPlayerByBattingOrder(game, appearance.half, ((appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1).toShort())
+            val batter = getPlayerByBattingOrder(game, appearance.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
             appearance = PxPlateAppearance(null, game, appearance.inning, appearance.half, batter)
             plateAppearanceRepository.save(appearance)
 
@@ -110,7 +110,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         return appearance
     }
 
-    private fun getPlayerByBattingOrder(game: PxGame, inningHalf: InningHalf, battingOrder: Short): PxLineupPlayer {
+    private fun getPlayerByBattingOrder(game: PxGame, inningHalf: InningHalf, battingOrder: Int): PxLineupPlayer {
         return lineupPlayerRepository.findFirstByGameAndInningHalfAndBattingOrderAndOwner(game, inningHalf, battingOrder)
     }
 

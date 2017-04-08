@@ -13,7 +13,7 @@ interface LineupPlayerRepository : LongballRepository<PxLineupPlayer> {
 
     fun findByGameAndInningHalfAndOwner(pageable: Pageable, game: PxGame, inningHalf: InningHalf, owner: EmbeddableUser = UserContext.getPersistenceUser()): Page<PxLineupPlayer>
 
-    fun findFirstByGameAndInningHalfAndBattingOrderAndOwner(game: PxGame, inningHalf: InningHalf, battingOrder: Short, owner: EmbeddableUser = UserContext.getPersistenceUser()): PxLineupPlayer
+    fun findFirstByGameAndInningHalfAndBattingOrderAndOwner(game: PxGame, inningHalf: InningHalf, battingOrder: Int, owner: EmbeddableUser = UserContext.getPersistenceUser()): PxLineupPlayer
 
     fun findFirstByGameAndInningHalfAndFieldPositionAndOwner(game: PxGame, inningHalf: InningHalf, fieldPosition: FieldPosition, owner: EmbeddableUser = UserContext.getPersistenceUser()): PxLineupPlayer
 }

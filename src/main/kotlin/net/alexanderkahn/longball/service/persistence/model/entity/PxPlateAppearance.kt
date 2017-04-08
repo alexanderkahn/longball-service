@@ -19,7 +19,7 @@ class PxPlateAppearance(
         val game: PxGame,
 
         @Column(nullable = false)
-        val inning: Short,
+        val inning: Int,
 
         @Column(nullable = false)
         val half: InningHalf,

@@ -56,7 +56,7 @@ fun PxTeam.toModel(): Team {
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Short): PlateAppearance {
+fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int): PlateAppearance {
     if (id == null || pitcher.id == null || batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
@@ -77,7 +77,7 @@ fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
     return PlateAppearanceCount(balls, strikes)
 }
 
-fun List<PxPlateAppearance>.toOuts(): Short {
+fun List<PxPlateAppearance>.toOuts(): Int {
     val outResults = arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING)
-    return filter { it.result?.plateAppearanceResult in  outResults}.count().toShort()
+    return filter { it.result?.plateAppearanceResult in  outResults}.count()
 }

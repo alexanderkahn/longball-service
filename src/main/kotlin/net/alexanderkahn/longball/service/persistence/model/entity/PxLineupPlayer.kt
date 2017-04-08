@@ -28,7 +28,7 @@ class PxLineupPlayer(
         val inningHalf: InningHalf,
 
         @Column(nullable = false)
-        val battingOrder: Short,
+        val battingOrder: Int,
 
         @Column(nullable = false)
         val fieldPosition: FieldPosition,

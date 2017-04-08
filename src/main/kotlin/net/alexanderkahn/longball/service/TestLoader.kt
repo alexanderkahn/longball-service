@@ -43,7 +43,7 @@ class TestLoader(
         val awayPlayers: List<PxPlayer> = (1..9).map { PxPlayer(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
             playerRepository.save(player)
-            rosterPlayerRepository.save(PxRosterPlayer(team = team, player = player, jerseyNumber = Random().nextInt(99).toShort(), startDate = OffsetDateTime.now()))
+            rosterPlayerRepository.save(PxRosterPlayer(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
         }
         return team
     }
@@ -59,7 +59,7 @@ class TestLoader(
         val rosterPlayers = rosterPlayerRepository.findByTeamIdAndOwner(PageRequest(0, 20), team.id!!, UserContext.getPersistenceUser())
         var counter = 0
         FieldPosition.values().forEach { it ->
-            val lPosition = PxLineupPlayer(null, game, rosterPlayers.content[counter].player, inningHalf, (++counter).toShort(), it)
+            val lPosition = PxLineupPlayer(null, game, rosterPlayers.content[counter].player, inningHalf, ++counter, it)
             lineupPlayerRepository.save(lPosition)
         }
     }
