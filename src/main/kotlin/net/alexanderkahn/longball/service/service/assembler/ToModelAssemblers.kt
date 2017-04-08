@@ -76,3 +76,8 @@ fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
     }
     return PlateAppearanceCount(balls, strikes)
 }
+
+fun List<PxPlateAppearance>.toOuts(): Short {
+    val outResults = arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING)
+    return filter { it.result?.plateAppearanceResult in  outResults}.count().toShort()
+}

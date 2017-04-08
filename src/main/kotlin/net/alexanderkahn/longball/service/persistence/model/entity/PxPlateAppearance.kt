@@ -30,9 +30,9 @@ data class PxPlateAppearance(
         val batter: PxLineupPlayer,
 
         @OneToMany(mappedBy = "plateAppearance")
-        val events: MutableList<PxGameplayEvent> = mutableListOf(),
+        var events: MutableList<PxGameplayEvent> = mutableListOf(),
 
         @OneToOne(mappedBy = "plateAppearance")
-        val result: PxPlateAppearanceResult? = null
+        var result: PxPlateAppearanceResult? = null
 
 ): OwnedIdentifiable

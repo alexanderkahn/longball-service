@@ -38,7 +38,6 @@ class GameController(@Autowired private val gameService: GameService) {
 
     @PostMapping("/{id}/plateappearance/event")
     fun addGameplayEvent(@PathVariable id: Long, @RequestBody gameplayEvent: GameplayEvent): PlateAppearance {
-        gameService.addGameplayEvent(id, gameplayEvent)
-        return gameService.getCurrentPlateAppearance(id)
+        return gameService.addGameplayEvent(id, gameplayEvent)
     }
 }
