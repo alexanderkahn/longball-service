@@ -9,7 +9,7 @@ import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "roster_player")
-data class PxRosterPlayer(
+class PxRosterPlayer(
         @Id
         override @GeneratedValue(strategy = IDENTITY)
         val id: Long? = null,
@@ -33,4 +33,38 @@ data class PxRosterPlayer(
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
-): OwnedIdentifiable
+): OwnedIdentifiable {
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other?.javaClass != javaClass) return false
+
+                other as PxRosterPlayer
+
+                if (id != other.id) return false
+                if (team != other.team) return false
+                if (player != other.player) return false
+                if (jerseyNumber != other.jerseyNumber) return false
+                if (startDate != other.startDate) return false
+                if (endDate != other.endDate) return false
+                if (owner != other.owner) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                var result = id?.hashCode() ?: 0
+                result = 31 * result + team.hashCode()
+                result = 31 * result + player.hashCode()
+                result = 31 * result + jerseyNumber
+                result = 31 * result + startDate.hashCode()
+                result = 31 * result + (endDate?.hashCode() ?: 0)
+                result = 31 * result + owner.hashCode()
+                return result
+        }
+
+        override fun toString(): String {
+                return "PxRosterPlayer(id=$id, team=$team, player=$player, jerseyNumber=$jerseyNumber, startDate=$startDate, endDate=$endDate, owner=$owner)"
+        }
+
+
+}

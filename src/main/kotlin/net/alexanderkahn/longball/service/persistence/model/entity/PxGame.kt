@@ -8,8 +8,8 @@ import java.time.OffsetDateTime
 import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
-@javax.persistence.Entity(name = "game")
-data class PxGame(
+@Entity(name = "game")
+class PxGame(
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long? = null,
@@ -31,4 +31,35 @@ data class PxGame(
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
-): OwnedIdentifiable
+): OwnedIdentifiable {
+
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other?.javaClass != javaClass) return false
+
+                other as PxGame
+
+                if (id != other.id) return false
+                if (league != other.league) return false
+                if (awayTeam != other.awayTeam) return false
+                if (homeTeam != other.homeTeam) return false
+                if (startTime != other.startTime) return false
+                if (owner != other.owner) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                var result = id?.hashCode() ?: 0
+                result = 31 * result + league.hashCode()
+                result = 31 * result + awayTeam.hashCode()
+                result = 31 * result + homeTeam.hashCode()
+                result = 31 * result + startTime.hashCode()
+                result = 31 * result + owner.hashCode()
+                return result
+        }
+
+        override fun toString(): String {
+                return "PxGame(id=$id, league=$league, awayTeam=$awayTeam, homeTeam=$homeTeam, startTime=$startTime, owner=$owner)"
+        }
+}

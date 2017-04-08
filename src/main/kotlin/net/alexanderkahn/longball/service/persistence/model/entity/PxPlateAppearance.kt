@@ -9,7 +9,7 @@ import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "plate_appearance")
-data class PxPlateAppearance(
+class PxPlateAppearance(
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long?,
@@ -37,4 +37,34 @@ data class PxPlateAppearance(
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
 
-): OwnedIdentifiable
+): OwnedIdentifiable {
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other?.javaClass != javaClass) return false
+
+                other as PxPlateAppearance
+
+                if (id != other.id) return false
+                if (game != other.game) return false
+                if (inning != other.inning) return false
+                if (half != other.half) return false
+                if (batter != other.batter) return false
+                if (owner != other.owner) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                var result1 = id?.hashCode() ?: 0
+                result1 = 31 * result1 + game.hashCode()
+                result1 = 31 * result1 + inning
+                result1 = 31 * result1 + half.hashCode()
+                result1 = 31 * result1 + batter.hashCode()
+                result1 = 31 * result1 + owner.hashCode()
+                return result1
+        }
+
+        override fun toString(): String {
+                return "PxPlateAppearance(id=$id, game=$game, inning=$inning, half=$half, batter=$batter, owner=$owner)"
+        }
+}

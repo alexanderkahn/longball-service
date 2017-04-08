@@ -9,7 +9,7 @@ import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "gameplay_event")
-data class PxGameplayEvent(
+class PxGameplayEvent(
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long?,
@@ -24,7 +24,30 @@ data class PxGameplayEvent(
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
 ): OwnedIdentifiable {
+
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other?.javaClass != javaClass) return false
+
+                other as PxGameplayEvent
+
+                if (id != other.id) return false
+                if (plateAppearance != other.plateAppearance) return false
+                if (pitch != other.pitch) return false
+                if (owner != other.owner) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                var result = id?.hashCode() ?: 0
+                result = 31 * result + plateAppearance.hashCode()
+                result = 31 * result + pitch.hashCode()
+                result = 31 * result + owner.hashCode()
+                return result
+        }
+
         override fun toString(): String {
-                return "PxGameplayEvent(id=$id, owner=$owner, pitch=$pitch)"
+                return "PxGameplayEvent(id=$id, plateAppearance=$plateAppearance, pitch=$pitch, owner=$owner)"
         }
 }
