@@ -21,24 +21,24 @@ class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val plateAppearanceResultRepository: PlateAppearanceResultRepository) {
 
     fun get(id: Long): Game {
-        val game = gameRepository.findByIdAndOwner(id, UserContext.getPersistenceUser())
+        val game = gameRepository.findByIdAndOwner(id)
         return game.toModel()
     }
 
     fun getAll(pageable: Pageable): Page<Game> {
-        val games = gameRepository.findByOwner(pageable, UserContext.getPersistenceUser())
+        val games = gameRepository.findByOwner(pageable)
         return games.map { it.toModel() }
     }
 
     fun getLineupPlayers(pageable: Pageable, gameId: Long, inningHalf: InningHalf): Page<LineupPlayer> {
-        val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
-        val players = lineupPlayerRepository.findByOwnerAndGameAndInningHalf(pageable, UserContext.getPersistenceUser(), game, inningHalf)
+        val game = gameRepository.findByIdAndOwner(gameId)
+        val players = lineupPlayerRepository.findByGameAndInningHalfAndOwner(pageable, game, inningHalf)
         return players.map { it.toModel() }
     }
 
     fun getCurrentPlateAppearance(gameId: Long): PlateAppearance {
-        val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
-        val appearance = plateAppearanceRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.getPersistenceUser(), game)
+        val game = gameRepository.findByIdAndOwner(gameId)
+        val appearance = plateAppearanceRepository.findFirstByGameAndOwnerOrderByIdDesc(game)
                 ?: throw Exception("Unable to find current plate appearance. Has the game started?")
         val currentPitcher = getOpposingPitcher(appearance.half, game)
         val outs = plateAppearanceRepository.findByGameAndInningAndHalfAndOwner(appearance.game, appearance.inning, appearance.half).toOuts()
@@ -51,7 +51,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         return currentPitcher
     }
     fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent): PlateAppearance {
-        val game = gameRepository.findByIdAndOwner(gameId, UserContext.getPersistenceUser())
+        val game = gameRepository.findByIdAndOwner(gameId)
         val appearance = getOrCreatePlateAppearance(game)
         val pxEvent = gameplayEvent.toPersistence(null, appearance)
         val inningAppearances = plateAppearanceRepository.findByGameAndInningAndHalfAndOwner(appearance.game, appearance.inning, appearance.half)
@@ -97,7 +97,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     private fun getOrCreatePlateAppearance(game: PxGame): PxPlateAppearance {
-        var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.getPersistenceUser(), game)
+        var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByGameAndOwnerOrderByIdDesc(game, UserContext.getPersistenceUser())
         if (appearance == null) {
             val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1)
             appearance = PxPlateAppearance(null, UserContext.getPersistenceUser(), game, 1, InningHalf.TOP, batter)
@@ -112,11 +112,11 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     private fun getPlayerByBattingOrder(game: PxGame, inningHalf: InningHalf, battingOrder: Short): PxLineupPlayer {
-        return lineupPlayerRepository.findFirstByOwnerAndGameAndInningHalfAndBattingOrder(UserContext.getPersistenceUser(), game, inningHalf, battingOrder)
+        return lineupPlayerRepository.findFirstByGameAndInningHalfAndBattingOrderAndOwner(game, inningHalf, battingOrder)
     }
 
     private fun getPlayerByPosition(game: PxGame, inningHalf: InningHalf, fieldPosition:FieldPosition): PxPlayer {
-        return lineupPlayerRepository.findFirstByOwnerAndGameAndInningHalfAndFieldPosition(UserContext.getPersistenceUser(), game, inningHalf, fieldPosition).player
+        return lineupPlayerRepository.findFirstByGameAndInningHalfAndFieldPositionAndOwner(game, inningHalf, fieldPosition).player
     }
 }
 

@@ -59,7 +59,7 @@ class TestLoader(
     }
 
     private fun createLineup(game: PxGame, team: PxTeam, inningHalf: InningHalf) {
-        val rosterPlayers = rosterPlayerRepository.findByOwnerAndTeamId(UserContext.getPersistenceUser(), team.id!!, PageRequest(0, 20))
+        val rosterPlayers = rosterPlayerRepository.findByTeamIdAndOwner(PageRequest(0, 20), team.id!!, UserContext.getPersistenceUser())
         var counter = 0
         FieldPosition.values().forEach { it ->
             val lPosition = PxLineupPlayer(null, owner, game, rosterPlayers.content[counter].player, inningHalf, (++counter).toShort(), it)

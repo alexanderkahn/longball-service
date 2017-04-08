@@ -7,6 +7,6 @@ import net.alexanderkahn.longball.service.persistence.model.entity.PxGame
 import net.alexanderkahn.longball.service.persistence.model.entity.PxPlateAppearance
 
 interface PlateAppearanceRepository: LongballRepository<PxPlateAppearance> {
-    fun findFirstByOwnerAndGameOrderByIdDesc(owner: EmbeddableUser, game: PxGame): PxPlateAppearance?
+    fun findFirstByGameAndOwnerOrderByIdDesc(game: PxGame, owner: EmbeddableUser = UserContext.getPersistenceUser()): PxPlateAppearance?
     fun findByGameAndInningAndHalfAndOwner(game: PxGame, inning: Short, half: InningHalf, owner: EmbeddableUser = UserContext.getPersistenceUser()): MutableList<PxPlateAppearance>
 }

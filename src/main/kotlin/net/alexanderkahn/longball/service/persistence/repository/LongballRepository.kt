@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.service.persistence.repository
 
+import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import org.springframework.data.domain.Page
@@ -16,8 +17,8 @@ interface LongballRepository<PersistenceObject: OwnedIdentifiable>: PagingAndSor
 
     override fun <S : PersistenceObject> save(entity: S): S
 
-    fun findByIdAndOwner(id: Long, currentUser: EmbeddableUser): PersistenceObject
+    fun findByIdAndOwner(id: Long, currentUser: EmbeddableUser = UserContext.getPersistenceUser()): PersistenceObject
 
-    fun findByOwner(pageable: Pageable, currentUser: EmbeddableUser): Page<PersistenceObject>
+    fun findByOwner(pageable: Pageable, currentUser: EmbeddableUser = UserContext.getPersistenceUser()): Page<PersistenceObject>
 
 }
