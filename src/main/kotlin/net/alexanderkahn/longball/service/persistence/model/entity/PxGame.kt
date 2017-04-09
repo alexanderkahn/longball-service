@@ -29,6 +29,9 @@ class PxGame(
         @Column(nullable = false)
         val startTime: OffsetDateTime,
 
+        @OneToMany(mappedBy = "game")
+        var innings: MutableList<PxInning> = mutableListOf(),
+
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
 ): OwnedIdentifiable {

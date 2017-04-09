@@ -18,7 +18,7 @@ fun PxGame.toModel(): Game {
 
 fun PxLeague.toModel(): League {
     if (id == null) {
-        throw UnsupportedOperationException("Cannot convert unsa")
+        throw UnsupportedOperationException("Cannot convert unsaved League")
     }
     return League(id, name)
 }
@@ -61,7 +61,7 @@ fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int): PlateAppearance {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
     //TODO: onBase
-    return PlateAppearance(pitcher.id, batter.id, Inning(half, inning), outs, listOf(), events.toPlateAppearanceCount(), result?.plateAppearanceResult)
+    return PlateAppearance(pitcher.id, batter.id, Inning(inningHalf.half, inningHalf.inning.inningNumber), outs, listOf(), events.toPlateAppearanceCount(), result?.plateAppearanceResult)
 }
 
 fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val lineupPlayerRepository: LineupPlayerRepository,
+                  @Autowired private val inningRepository: InningRepository,
+                  @Autowired private val inningHalfRepository: InningHalfRepository,
                   @Autowired private val plateAppearanceRepository: PlateAppearanceRepository,
                   @Autowired private val gameplayEventRepository: GameplayEventRepository,
                   @Autowired private val plateAppearanceResultRepository: PlateAppearanceResultRepository) {
@@ -37,23 +39,24 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     fun getCurrentPlateAppearance(gameId: Long): PlateAppearance {
         val game = gameRepository.findByIdAndOwner(gameId)
-        val appearance = plateAppearanceRepository.findFirstByGameAndOwnerOrderByIdDesc(game)
-                ?: throw Exception("Unable to find current plate appearance. Has the game started?")
-        val currentPitcher = getOpposingPitcher(appearance.half, game)
-        val outs = plateAppearanceRepository.findByGameAndInningAndHalfAndOwner(appearance.game, appearance.inning, appearance.half).toOuts()
+        val currentInning: PxInning = game.innings.last()
+        val currentHalf = currentInning.inningHalves.last()
+        val appearance = currentHalf.plateAppearances.last()
+        val currentPitcher = getOpposingPitcher(appearance)
+        val outs = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf).toOuts()
         return appearance.toModel(currentPitcher, outs)
     }
 
-    private fun getOpposingPitcher(inningHalf: InningHalf, game: PxGame): PxPlayer {
-        val oppositeHalf = InningHalf.values().filter { it != inningHalf }.first()
-        val currentPitcher = getPlayerByPosition(game, oppositeHalf, FieldPosition.PITCHER)
+    private fun getOpposingPitcher(appearance: PxPlateAppearance): PxPlayer {
+        val oppositeHalf = if (appearance.inningHalf.half == InningHalf.TOP) InningHalf.BOTTOM else InningHalf.TOP
+        val currentPitcher = getPlayerByPosition(appearance.inningHalf.inning.game, oppositeHalf, FieldPosition.PITCHER)
         return currentPitcher
     }
     fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent): PlateAppearance {
         val game = gameRepository.findByIdAndOwner(gameId)
         val appearance = getOrCreatePlateAppearance(game)
         val pxEvent = gameplayEvent.toPersistence(null, appearance)
-        val inningAppearances = plateAppearanceRepository.findByGameAndInningAndHalfAndOwner(appearance.game, appearance.inning, appearance.half)
+        val inningAppearances = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf)
         appearance.events.add(pxEvent)
         val result = processAppearanceResult(appearance)
         if (result != null) {
@@ -62,7 +65,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         }
         gameplayEventRepository.save(pxEvent)
         plateAppearanceRepository.save(appearance)
-        return appearance.toModel(getOpposingPitcher(appearance.half, appearance.game), inningAppearances.toOuts())
+        return appearance.toModel(getOpposingPitcher(appearance), inningAppearances.toOuts())
     }
 
     private fun processAppearanceResult(appearance: PxPlateAppearance): PxPlateAppearanceResult? {
@@ -96,14 +99,26 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     private fun getOrCreatePlateAppearance(game: PxGame): PxPlateAppearance {
-        var appearance: PxPlateAppearance? = plateAppearanceRepository.findFirstByGameAndOwnerOrderByIdDesc(game)
+        var inning: PxInning? = game.innings.lastOrNull()
+        if (inning == null) {
+            inning = PxInning(null, game, 1)
+            inningRepository.save(inning)
+            game.innings.add(inning)
+        }
+        var inningHalf: PxInningHalf? = inning.inningHalves.lastOrNull()
+        if (inningHalf == null) {
+            inningHalf = PxInningHalf(null, inning, InningHalf.TOP)
+            inningHalfRepository.save(inningHalf)
+            inning.inningHalves.add(inningHalf)
+        }
+        var appearance: PxPlateAppearance? = inningHalf.plateAppearances.lastOrNull()
         if (appearance == null) {
-            val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1)
-            appearance = PxPlateAppearance(null, game, 1, InningHalf.TOP, batter)
+            val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1) //TODO this is only true if inning is 1
+            appearance = PxPlateAppearance(null, inningHalf, batter)
             plateAppearanceRepository.save(appearance)
         } else if (appearance.events.isNotEmpty() && appearance.result != null) {
-            val batter = getPlayerByBattingOrder(game, appearance.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
-            appearance = PxPlateAppearance(null, game, appearance.inning, appearance.half, batter)
+            val batter = getPlayerByBattingOrder(game, appearance.inningHalf.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
+            appearance = PxPlateAppearance(null, inningHalf, batter)
             plateAppearanceRepository.save(appearance)
 
         }
