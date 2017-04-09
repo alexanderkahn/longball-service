@@ -10,12 +10,11 @@ import javax.persistence.GenerationType.IDENTITY
 @Entity(name = "league")
 class PxLeague(
 
+        @Column(nullable = false) val name: String,
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
-        override val id: Long?,
-
-        @Column(nullable = false)
-        val name: String,
+        override val id: Long? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

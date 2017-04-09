@@ -9,18 +9,19 @@ import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "team")
 class PxTeam(
+        @Column(nullable = false) val abbreviation: String,
+
+        @Column(nullable = false) val location: String,
+
+        @Column(nullable = false) val nickname: String,
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long? = null,
 
-        @Column(nullable = false)
-        val abbreviation: String,
-
-        @Column(nullable = false)
-        val location: String, val nickname: String,
-
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
+
 ): OwnedIdentifiable {
         override fun equals(other: Any?): Boolean {
                 if (this === other) return true

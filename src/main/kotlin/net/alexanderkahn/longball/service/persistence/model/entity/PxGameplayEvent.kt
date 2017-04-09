@@ -10,19 +10,16 @@ import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "gameplay_event")
 class PxGameplayEvent(
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_plate_appearance"), nullable = false) val plateAppearance: PxPlateAppearance,
+
+        @Column(nullable = false) val pitch: Pitch,
+
+        @OneToOne(mappedBy = "gameplayEvent", cascade = arrayOf(CascadeType.ALL)) var result: PxPlateAppearanceResult? = null,
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
-        override val id: Long?,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_plate_appearance"), nullable = false)
-        val plateAppearance: PxPlateAppearance,
-
-        @Column(nullable = false)
-        val pitch: Pitch,
-
-        @OneToOne(mappedBy = "gameplayEvent", cascade = arrayOf(CascadeType.ALL))
-        var result: PxPlateAppearanceResult? = null,
+        override val id: Long? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

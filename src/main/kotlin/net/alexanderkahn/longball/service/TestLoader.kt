@@ -32,7 +32,7 @@ class TestLoader(
     }
 
     private fun loadLeague(): PxLeague {
-        val league = PxLeague(null, "Example League")
+        val league = PxLeague("Example League")
         leagueRepository.save(league)
         return league
     }
@@ -49,7 +49,7 @@ class TestLoader(
     }
 
     private fun createGame(league: PxLeague, awayTeam: PxTeam, homeTeam: PxTeam) {
-        val game: PxGame = PxGame(null, league, awayTeam, homeTeam, OffsetDateTime.now())
+        val game: PxGame = PxGame(league, awayTeam, homeTeam, OffsetDateTime.now())
         gameRepository.save(game)
         createLineup(game, awayTeam, InningHalf.TOP)
         createLineup(game, homeTeam, InningHalf.BOTTOM)
@@ -59,7 +59,7 @@ class TestLoader(
         val rosterPlayers = rosterPlayerRepository.findByTeamIdAndOwner(PageRequest(0, 20), team.id!!, UserContext.getPersistenceUser())
         var counter = 0
         FieldPosition.values().forEach { it ->
-            val lPosition = PxLineupPlayer(null, game, rosterPlayers.content[counter].player, inningHalf, ++counter, it)
+            val lPosition = PxLineupPlayer(game, rosterPlayers.content[counter].player, inningHalf, ++counter, it)
             lineupPlayerRepository.save(lPosition)
         }
     }

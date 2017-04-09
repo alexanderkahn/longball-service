@@ -4,5 +4,5 @@ import net.alexanderkahn.longball.service.persistence.model.entity.PxInningHalf
 import net.alexanderkahn.longball.service.persistence.model.entity.PxInningHalfResult
 
 fun PxInningHalf.toResult(): PxInningHalfResult {
-    return PxInningHalfResult(null, 0, this)
+    return PxInningHalfResult(0, this, null)
 }

@@ -9,21 +9,18 @@ import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "plate_appearance")
 class PxPlateAppearance(
-        @Id
-        @GeneratedValue(strategy = IDENTITY)
-        override val id: Long?,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half"), nullable = false) val inningHalf: PxInningHalf,
 
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half"), nullable = false)
-        val inningHalf: PxInningHalf,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false)
-        val batter: PxLineupPlayer,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false) val batter: PxLineupPlayer,
 
         @OneToMany(mappedBy = "plateAppearance", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC")
-        var events: MutableList<PxGameplayEvent> = mutableListOf(),
+        @OrderBy("id ASC") var events: MutableList<PxGameplayEvent> = mutableListOf(),
+
+        @Id
+        @GeneratedValue(strategy = IDENTITY)
+        override val id: Long? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

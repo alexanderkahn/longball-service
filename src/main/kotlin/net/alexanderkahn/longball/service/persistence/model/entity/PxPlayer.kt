@@ -9,15 +9,13 @@ import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "player")
 class PxPlayer(
+        @Column(nullable = false) val first: String,
+
+        @Column(nullable = false) val last: String,
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long? = null,
-
-        @Column(nullable = false)
-        val first: String,
-
-        @Column(nullable = false)
-        val last: String,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

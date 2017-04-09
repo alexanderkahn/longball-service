@@ -5,5 +5,5 @@ import net.alexanderkahn.longball.service.persistence.model.entity.PxGameplayEve
 import net.alexanderkahn.longball.service.persistence.model.entity.PxPlateAppearance
 
 fun GameplayEvent.toPersistence(id: Long?, appearance: PxPlateAppearance): PxGameplayEvent {
-    return PxGameplayEvent(id, appearance, pitch)
+    return PxGameplayEvent(appearance, pitch, id = id)
 }

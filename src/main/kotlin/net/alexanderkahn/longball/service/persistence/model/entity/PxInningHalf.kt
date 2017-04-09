@@ -11,23 +11,19 @@ import javax.persistence.*
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("inning_id", "half"))))
 class PxInningHalf(
 
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning"), nullable = false) val inning: PxInning,
+
+        @Column(nullable = false) val half: InningHalf,
+
+        @OneToMany(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC") var plateAppearances: MutableList<PxPlateAppearance> = mutableListOf(),
+
+        @OneToOne(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL)) var result: PxInningHalfResult? = null,
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         override val id: Long? = null,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning"), nullable = false)
-        val inning: PxInning,
-
-        @Column(nullable = false)
-        val half: InningHalf,
-
-        @OneToMany(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC")
-        var plateAppearances: MutableList<PxPlateAppearance> = mutableListOf(),
-
-        @OneToOne(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
-        var result: PxInningHalfResult? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

@@ -12,26 +12,21 @@ import javax.persistence.GenerationType.IDENTITY
 @Entity(name = "lineup_player")
 class PxLineupPlayer(
 
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false) val game: PxGame,
+
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false) val player: PxPlayer,
+
+        @Column(nullable = false) val inningHalf: InningHalf,
+
+        @Column(nullable = false) val battingOrder: Int,
+
+        @Column(nullable = false) val fieldPosition: FieldPosition,
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
-        override val id: Long?,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
-        val game: PxGame,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false)
-        val player: PxPlayer,
-
-        @Column(nullable = false)
-        val inningHalf: InningHalf,
-
-        @Column(nullable = false)
-        val battingOrder: Int,
-
-        @Column(nullable = false)
-        val fieldPosition: FieldPosition,
+        override val id: Long? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

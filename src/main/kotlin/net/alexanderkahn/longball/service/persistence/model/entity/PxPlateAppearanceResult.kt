@@ -10,16 +10,14 @@ import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "plate_appearance_result")
 class PxPlateAppearanceResult(
+        @OneToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_gameplaye_event"), nullable = false) val gameplayEvent: PxGameplayEvent,
+
+        @Column(nullable = false) val plateAppearanceResult: PlateAppearanceResult,
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
-        override val id: Long?,
-
-        @OneToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_gameplaye_event"), nullable = false)
-        val gameplayEvent: PxGameplayEvent,
-
-        @Column(nullable = false)
-        val plateAppearanceResult: PlateAppearanceResult,
+        override val id: Long? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

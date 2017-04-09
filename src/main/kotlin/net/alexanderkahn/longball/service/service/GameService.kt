@@ -88,7 +88,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     //TODO: or a new class
     private fun addResult(gameplayEvent: PxGameplayEvent): PxPlateAppearanceResult {
         val plateAppearanceResult = getPlateAppearanceResult(gameplayEvent)
-        return PxPlateAppearanceResult(null, gameplayEvent, plateAppearanceResult)
+        return PxPlateAppearanceResult(gameplayEvent, plateAppearanceResult)
 
     }
 
@@ -111,11 +111,11 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     private fun getOrCreateInning(game: PxGame): PxInning {
         var inning: PxInning? = game.innings.lastOrNull()
         if (inning == null) {
-            inning = PxInning(null, game, 1)
+            inning = PxInning(game, 1)
             inningRepository.save(inning) //TODO figure out how to get rid of BS like this
             game.innings.add(inning)
         } else if (inning.inningHalves.filter { it.result != null }.count() >= InningHalf.values().size ) {
-            inning = PxInning(null, game, inning.inningNumber + 1)
+            inning = PxInning(game, inning.inningNumber + 1)
             inningRepository.save(inning)
             game.innings.add(inning)
         }
@@ -125,11 +125,11 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     private fun getOrCreateInningHalf(inning: PxInning): PxInningHalf {
         var inningHalf: PxInningHalf? = inning.inningHalves.lastOrNull()
         if (inningHalf == null) {
-            inningHalf = PxInningHalf(null, inning, InningHalf.TOP)
+            inningHalf = PxInningHalf(inning, InningHalf.TOP)
             inningHalfRepository.save(inningHalf)
             inning.inningHalves.add(inningHalf)
         } else if (inningHalf.result != null) {
-            inningHalf = PxInningHalf(null, inning, InningHalf.BOTTOM)
+            inningHalf = PxInningHalf(inning, InningHalf.BOTTOM)
             inningHalfRepository.save(inningHalf)
             inning.inningHalves.add(inningHalf)
         }
@@ -149,11 +149,11 @@ class GameService(@Autowired private val gameRepository: GameRepository,
                 val lastAppearance = lastHalfInning.plateAppearances.filter { it.events.count { it.result != null } > 0}.last()
                 batter = getPlayerByBattingOrder(lastInning.game, lastHalfInning.half, (lastAppearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
             }
-            appearance = PxPlateAppearance(null, inningHalf, batter)
+            appearance = PxPlateAppearance(inningHalf, batter)
             plateAppearanceRepository.save(appearance)
         } else if (appearance.events.isNotEmpty() && appearance.events.last().result != null) {
             val batter = getPlayerByBattingOrder(appearance.inningHalf.inning.game, appearance.inningHalf.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
-            appearance = PxPlateAppearance(null, inningHalf, batter)
+            appearance = PxPlateAppearance(inningHalf, batter)
             plateAppearanceRepository.save(appearance)
 
         }

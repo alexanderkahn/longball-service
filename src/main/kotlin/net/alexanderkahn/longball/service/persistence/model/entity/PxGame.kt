@@ -10,28 +10,23 @@ import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "game")
 class PxGame(
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_league"), nullable = false) val league: PxLeague,
+
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_away_team"), nullable = false) val awayTeam: PxTeam,
+
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_home_team"), nullable = false) val homeTeam: PxTeam,
+
+        @Column(nullable = false) val startTime: OffsetDateTime,
+
+        @OneToMany(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC") var innings: MutableList<PxInning> = mutableListOf(),
+
         @Id
         @GeneratedValue(strategy = IDENTITY)
         override val id: Long? = null,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_league"), nullable = false)
-        val league: PxLeague,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_away_team"), nullable = false)
-        val awayTeam: PxTeam,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_home_team"), nullable = false)
-        val homeTeam: PxTeam,
-
-        @Column(nullable = false)
-        val startTime: OffsetDateTime,
-
-        @OneToMany(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC")
-        var innings: MutableList<PxInning> = mutableListOf(),
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

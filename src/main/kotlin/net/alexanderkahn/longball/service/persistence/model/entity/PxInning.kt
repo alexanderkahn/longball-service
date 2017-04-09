@@ -9,20 +9,17 @@ import javax.persistence.*
 @Entity(name = "inning")
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("game_id", "inningNumber"))))
 class PxInning(
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false) val game: PxGame,
+
+        @Column(nullable = false) val inningNumber: Int,
+
+        @OneToMany(mappedBy = "inning", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC") val inningHalves: MutableList<PxInningHalf> = mutableListOf(),
+
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         override val id: Long? = null,
-
-        @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
-        val game: PxGame,
-
-        @Column(nullable = false)
-        val inningNumber: Int,
-
-        @OneToMany(mappedBy = "inning", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC")
-        val inningHalves: MutableList<PxInningHalf> = mutableListOf(),
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
