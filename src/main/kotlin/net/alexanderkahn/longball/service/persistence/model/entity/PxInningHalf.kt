@@ -23,6 +23,7 @@ class PxInningHalf(
         val half: InningHalf,
 
         @OneToMany(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC")
         var plateAppearances: MutableList<PxPlateAppearance> = mutableListOf(),
 
         @OneToOne(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))

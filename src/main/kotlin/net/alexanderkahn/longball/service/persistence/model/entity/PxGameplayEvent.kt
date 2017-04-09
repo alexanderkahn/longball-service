@@ -21,6 +21,9 @@ class PxGameplayEvent(
         @Column(nullable = false)
         val pitch: Pitch,
 
+        @OneToOne(mappedBy = "gameplayEvent", cascade = arrayOf(CascadeType.ALL))
+        var result: PxPlateAppearanceResult? = null,
+
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
 ): OwnedIdentifiable {
@@ -34,20 +37,24 @@ class PxGameplayEvent(
                 if (id != other.id) return false
                 if (plateAppearance != other.plateAppearance) return false
                 if (pitch != other.pitch) return false
+                if (result != other.result) return false
                 if (owner != other.owner) return false
 
                 return true
         }
 
         override fun hashCode(): Int {
-                var result = id?.hashCode() ?: 0
-                result = 31 * result + plateAppearance.hashCode()
-                result = 31 * result + pitch.hashCode()
-                result = 31 * result + owner.hashCode()
-                return result
+                var result1 = id?.hashCode() ?: 0
+                result1 = 31 * result1 + plateAppearance.hashCode()
+                result1 = 31 * result1 + pitch.hashCode()
+                result1 = 31 * result1 + (result?.hashCode() ?: 0)
+                result1 = 31 * result1 + owner.hashCode()
+                return result1
         }
 
         override fun toString(): String {
-                return "PxGameplayEvent(id=$id, plateAppearance=$plateAppearance, pitch=$pitch, owner=$owner)"
+                return "PxGameplayEvent(id=$id, plateAppearance=$plateAppearance, pitch=$pitch, result=$result, owner=$owner)"
         }
+
+
 }

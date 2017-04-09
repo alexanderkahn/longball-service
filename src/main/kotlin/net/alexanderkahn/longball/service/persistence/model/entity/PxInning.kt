@@ -21,6 +21,7 @@ class PxInning(
         val inningNumber: Int,
 
         @OneToMany(mappedBy = "inning", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC")
         val inningHalves: MutableList<PxInningHalf> = mutableListOf(),
 
         @Embedded

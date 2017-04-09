@@ -22,10 +22,8 @@ class PxPlateAppearance(
         val batter: PxLineupPlayer,
 
         @OneToMany(mappedBy = "plateAppearance", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC")
         var events: MutableList<PxGameplayEvent> = mutableListOf(),
-
-        @OneToOne(mappedBy = "plateAppearance", cascade = arrayOf(CascadeType.ALL))
-        var result: PxPlateAppearanceResult? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
@@ -54,7 +52,7 @@ class PxPlateAppearance(
         }
 
         override fun toString(): String {
-                return "PxPlateAppearance(id=$id, inningHalf=$inningHalf, batter=$batter, events=$events, result=$result, owner=$owner)"
+                return "PxPlateAppearance(id=$id, inningHalf=$inningHalf, batter=$batter, owner=$owner)"
         }
 
 

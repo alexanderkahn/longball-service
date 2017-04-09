@@ -15,8 +15,8 @@ class PxPlateAppearanceResult(
         override val id: Long?,
 
         @OneToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_plate_appearance"), nullable = false)
-        val plateAppearance: PxPlateAppearance,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_gameplaye_event"), nullable = false)
+        val gameplayEvent: PxGameplayEvent,
 
         @Column(nullable = false)
         val plateAppearanceResult: PlateAppearanceResult,
@@ -33,7 +33,7 @@ class PxPlateAppearanceResult(
                 other as PxPlateAppearanceResult
 
                 if (id != other.id) return false
-                if (plateAppearance != other.plateAppearance) return false
+                if (gameplayEvent.id != other.gameplayEvent.id) return false
                 if (plateAppearanceResult != other.plateAppearanceResult) return false
                 if (owner != other.owner) return false
 
@@ -42,14 +42,13 @@ class PxPlateAppearanceResult(
 
         override fun hashCode(): Int {
                 var result = id?.hashCode() ?: 0
-                result = 31 * result + plateAppearance.hashCode()
                 result = 31 * result + plateAppearanceResult.hashCode()
                 result = 31 * result + owner.hashCode()
                 return result
         }
 
         override fun toString(): String {
-                return "PxPlateAppearanceResult(id=$id, plateAppearance=$plateAppearance, plateAppearanceResult=$plateAppearanceResult, owner=$owner)"
+                return "PxPlateAppearanceResult(id=$id, gameplayEvent=${gameplayEvent.id}, plateAppearanceResult=$plateAppearanceResult, owner=$owner)"
         }
 
 

@@ -30,6 +30,7 @@ class PxGame(
         val startTime: OffsetDateTime,
 
         @OneToMany(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC")
         var innings: MutableList<PxInning> = mutableListOf(),
 
         @Embedded
