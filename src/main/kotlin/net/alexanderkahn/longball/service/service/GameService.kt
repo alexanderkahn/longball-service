@@ -3,10 +3,7 @@ package net.alexanderkahn.longball.service.service
 import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.persistence.model.entity.*
 import net.alexanderkahn.longball.service.persistence.repository.*
-import net.alexanderkahn.longball.service.service.assembler.toModel
-import net.alexanderkahn.longball.service.service.assembler.toOuts
-import net.alexanderkahn.longball.service.service.assembler.toPersistence
-import net.alexanderkahn.longball.service.service.assembler.toPlateAppearanceCount
+import net.alexanderkahn.longball.service.service.assembler.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -62,10 +59,18 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         if (result != null) {
             appearance.result = result
             plateAppearanceResultRepository.save(result)
+            proccessInningHalfResult(appearance.inningHalf)
         }
         gameplayEventRepository.save(pxEvent)
         plateAppearanceRepository.save(appearance)
         return appearance.toModel(getOpposingPitcher(appearance), inningAppearances.toOuts())
+    }
+
+    private fun proccessInningHalfResult(inningHalf: PxInningHalf) {
+        if (inningHalf.plateAppearances.toOuts() >= LeagueRuleSet.OUTS_PER_INNING) {
+            inningHalf.result = inningHalf.toResult()
+            inningHalfRepository.save(inningHalf)
+        }
     }
 
     private fun processAppearanceResult(appearance: PxPlateAppearance): PxPlateAppearanceResult? {
@@ -99,25 +104,48 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     private fun getOrCreatePlateAppearance(game: PxGame): PxPlateAppearance {
+        val inning: PxInning = getOrCreateInning(game)
+        val inningHalf: PxInningHalf = getOrCreateInningHalf(inning)
+        val appearance: PxPlateAppearance = getOrCreateAppearance(inningHalf)
+        return appearance
+    }
+
+    private fun getOrCreateInning(game: PxGame): PxInning {
         var inning: PxInning? = game.innings.lastOrNull()
         if (inning == null) {
             inning = PxInning(null, game, 1)
+            inningRepository.save(inning) //TODO figure out how to get rid of BS like this
+            game.innings.add(inning)
+        } else if (inning.inningHalves.filter { it.result != null }.count() >= InningHalf.values().size ) {
+            inning = PxInning(null, game, inning.inningNumber + 1)
             inningRepository.save(inning)
             game.innings.add(inning)
         }
+        return inning
+    }
+
+    private fun getOrCreateInningHalf(inning: PxInning): PxInningHalf {
         var inningHalf: PxInningHalf? = inning.inningHalves.lastOrNull()
         if (inningHalf == null) {
             inningHalf = PxInningHalf(null, inning, InningHalf.TOP)
             inningHalfRepository.save(inningHalf)
             inning.inningHalves.add(inningHalf)
+        } else if (inningHalf.result != null) {
+            inningHalf = PxInningHalf(null, inning, InningHalf.BOTTOM)
+            inningHalfRepository.save(inningHalf)
+            inning.inningHalves.add(inningHalf)
         }
+        return inningHalf
+    }
+
+    private fun getOrCreateAppearance(inningHalf: PxInningHalf): PxPlateAppearance {
         var appearance: PxPlateAppearance? = inningHalf.plateAppearances.lastOrNull()
         if (appearance == null) {
-            val batter = getPlayerByBattingOrder(game, InningHalf.TOP, 1) //TODO this is only true if inning is 1
+            val batter = getPlayerByBattingOrder(inningHalf.inning.game, InningHalf.TOP, 1) //TODO this is only true if inning is 1
             appearance = PxPlateAppearance(null, inningHalf, batter)
             plateAppearanceRepository.save(appearance)
         } else if (appearance.events.isNotEmpty() && appearance.result != null) {
-            val batter = getPlayerByBattingOrder(game, appearance.inningHalf.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
+            val batter = getPlayerByBattingOrder(appearance.inningHalf.inning.game, appearance.inningHalf.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
             appearance = PxPlateAppearance(null, inningHalf, batter)
             plateAppearanceRepository.save(appearance)
 

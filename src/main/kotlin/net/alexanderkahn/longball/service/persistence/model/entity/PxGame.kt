@@ -29,7 +29,7 @@ class PxGame(
         @Column(nullable = false)
         val startTime: OffsetDateTime,
 
-        @OneToMany(mappedBy = "game")
+        @OneToMany(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
         var innings: MutableList<PxInning> = mutableListOf(),
 
         @Embedded

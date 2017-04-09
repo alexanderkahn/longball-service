@@ -22,8 +22,11 @@ class PxInningHalf(
         @Column(nullable = false)
         val half: InningHalf,
 
-        @OneToMany(mappedBy = "inningHalf")
+        @OneToMany(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
         var plateAppearances: MutableList<PxPlateAppearance> = mutableListOf(),
+
+        @OneToOne(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
+        var result: PxInningHalfResult? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()

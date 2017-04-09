@@ -20,7 +20,7 @@ class PxInning(
         @Column(nullable = false)
         val inningNumber: Int,
 
-        @OneToMany(mappedBy = "inning")
+        @OneToMany(mappedBy = "inning", cascade = arrayOf(CascadeType.ALL))
         val inningHalves: MutableList<PxInningHalf> = mutableListOf(),
 
         @Embedded

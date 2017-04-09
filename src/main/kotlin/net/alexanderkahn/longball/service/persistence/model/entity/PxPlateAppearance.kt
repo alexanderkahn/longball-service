@@ -21,10 +21,10 @@ class PxPlateAppearance(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false)
         val batter: PxLineupPlayer,
 
-        @OneToMany(mappedBy = "plateAppearance")
+        @OneToMany(mappedBy = "plateAppearance", cascade = arrayOf(CascadeType.ALL))
         var events: MutableList<PxGameplayEvent> = mutableListOf(),
 
-        @OneToOne(mappedBy = "plateAppearance")
+        @OneToOne(mappedBy = "plateAppearance", cascade = arrayOf(CascadeType.ALL))
         var result: PxPlateAppearanceResult? = null,
 
         @Embedded
