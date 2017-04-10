@@ -11,11 +11,15 @@ import javax.persistence.GenerationType.IDENTITY
 @Entity(name = "gameplay_event")
 class PxGameplayEvent(
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_plate_appearance"), nullable = false) val plateAppearance: PxPlateAppearance,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_plate_appearance"), nullable = false)
+        val plateAppearance: PxPlateAppearance,
 
-        @Column(nullable = false) val pitch: Pitch,
+        @Column(nullable = false)
+        val pitch: Pitch,
 
-        @OneToOne(mappedBy = "gameplayEvent", cascade = arrayOf(CascadeType.ALL)) var result: PxPlateAppearanceResult? = null,
+        @OneToMany(mappedBy = "gameplayEvent", cascade = arrayOf(CascadeType.ALL))
+        @OrderBy("id ASC")
+        val basepathResults: MutableList<PxBasePathResult> = mutableListOf(),
 
         @Id
         @GeneratedValue(strategy = IDENTITY)
@@ -34,7 +38,7 @@ class PxGameplayEvent(
                 if (id != other.id) return false
                 if (plateAppearance != other.plateAppearance) return false
                 if (pitch != other.pitch) return false
-                if (result != other.result) return false
+                if (basepathResults != other.basepathResults) return false
                 if (owner != other.owner) return false
 
                 return true
@@ -44,13 +48,13 @@ class PxGameplayEvent(
                 var result1 = id?.hashCode() ?: 0
                 result1 = 31 * result1 + plateAppearance.hashCode()
                 result1 = 31 * result1 + pitch.hashCode()
-                result1 = 31 * result1 + (result?.hashCode() ?: 0)
+                result1 = 31 * result1 + (basepathResults.hashCode())
                 result1 = 31 * result1 + owner.hashCode()
                 return result1
         }
 
         override fun toString(): String {
-                return "PxGameplayEvent(id=$id, plateAppearance=$plateAppearance, pitch=$pitch, result=$result, owner=$owner)"
+                return "PxGameplayEvent(id=$id, plateAppearance=$plateAppearance, pitch=$pitch, basepathResults=$basepathResults, owner=$owner)"
         }
 
 

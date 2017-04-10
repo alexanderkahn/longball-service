@@ -56,13 +56,43 @@ fun PxTeam.toModel(): Team {
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int): PlateAppearance {
+fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int, basePathResults: List<PxBasePathResult>): PlateAppearance {
     if (id == null || pitcher.id == null || batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
-    //TODO: onBase
-    return PlateAppearance(pitcher.id, batter.id, Inning(inningHalf.half, inningHalf.inning.inningNumber), outs, listOf(), events.toPlateAppearanceCount(), events.last().result?.plateAppearanceResult)
+    //TODO: Once outs can come at the plate or on the basepath, this might get more complicated
+    val inning = Inning(inningHalf.half, inningHalf.inning.inningNumber)
+    val onBase = basePathResults.map{ it.toBaserunner() }
+    return PlateAppearance(pitcher.id, batter.id, inning, outs, onBase, pitchEvents.toPlateAppearanceCount(), plateAppearanceResult)
 }
+
+private fun PxBasePathResult.toBaserunner(): BaseRunner {
+    if (lineupPlayer.player.id == null) {
+        throw UnsupportedOperationException("Not saved")
+    }
+    return BaseRunner(location, lineupPlayer.player.id)
+}
+
+//fun List<PxPlateAppearance>.toCurrentAppearance(pitcher: PxPlayer): PlateAppearance {
+//    if (isEmpty()) {
+//        throw UnsupportedOperationException("There are no plate appearances to operate on")
+//    }
+//    if (pitcher.id == null || any{it.id == null || it.batter.id == null}) {
+//        throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
+//    }
+//    if (distinctBy { it.inningHalf }.count() > 1) {
+//        throw UnsupportedOperationException("Cannot operate on plate appearances from different innings")
+//    }
+//    //TODO: Once outs can come at the plate or on the basepath, this might get more complicated
+//    //TODO: make extension function for things to avoid pissing off demeter quite so much
+//    val currentAppearance = this.last()
+//    val inning = Inning(currentAppearance.inningHalf.half, currentAppearance.inningHalf.inning.inningNumber)
+//    val plateAppearanceResults = flatMap { it.pitchEvents }.mapNotNull { it.basepathResults }
+//    val plateAppearanceResult = currentAppearance.pitchEvents.last().basepathResults?.plateAppearanceResult //may be null
+//    val outs = plateAppearanceResults.toOuts()
+//    val onBase = plateAppearanceResults.toOnBase()
+//    return PlateAppearance(pitcher.id, currentAppearance.batter.id!!, inning, outs, onBase, currentAppearance.pitchEvents.toPlateAppearanceCount(), plateAppearanceResult)
+//}
 
 fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
     var balls = 0
@@ -75,9 +105,4 @@ fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
         }
     }
     return PlateAppearanceCount(balls, strikes)
-}
-
-fun List<PxPlateAppearance>.toOuts(): Int {
-    val outResults = arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING)
-    return filter { it.events.last().result?.plateAppearanceResult in  outResults}.count()
 }

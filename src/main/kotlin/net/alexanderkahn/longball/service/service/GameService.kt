@@ -15,8 +15,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val inningRepository: InningRepository,
                   @Autowired private val inningHalfRepository: InningHalfRepository,
                   @Autowired private val plateAppearanceRepository: PlateAppearanceRepository,
-                  @Autowired private val gameplayEventRepository: GameplayEventRepository,
-                  @Autowired private val plateAppearanceResultRepository: PlateAppearanceResultRepository) {
+                  @Autowired private val gameplayEventRepository: GameplayEventRepository) {
 
     fun get(id: Long): Game {
         val game = gameRepository.findByIdAndOwner(id)
@@ -39,9 +38,8 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val currentInning: PxInning = game.innings.last()
         val currentHalf = currentInning.inningHalves.last()
         val appearance = currentHalf.plateAppearances.last()
-        val currentPitcher = getOpposingPitcher(appearance)
-        val outs = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf).toOuts()
-        return appearance.toModel(currentPitcher, outs)
+        val inningAppearances = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf)
+        return getPlateAppearanceModel(inningAppearances, appearance)
     }
 
     private fun getOpposingPitcher(appearance: PxPlateAppearance): PxPlayer {
@@ -54,14 +52,17 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val appearance = getOrCreatePlateAppearance(game)
         val pxEvent = gameplayEvent.toPersistence(null, appearance)
         val inningAppearances = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf)
-        appearance.events.add(pxEvent)
-        val result = processAppearanceResult(appearance)
-        if (result != null) {
-            appearance.events.last().result = result
-            proccessInningHalfResult(appearance.inningHalf)
-        }
+        appearance.pitchEvents.add(pxEvent)
+        processAppearanceResult(appearance)
+        proccessInningHalfResult(appearance.inningHalf)
         gameRepository.save(game)
-        return appearance.toModel(getOpposingPitcher(appearance), inningAppearances.toOuts())
+        return getPlateAppearanceModel(inningAppearances, appearance)
+    }
+
+    private fun getPlateAppearanceModel(inningAppearances: MutableList<PxPlateAppearance>, appearance: PxPlateAppearance): PlateAppearance {
+        val outs = inningAppearances.toOuts()
+        val basePathResults = inningAppearances.toCurrentOnBase()
+        return appearance.toModel(getOpposingPitcher(appearance), outs, basePathResults)
     }
 
     private fun proccessInningHalfResult(inningHalf: PxInningHalf) {
@@ -71,25 +72,21 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         }
     }
 
-    private fun processAppearanceResult(appearance: PxPlateAppearance): PxPlateAppearanceResult? {
-        if (shouldAddResult(appearance.events)) {
-            return addResult(appearance.events.last())
+    private fun processAppearanceResult(appearance: PxPlateAppearance) {
+        if (shouldAddResult(appearance.pitchEvents)) {
+            val lastPitch = appearance.pitchEvents.last()
+            appearance.plateAppearanceResult = getPlateAppearanceResult(lastPitch)
+            when(appearance.plateAppearanceResult) {
+                PlateAppearanceResult.BASE_ON_BALLS -> lastPitch.basepathResults.add(PxBasePathResult(lastPitch, appearance.batter, PlayLocation.FIRST, PlayResult.SAFE))
+                else -> {}
+            }
         }
-        return null
     }
 
     private fun shouldAddResult(events: List<PxGameplayEvent>): Boolean {
         val count = events.toPlateAppearanceCount()
         return count.strikes >= LeagueRuleSet.STRIKES_PER_OUT ||
                 count.balls >= LeagueRuleSet.BALLS_PER_WALK
-    }
-
-    //TODO: this could be an extension function. Lots of this stuff should eventually go into either top-level functions
-    //TODO: or a new class
-    private fun addResult(gameplayEvent: PxGameplayEvent): PxPlateAppearanceResult {
-        val plateAppearanceResult = getPlateAppearanceResult(gameplayEvent)
-        return PxPlateAppearanceResult(gameplayEvent, plateAppearanceResult)
-
     }
 
     private fun getPlateAppearanceResult(lastEvent: PxGameplayEvent): PlateAppearanceResult {
@@ -146,12 +143,12 @@ class GameService(@Autowired private val gameRepository: GameRepository,
                 //TODO: I think these filters can be replaced with functional first()s and count()s
                 val lastInning = inningHalf.inning.game.innings.filter { it.inningNumber == inningHalf.inning.inningNumber - 1 }.first()
                 val lastHalfInning = lastInning.inningHalves.filter { it.half == inningHalf.half }.first()
-                val lastAppearance = lastHalfInning.plateAppearances.filter { it.events.count { it.result != null } > 0}.last()
+                val lastAppearance = lastHalfInning.plateAppearances.filter { it.plateAppearanceResult != null }.last()
                 batter = getPlayerByBattingOrder(lastInning.game, lastHalfInning.half, (lastAppearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
             }
             appearance = PxPlateAppearance(inningHalf, batter)
             plateAppearanceRepository.save(appearance)
-        } else if (appearance.events.isNotEmpty() && appearance.events.last().result != null) {
+        } else if (appearance.pitchEvents.isNotEmpty() && appearance.plateAppearanceResult != null) {
             val batter = getPlayerByBattingOrder(appearance.inningHalf.inning.game, appearance.inningHalf.half, (appearance.batter.battingOrder % LeagueRuleSet.BATTERS_PER_LINEUP) + 1)
             appearance = PxPlateAppearance(inningHalf, batter)
             plateAppearanceRepository.save(appearance)

@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.service.persistence.model.entity
 
 import net.alexanderkahn.base.servicebase.service.UserContext
+import net.alexanderkahn.longball.service.model.PlateAppearanceResult
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
@@ -16,7 +17,10 @@ class PxPlateAppearance(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false) val batter: PxLineupPlayer,
 
         @OneToMany(mappedBy = "plateAppearance", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC") var events: MutableList<PxGameplayEvent> = mutableListOf(),
+        @OrderBy("id ASC") var pitchEvents: MutableList<PxGameplayEvent> = mutableListOf(),
+
+        @Column(nullable = true)
+        var plateAppearanceResult: PlateAppearanceResult? = null,
 
         @Id
         @GeneratedValue(strategy = IDENTITY)
@@ -32,25 +36,23 @@ class PxPlateAppearance(
 
                 other as PxPlateAppearance
 
+                if (inningHalf.id != other.inningHalf.id) return false
+                if (batter.id != other.batter.id) return false
+                if (pitchEvents != other.pitchEvents) return false
+                if (plateAppearanceResult != other.plateAppearanceResult) return false
                 if (id != other.id) return false
-                if (inningHalf != other.inningHalf) return false
-                if (batter != other.batter) return false
                 if (owner != other.owner) return false
 
                 return true
         }
 
         override fun hashCode(): Int {
-                var result1 = id?.hashCode() ?: 0
-                result1 = 31 * result1 + inningHalf.hashCode()
-                result1 = 31 * result1 + batter.hashCode()
-                result1 = 31 * result1 + owner.hashCode()
-                return result1
+                var result = inningHalf.id?.hashCode() ?: 31
+                result = 31 * result + batter.hashCode()
+                result = 31 * result + pitchEvents.hashCode()
+                result = 31 * result + (plateAppearanceResult?.hashCode() ?: 0)
+                result = 31 * result + (id?.hashCode() ?: 0)
+                result = 31 * result + owner.hashCode()
+                return result
         }
-
-        override fun toString(): String {
-                return "PxPlateAppearance(id=$id, inningHalf=$inningHalf, batter=$batter, owner=$owner)"
-        }
-
-
 }
