@@ -56,14 +56,14 @@ fun PxTeam.toModel(): Team {
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int, basePathResults: List<PxBasePathResult>): PlateAppearance {
+fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int, hits: Int, walks: Int, errors: Int, runs: Int, currentOnBase: List<PxBasePathResult>): PlateAppearance {
     if (id == null || pitcher.id == null || batter.id == null) {
         throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
     }
     //TODO: Once outs can come at the plate or on the basepath, this might get more complicated
-    val inning = Inning(inningHalf.half, inningHalf.inning.inningNumber)
-    val onBase = basePathResults.map{ it.toBaserunner() }
-    return PlateAppearance(pitcher.id, batter.id, inning, outs, onBase, pitchEvents.toPlateAppearanceCount(), plateAppearanceResult)
+    val inning = Inning(inningHalf.half, inningHalf.inning.inningNumber, outs, hits, walks, errors, runs)
+    val onBase = currentOnBase.map{ it.toBaserunner() }
+    return PlateAppearance(pitcher.id, batter.id, inning, onBase, pitchEvents.toPlateAppearanceCount(), plateAppearanceResult)
 }
 
 private fun PxBasePathResult.toBaserunner(): BaseRunner {
