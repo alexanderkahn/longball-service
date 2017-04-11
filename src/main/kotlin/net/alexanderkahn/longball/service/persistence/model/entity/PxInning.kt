@@ -10,9 +10,11 @@ import javax.persistence.*
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("game_id", "inningNumber"))))
 class PxInning(
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false) val game: PxGame,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
+        val game: PxGame,
 
-        @Column(nullable = false) val inningNumber: Int,
+        @Column(nullable = false)
+        val inningNumber: Int,
 
         @OneToMany(mappedBy = "inning", cascade = arrayOf(CascadeType.ALL))
         @OrderBy("id ASC") val inningHalves: MutableList<PxInningHalf> = mutableListOf(),

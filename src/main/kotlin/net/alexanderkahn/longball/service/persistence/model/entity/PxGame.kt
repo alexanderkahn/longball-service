@@ -22,7 +22,11 @@ class PxGame(
         @Column(nullable = false) val startTime: OffsetDateTime,
 
         @OneToMany(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC") var innings: MutableList<PxInning> = mutableListOf(),
+        @OrderBy("id ASC")
+        var innings: MutableList<PxInning> = mutableListOf(),
+
+        @OneToOne(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
+        var result: PxGameResult? = null,
 
         @Id
         @GeneratedValue(strategy = IDENTITY)

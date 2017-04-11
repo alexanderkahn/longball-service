@@ -19,7 +19,8 @@ class PxInningHalf(
         @OneToMany(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
         @OrderBy("id ASC") var plateAppearances: MutableList<PxPlateAppearance> = mutableListOf(),
 
-        @OneToOne(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL)) var result: PxInningHalfResult? = null,
+        @OneToOne(mappedBy = "inningHalf", cascade = arrayOf(CascadeType.ALL))
+        var result: PxInningHalfResult? = null,
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

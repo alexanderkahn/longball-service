@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.time.OffsetDateTime
 
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository,
@@ -49,14 +50,25 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
     fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent): PlateAppearance {
         val game = gameRepository.findByIdAndOwner(gameId)
+        if (game.result != null) {
+            throw Exception("can't add a result to a game that's already over")
+        }
         val appearance = getOrCreatePlateAppearance(game)
         val pxEvent = gameplayEvent.toPersistence(null, appearance)
         val inningAppearances = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf)
         appearance.pitchEvents.add(pxEvent)
         processAppearanceResult(appearance)
         proccessInningHalfResult(appearance.inningHalf)
+        processGameResult(game)
         gameRepository.save(game)
         return getPlateAppearanceModel(inningAppearances, appearance)
+    }
+
+    private fun processGameResult(game: PxGame) {
+        //Wow, this is tortured. Also, not entirely right. Maybe the game is tied. Maybe the bottom half doesn't need to be played.
+        if (game.innings.count { it.inningHalves.count { it.result != null } >=2 } >= LeagueRuleSet.INNINGS_PER_GAME) {
+            game.result = PxGameResult(game, OffsetDateTime.now())
+        }
     }
 
     private fun getPlateAppearanceModel(inningAppearances: MutableList<PxPlateAppearance>, appearance: PxPlateAppearance): PlateAppearance {
