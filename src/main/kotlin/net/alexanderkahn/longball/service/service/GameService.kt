@@ -77,13 +77,16 @@ class GameService(@Autowired private val gameRepository: GameRepository,
             val lastPitch = appearance.pitchEvents.last()
             appearance.plateAppearanceResult = getPlateAppearanceResult(lastPitch)
             when(appearance.plateAppearanceResult) {
-                PlateAppearanceResult.BASE_ON_BALLS -> lastPitch.basepathResults.add(PxBasePathResult(lastPitch, appearance.batter, PlayLocation.FIRST, PlayResult.SAFE))
+                PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH -> lastPitch.basepathResults.add(PxBasePathResult(lastPitch, appearance.batter, PlayLocation.FIRST, PlayResult.SAFE))
                 else -> {}
             }
         }
     }
 
     private fun shouldAddResult(events: List<PxGameplayEvent>): Boolean {
+        if (events.isNotEmpty() && events.last().pitch == Pitch.HIT_BY_PITCH) {
+            return true
+        }
         val count = events.toPlateAppearanceCount()
         return count.strikes >= LeagueRuleSet.STRIKES_PER_OUT ||
                 count.balls >= LeagueRuleSet.BALLS_PER_WALK
@@ -94,6 +97,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
             Pitch.BALL -> return PlateAppearanceResult.BASE_ON_BALLS
             Pitch.STRIKE_SWINGING -> return PlateAppearanceResult.STRIKEOUT_SWINGING
             Pitch.STRIKE_LOOKING -> return PlateAppearanceResult.STRIKEOUT_LOOKING
+            Pitch.HIT_BY_PITCH -> return PlateAppearanceResult.HIT_BY_PITCH
             else -> throw NotImplementedError()
         }
     }

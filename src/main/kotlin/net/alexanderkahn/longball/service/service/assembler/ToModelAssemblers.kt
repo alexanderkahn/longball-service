@@ -73,27 +73,6 @@ private fun PxBasePathResult.toBaserunner(): BaseRunner {
     return BaseRunner(location, lineupPlayer.player.id)
 }
 
-//fun List<PxPlateAppearance>.toCurrentAppearance(pitcher: PxPlayer): PlateAppearance {
-//    if (isEmpty()) {
-//        throw UnsupportedOperationException("There are no plate appearances to operate on")
-//    }
-//    if (pitcher.id == null || any{it.id == null || it.batter.id == null}) {
-//        throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
-//    }
-//    if (distinctBy { it.inningHalf }.count() > 1) {
-//        throw UnsupportedOperationException("Cannot operate on plate appearances from different innings")
-//    }
-//    //TODO: Once outs can come at the plate or on the basepath, this might get more complicated
-//    //TODO: make extension function for things to avoid pissing off demeter quite so much
-//    val currentAppearance = this.last()
-//    val inning = Inning(currentAppearance.inningHalf.half, currentAppearance.inningHalf.inning.inningNumber)
-//    val plateAppearanceResults = flatMap { it.pitchEvents }.mapNotNull { it.basepathResults }
-//    val plateAppearanceResult = currentAppearance.pitchEvents.last().basepathResults?.plateAppearanceResult //may be null
-//    val outs = plateAppearanceResults.toOuts()
-//    val onBase = plateAppearanceResults.toOnBase()
-//    return PlateAppearance(pitcher.id, currentAppearance.batter.id!!, inning, outs, onBase, currentAppearance.pitchEvents.toPlateAppearanceCount(), plateAppearanceResult)
-//}
-
 fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
     var balls = 0
     var strikes = 0
@@ -101,7 +80,8 @@ fun List<PxGameplayEvent>.toPlateAppearanceCount(): PlateAppearanceCount {
         when(it) {
             Pitch.BALL -> balls++
             Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING -> strikes++
-            else -> throw NotImplementedError("This type of pitch isn't supported yet")
+            Pitch.FOUL_TIP -> if (strikes < (LeagueRuleSet.STRIKES_PER_OUT - 1)) strikes++
+            else -> {}
         }
     }
     return PlateAppearanceCount(balls, strikes)
