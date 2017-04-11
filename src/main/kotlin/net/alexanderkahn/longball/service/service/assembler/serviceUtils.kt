@@ -9,7 +9,11 @@ import net.alexanderkahn.longball.service.persistence.model.entity.PxInningHalfR
 import net.alexanderkahn.longball.service.persistence.model.entity.PxPlateAppearance
 
 fun PxInningHalf.toResult(): PxInningHalfResult {
-    return PxInningHalfResult(0, this, null)
+    return PxInningHalfResult(this,
+            this.plateAppearances.toHits(),
+            this.plateAppearances.toWalks(),
+            this.plateAppearances.toErrors(),
+            this.plateAppearances.toRuns())
 }
 
 fun List<PxPlateAppearance>.toOuts(): Int {

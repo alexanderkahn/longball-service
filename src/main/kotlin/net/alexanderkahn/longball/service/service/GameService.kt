@@ -135,7 +135,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
             inning = PxInning(game, 1)
             inningRepository.save(inning) //TODO figure out how to get rid of BS like this
             game.innings.add(inning)
-        } else if (inning.inningHalves.filter { it.result != null }.count() >= InningHalf.values().size ) {
+        } else if (inning.inningHalves.count { it.result != null } >= InningHalf.values().size ) {
             inning = PxInning(game, inning.inningNumber + 1)
             inningRepository.save(inning)
             game.innings.add(inning)

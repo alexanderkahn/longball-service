@@ -1,13 +1,13 @@
 package net.alexanderkahn.longball.service.model
 
-enum class FieldPosition {
-    PITCHER,
-    CATCHER,
-    FIRST_BASE,
-    SECOND_BASE,
-    THIRD_BASE,
-    SHORTSTOP,
-    LEFT_FIELD,
-    CENTER_FIELD,
-    RIGHT_FIELD
+enum class FieldPosition(val intNotation: Int) {
+    PITCHER(1),
+    CATCHER(2),
+    FIRST_BASE(3),
+    SECOND_BASE(4),
+    THIRD_BASE(5),
+    SHORTSTOP(6),
+    LEFT_FIELD(7),
+    CENTER_FIELD(8),
+    RIGHT_FIELD(9)
 }

@@ -8,10 +8,21 @@ import javax.persistence.*
 
 @Entity(name="inning_half_result")
 class PxInningHalfResult(
-        @Column(nullable = false) val runs: Int,
-
         @OneToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half_result"), nullable = false) val inningHalf: PxInningHalf,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half_result"), nullable = false)
+        val inningHalf: PxInningHalf,
+
+        @Column(nullable = false)
+        val hits: Int,
+
+        @Column(nullable = false)
+        val walks: Int,
+
+        @Column(nullable = false)
+        val errors: Int,
+
+        @Column(nullable = false)
+        val runs: Int,
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
