@@ -27,3 +27,19 @@ fun List<PxPlateAppearance>.toCurrentOnBase(): List<PxBasePathResult> {
 
     return basePath.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResult.SAFE && it.location != PlayLocation.HOME }
 }
+
+fun List<PxPlateAppearance>.toHits(): Int {
+    return 0
+}
+
+fun List<PxPlateAppearance>.toWalks(): Int {
+    return mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH) }
+}
+
+fun List<PxPlateAppearance>.toErrors(): Int {
+    return 0 //TODO
+}
+
+fun List<PxPlateAppearance>.toRuns(): Int {
+    return flatMap { it.pitchEvents }.flatMap { it.basepathResults }.count { it.location == PlayLocation.HOME && it.playResult == PlayResult.SAFE }
+}
