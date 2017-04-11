@@ -77,10 +77,26 @@ class GameService(@Autowired private val gameRepository: GameRepository,
             val lastPitch = appearance.pitchEvents.last()
             appearance.plateAppearanceResult = getPlateAppearanceResult(lastPitch)
             when(appearance.plateAppearanceResult) {
-                PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH -> lastPitch.basepathResults.add(PxBasePathResult(lastPitch, appearance.batter, PlayLocation.FIRST, PlayResult.SAFE))
+                PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH -> advanceRunners(lastPitch, appearance, getCurrentOnBase(appearance.inningHalf))
                 else -> {}
             }
         }
+    }
+
+    private fun getCurrentOnBase(inningHalf: PxInningHalf): List<PxBasePathResult> {
+        val results = inningHalf.plateAppearances.flatMap { it.pitchEvents }.flatMap { it.basepathResults }
+        return results.sortedByDescending { it.id }.distinctBy { it.lineupPlayer }
+                .filterNot { it.location == PlayLocation.HOME || it.playResult == PlayResult.OUT }
+    }
+
+    private fun advanceRunners(lastPitch: PxGameplayEvent, appearance: PxPlateAppearance, currentOnBase: List<PxBasePathResult>) {
+        for (base in PlayLocation.values().sortedArrayDescending()) {
+            val onBase = currentOnBase.firstOrNull { it.location == base }
+            if (onBase != null && currentOnBase.any{ it.location == PlayLocation.FIRST || it.location == PlayLocation.values()[base.ordinal - 1]}) {
+                lastPitch.basepathResults.add(PxBasePathResult(lastPitch, onBase.lineupPlayer, PlayLocation.values()[base.ordinal + 1], PlayResult.SAFE))
+            }
+        }
+        lastPitch.basepathResults.add(PxBasePathResult(lastPitch, appearance.batter, PlayLocation.FIRST, PlayResult.SAFE))
     }
 
     private fun shouldAddResult(events: List<PxGameplayEvent>): Boolean {
