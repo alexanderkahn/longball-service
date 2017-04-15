@@ -5,6 +5,6 @@ enum class Pitch {
     STRIKE_LOOKING,
     STRIKE_SWINGING,
     FOUL_TIP,
-    IN_PLAY,
-    HIT_BY_PITCH
+    HIT_BY_PITCH,
+    IN_PLAY
 }

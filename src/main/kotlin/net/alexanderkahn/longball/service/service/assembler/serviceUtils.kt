@@ -1,49 +1,67 @@
 package net.alexanderkahn.longball.service.service.assembler
 
-import net.alexanderkahn.longball.service.model.PlateAppearanceResult
-import net.alexanderkahn.longball.service.model.PlayLocation
-import net.alexanderkahn.longball.service.model.PlayResult
-import net.alexanderkahn.longball.service.persistence.model.entity.PxBasePathResult
-import net.alexanderkahn.longball.service.persistence.model.entity.PxInningHalf
-import net.alexanderkahn.longball.service.persistence.model.entity.PxInningHalfResult
-import net.alexanderkahn.longball.service.persistence.model.entity.PxPlateAppearance
+import net.alexanderkahn.longball.service.model.*
+import net.alexanderkahn.longball.service.persistence.model.entity.*
 
 fun PxInningHalf.toResult(): PxInningHalfResult {
     return PxInningHalfResult(this,
-            this.plateAppearances.toHits(),
-            this.plateAppearances.toWalks(),
-            this.plateAppearances.toErrors(),
-            this.plateAppearances.toRuns())
+            this.plateAppearances.hits,
+            this.plateAppearances.walks,
+            this.plateAppearances.errors,
+            this.plateAppearances.runs)
 }
 
-fun List<PxPlateAppearance>.toOuts(): Int {
-    //TODO: Once outs can come at the plate or on the basepath, this might get more complicated
-    val outAtPlate = mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING) }
-    val outOnBase = flatMap { it.pitchEvents }.flatMap { it.basepathResults }.count { it.playResult == PlayResult.OUT }
-    return outAtPlate + outOnBase
-}
-
-fun List<PxPlateAppearance>.toCurrentOnBase(): List<PxBasePathResult> {
-    val basePath: List<PxBasePathResult> =  flatMap { it.pitchEvents }.flatMap { it.basepathResults }.sortedByDescending { it.id }
-    if (basePath.any{it.lineupPlayer.player.id == null}) {
-        throw Exception("no player id?")
+val List<PxGameplayEvent>.balls: Int
+    get() {
+        return count { it.pitch == Pitch.BALL }
     }
 
-    return basePath.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResult.SAFE && it.location != PlayLocation.HOME }
-}
+val List<PxGameplayEvent>.strikes: Int
+    get() {
+        var strikes = 0
+        forEach {
+            when(it.pitch) {
+                Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING -> strikes++
+                Pitch.FOUL_TIP -> if (strikes < (LeagueRuleSet.STRIKES_PER_OUT - 1)) strikes++
+                else -> {}
+            }
+        }
+        return strikes
+    }
 
-fun List<PxPlateAppearance>.toHits(): Int {
-    return 0
-}
+val List<PxPlateAppearance>.outs: Int
+    get() {
+        val outAtPlate = mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING) }
+        val outOnBase = flatMap { it.pitchEvents }.flatMap { it.basepathResults }.count { it.playResult == PlayResult.OUT }
+        return outAtPlate + outOnBase
+    }
 
-fun List<PxPlateAppearance>.toWalks(): Int {
-    return mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH) }
-}
+val List<PxPlateAppearance>.currentOnBase: List<PxBasepathResult>
+    get() {
+        val basePath: List<PxBasepathResult> = flatMap { it.pitchEvents }.flatMap { it.basepathResults }.sortedByDescending { it.id }
+        if (basePath.any { it.lineupPlayer.player.id == null }) {
+            throw Exception("no player id?")
+        }
 
-fun List<PxPlateAppearance>.toErrors(): Int {
-    return 0 //TODO
-}
+        return basePath.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResult.SAFE && it.location != PlayLocation.HOME }
+    }
 
-fun List<PxPlateAppearance>.toRuns(): Int {
-    return flatMap { it.pitchEvents }.flatMap { it.basepathResults }.count { it.location == PlayLocation.HOME && it.playResult == PlayResult.SAFE }
-}
+val List<PxPlateAppearance>.hits: Int
+    get() {
+        return 0 //TODO
+    }
+
+val List<PxPlateAppearance>.walks: Int
+    get() {
+        return mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH) }
+    }
+
+val List<PxPlateAppearance>.errors: Int
+    get() {
+        return 0 //TODO
+    }
+
+val List<PxPlateAppearance>.runs: Int
+    get() {
+        return flatMap { it.pitchEvents }.flatMap { it.basepathResults }.count { it.location == PlayLocation.HOME && it.playResult == PlayResult.SAFE }
+    }

@@ -19,7 +19,7 @@ class PxGameplayEvent(
 
         @OneToMany(mappedBy = "gameplayEvent", cascade = arrayOf(CascadeType.ALL))
         @OrderBy("id ASC")
-        val basepathResults: MutableList<PxBasePathResult> = mutableListOf(),
+        val basepathResults: MutableList<PxBasepathResult> = mutableListOf(),
 
         @Id
         @GeneratedValue(strategy = IDENTITY)
