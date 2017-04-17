@@ -71,6 +71,23 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         if (gameplayEvent.basepathResults.isNotEmpty() && pitchEndsAtBatWithoutHit(gameplayEvent, appearance) && gameplayEvent.basepathResults.isNotEmpty()) {
             throw Exception("Cannot record basepath event on at-bat-ending pitch")
         }
+        validateOnBase(gameplayEvent, appearance)
+    }
+
+    private fun validateOnBase(gameplayEvent: GameplayEvent, appearance: PxPlateAppearance) {
+        if (gameplayEvent.pitch == Pitch.IN_PLAY && gameplayEvent.basepathResults.none { appearance.batter.player.id == it.player }) {
+            throw Exception("In play pitch must include a baserunning result for the batter")
+        }
+        if (gameplayEvent.basepathResults.map { it.player }.distinct().count() != gameplayEvent.basepathResults.count()) {
+            throw Exception("Basepath results cannot contain the same player multiple times")
+        }
+
+        val onBasePlayerIds = getCurrentOnBase(appearance.inningHalf).map { it.lineupPlayer.player.id ?: throw Exception() }.toMutableSet()
+        if (gameplayEvent.basepathResults.any { it.player != appearance.batter.id && !onBasePlayerIds.contains(it.player) }) {
+            throw Exception("Basepath runners may not swap order")
+        }
+
+        //TODO: assert same order as it was before (maybe just (wrapped) order of battingorder
     }
 
     private fun pitchEndsAtBatWithoutHit(gameplayEvent: GameplayEvent, appearance: PxPlateAppearance): Boolean {
