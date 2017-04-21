@@ -75,15 +75,15 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     private fun validateOnBase(gameplayEvent: GameplayEvent, appearance: PxPlateAppearance) {
-        if (gameplayEvent.pitch == Pitch.IN_PLAY && gameplayEvent.basepathResults.none { appearance.batter.player.id == it.player }) {
+        if (gameplayEvent.pitch == Pitch.IN_PLAY && gameplayEvent.basepathResults.none { appearance.batter.id == it.lineupPlayer }) {
             throw Exception("In play pitch must include a baserunning result for the batter")
         }
-        if (gameplayEvent.basepathResults.map { it.player }.distinct().count() != gameplayEvent.basepathResults.count()) {
+        if (gameplayEvent.basepathResults.map { it.lineupPlayer }.distinct().count() != gameplayEvent.basepathResults.count()) {
             throw Exception("Basepath results cannot contain the same player multiple times")
         }
 
-        val onBasePlayerIds = getCurrentOnBase(appearance.inningHalf).map { it.lineupPlayer.player.id ?: throw Exception() }.toMutableSet()
-        if (gameplayEvent.basepathResults.any { it.player != appearance.batter.id && !onBasePlayerIds.contains(it.player) }) {
+        val onBasePlayerIds = getCurrentOnBase(appearance.inningHalf).map { it.lineupPlayer.id ?: throw Exception() }.toMutableSet()
+        if (gameplayEvent.basepathResults.any { it.lineupPlayer != appearance.batter.id && !onBasePlayerIds.contains(it.lineupPlayer) }) {
             throw Exception("Basepath runners may not swap order")
         }
 
