@@ -23,12 +23,12 @@ class GameController(@Autowired private val gameService: GameService) {
 
     @GetMapping("/{id}/lineups/away")
     fun getAwayLineup(pageable: Pageable, @PathVariable id: Long): Page<LineupPlayer> {
-        return gameService.getLineupPlayers(pageable, id, InningHalf.TOP)
+        return gameService.getLineupPlayers(pageable, id, InningSide.TOP)
     }
 
     @GetMapping("/{id}/lineups/home")
     fun getHomeLineup(pageable: Pageable, @PathVariable id: Long): Page<LineupPlayer> {
-        return gameService.getLineupPlayers(pageable, id, InningHalf.BOTTOM)
+        return gameService.getLineupPlayers(pageable, id, InningSide.BOTTOM)
     }
 
     @GetMapping("/{id}/plateappearance")

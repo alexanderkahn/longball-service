@@ -1,28 +1,23 @@
 package net.alexanderkahn.longball.service.persistence.model.entity
 
 import net.alexanderkahn.base.servicebase.service.UserContext
+import net.alexanderkahn.longball.service.model.InningSide
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
 import javax.persistence.*
 
-@Entity(name="inning_half_result")
-data class PxInningHalfResult(
-        @OneToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half"), nullable = false)
-        val inningHalf: PxInningHalf,
+@Entity(name = "inning_side")
+@Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("inning_id", "side"))))
+data class PxInningSide(
 
-        @Column(nullable = false)
-        val hits: Int,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning"), nullable = false) val inning: PxInning,
 
-        @Column(nullable = false)
-        val walks: Int,
+        @Column(nullable = false) val side: InningSide,
 
-        @Column(nullable = false)
-        val errors: Int,
-
-        @Column(nullable = false)
-        val runs: Int,
+        @OneToOne(mappedBy = "side", cascade = arrayOf(CascadeType.ALL))
+        var result: PxSideResult? = null,
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +25,5 @@ data class PxInningHalfResult(
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
-): OwnedIdentifiable
+
+        ): OwnedIdentifiable

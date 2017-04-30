@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.model
 
-enum class InningHalf {
+enum class InningSide {
     TOP,
     BOTTOM
 }

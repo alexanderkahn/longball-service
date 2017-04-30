@@ -3,8 +3,8 @@ package net.alexanderkahn.longball.service.service.assembler
 import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.persistence.model.entity.*
 
-fun PxInningHalf.toResult(basePathResults: List<PxBasepathResult>): PxInningHalfResult {
-    return PxInningHalfResult(this,
+fun PxInningSide.toResult(basePathResults: List<PxBasepathResult>): PxSideResult {
+    return PxSideResult(this,
             basePathResults.hits,
             basePathResults.walks,
             basePathResults.errors,

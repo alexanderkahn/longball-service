@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.service
 import net.alexanderkahn.base.servicebase.security.jwt.jwtTestUser
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.FieldPosition
-import net.alexanderkahn.longball.service.model.InningHalf
+import net.alexanderkahn.longball.service.model.InningSide
 import net.alexanderkahn.longball.service.persistence.model.entity.*
 import net.alexanderkahn.longball.service.persistence.repository.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,15 +51,15 @@ class TestLoader(
     private fun createGame(league: PxLeague, awayTeam: PxTeam, homeTeam: PxTeam) {
         val game: PxGame = PxGame(league, awayTeam, homeTeam, OffsetDateTime.now())
         gameRepository.save(game)
-        createLineup(game, awayTeam, InningHalf.TOP)
-        createLineup(game, homeTeam, InningHalf.BOTTOM)
+        createLineup(game, awayTeam, InningSide.TOP)
+        createLineup(game, homeTeam, InningSide.BOTTOM)
     }
 
-    private fun createLineup(game: PxGame, team: PxTeam, inningHalf: InningHalf) {
+    private fun createLineup(game: PxGame, team: PxTeam, side: InningSide) {
         val rosterPlayers = rosterPlayerRepository.findByTeamIdAndOwner(PageRequest(0, 20), team.id!!, UserContext.getPersistenceUser())
         var counter = 0
         FieldPosition.values().forEach { it ->
-            val lPosition = PxLineupPlayer(game, rosterPlayers.content[counter].player, inningHalf, ++counter, it)
+            val lPosition = PxLineupPlayer(game, rosterPlayers.content[counter].player, side, ++counter, it)
             lineupPlayerRepository.save(lPosition)
         }
     }

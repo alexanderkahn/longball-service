@@ -11,7 +11,7 @@ import javax.persistence.GenerationType.IDENTITY
 @Entity(name = "plate_appearance")
 data class PxPlateAppearance(
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half"), nullable = false) val inningHalf: PxInningHalf,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_side"), nullable = false) val side: PxInningSide,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false) val batter: PxLineupPlayer,
