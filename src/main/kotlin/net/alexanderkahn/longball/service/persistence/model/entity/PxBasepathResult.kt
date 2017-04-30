@@ -9,7 +9,7 @@ import net.alexanderkahn.longball.service.persistence.repository.getPersistenceU
 import javax.persistence.*
 
 @Entity(name = "basepath_result")
-class PxBasepathResult(
+data class PxBasepathResult(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_gameplay_event"), nullable = false)
@@ -31,32 +31,4 @@ class PxBasepathResult(
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
-):OwnedIdentifiable {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other?.javaClass != javaClass) return false
-
-        other as PxBasepathResult
-
-        if (gameplayEvent.id != other.gameplayEvent.id) return false
-        if (location != other.location) return false
-        if (playResult != other.playResult) return false
-        if (id != other.id) return false
-        if (owner != other.owner) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result1 = gameplayEvent.id?.hashCode() ?: 1
-        result1 = 31 * result1 + location.hashCode()
-        result1 = 31 * result1 + playResult.hashCode()
-        result1 = 31 * result1 + (id?.hashCode() ?: 0)
-        result1 = 31 * result1 + owner.hashCode()
-        return result1
-    }
-
-    override fun toString(): String {
-        return "PxBasepathResult(gameplayEvent=${gameplayEvent.id}, location=$location, basepathResults=$playResult, id=$id, owner=$owner)"
-    }
-}
+):OwnedIdentifiable

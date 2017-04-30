@@ -8,7 +8,7 @@ import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "player")
-class PxPlayer(
+data class PxPlayer(
         @Column(nullable = false) val first: String,
 
         @Column(nullable = false) val last: String,
@@ -19,32 +19,4 @@ class PxPlayer(
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
-): OwnedIdentifiable {
-        override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (other?.javaClass != javaClass) return false
-
-                other as PxPlayer
-
-                if (id != other.id) return false
-                if (first != other.first) return false
-                if (last != other.last) return false
-                if (owner != other.owner) return false
-
-                return true
-        }
-
-        override fun hashCode(): Int {
-                var result = id?.hashCode() ?: 0
-                result = 31 * result + first.hashCode()
-                result = 31 * result + last.hashCode()
-                result = 31 * result + owner.hashCode()
-                return result
-        }
-
-        override fun toString(): String {
-                return "PxPlayer(id=$id, first='$first', last='$last', owner=$owner)"
-        }
-
-
-}
+): OwnedIdentifiable

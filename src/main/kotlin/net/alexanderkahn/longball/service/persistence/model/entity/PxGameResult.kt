@@ -8,7 +8,7 @@ import java.time.OffsetDateTime
 import javax.persistence.*
 
 @Entity(name = "game_result")
-class PxGameResult(
+data class PxGameResult(
 
         @OneToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)

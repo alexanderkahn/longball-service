@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.service.persistence.repository.getPersistenceU
 import javax.persistence.*
 
 @Entity(name="inning_half_result")
-class PxInningHalfResult(
+data class PxInningHalfResult(
         @OneToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_inning_half"), nullable = false)
         val inningHalf: PxInningHalf,

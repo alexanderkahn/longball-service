@@ -7,4 +7,5 @@ import net.alexanderkahn.longball.service.persistence.model.entity.PxInning
 
 interface InningRepository: LongballRepository<PxInning> {
     fun findFirstByGameAndOwnerOrderByIdDesc(game: PxGame, owner: EmbeddableUser = UserContext.getPersistenceUser()): PxInning?
+    fun findByGameAndOwner(game: PxGame, owner: EmbeddableUser = UserContext.getPersistenceUser()): List<PxInning>
 }

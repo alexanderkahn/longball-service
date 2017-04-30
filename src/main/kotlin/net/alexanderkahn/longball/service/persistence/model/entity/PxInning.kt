@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Entity(name = "inning")
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("game_id", "inningNumber"))))
-class PxInning(
+data class PxInning(
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
         val game: PxGame,
@@ -16,42 +16,10 @@ class PxInning(
         @Column(nullable = false)
         val inningNumber: Int,
 
-        @OneToMany(mappedBy = "inning", cascade = arrayOf(CascadeType.ALL))
-        @OrderBy("id ASC") val inningHalves: MutableList<PxInningHalf> = mutableListOf(),
-
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         override val id: Long? = null,
 
         @Embedded
         override val owner: EmbeddableUser = UserContext.getPersistenceUser()
-        ): OwnedIdentifiable {
-
-        override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (other?.javaClass != javaClass) return false
-
-                other as PxInning
-
-                if (id != other.id) return false
-                if (game != other.game) return false
-                if (inningNumber != other.inningNumber) return false
-                if (owner != other.owner) return false
-
-                return true
-        }
-
-        override fun hashCode(): Int {
-                var result = id?.hashCode() ?: 0
-                result = 31 * result + game.hashCode()
-                result = 31 * result + inningNumber
-                result = 31 * result + owner.hashCode()
-                return result
-        }
-
-        override fun toString(): String {
-                return "PxInning(id=$id, game=$game, inningNumber=$inningNumber, owner=$owner)"
-        }
-
-
-}
+        ): OwnedIdentifiable
