@@ -119,13 +119,15 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     private fun getPlateAppearanceModel(inningAppearances: MutableList<PxPlateAppearance>, appearance: PxPlateAppearance): PlateAppearance {
         val basepathResults = basepathResultRepository.findByPlateAppearanceAndOwner(inningAppearances)
         val events = gameplayEventRepository.findByPlateAppearanceAndOwner(appearance)
-        val outs = inningAppearances.getOuts(basepathResults)
-        val hits = basepathResults.hits
-        val walks = basepathResults.walks
-        val errors = basepathResults.errors
-        val runs = basepathResults.runs
         val balls = events.balls
         val strikes = events.strikes
+
+        val inningHalfResults = basepathResultRepository.findByPlateAppearanceAndOwner(inningAppearances)
+        val outs = inningAppearances.getOuts(basepathResults)
+        val hits = inningHalfResults.hits
+        val walks = inningHalfResults.walks
+        val errors = inningHalfResults.errors
+        val runs = inningHalfResults.runs
         return appearance.toModel(getOpposingPitcher(appearance), outs,hits,walks,errors,runs, balls, strikes, basepathResults.getCurrentOnBase())
     }
 

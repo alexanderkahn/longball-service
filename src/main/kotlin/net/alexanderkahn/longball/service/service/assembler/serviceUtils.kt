@@ -48,7 +48,7 @@ val List<PxBasepathResult>.hits: Int
 
 val List<PxBasepathResult>.walks: Int
     get() {
-        return mapNotNull { it.gameplayEvent.plateAppearance.plateAppearanceResult }.distinct().count { it in arrayOf(PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH) }
+        return mapNotNull { it.gameplayEvent.plateAppearance }.distinct().count { it.plateAppearanceResult in arrayOf(PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH) }
     }
 
 val List<PxBasepathResult>.errors: Int
