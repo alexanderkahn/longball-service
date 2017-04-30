@@ -126,7 +126,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val runs = basepathResults.runs
         val balls = events.balls
         val strikes = events.strikes
-        return appearance.toModel(getOpposingPitcher(appearance), outs,hits,walks,errors,runs, balls, strikes, basepathResults)
+        return appearance.toModel(getOpposingPitcher(appearance), outs,hits,walks,errors,runs, balls, strikes, basepathResults.getCurrentOnBase())
     }
 
     private fun proccessInningHalfResult(inningHalf: PxInningHalf, plateAppearances: List<PxPlateAppearance>) {
