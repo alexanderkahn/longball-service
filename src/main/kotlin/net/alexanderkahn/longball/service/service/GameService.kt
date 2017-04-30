@@ -59,9 +59,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         validateEvent(gameplayEvent, appearance, game)
         gameplayEventRepository.save(pxEvent)
 
-        val appearanceEvents = gameplayEventRepository.findByPlateAppearanceAndOwner(appearance).toMutableList()
-        appearanceEvents.add(pxEvent)
-
+        val appearanceEvents = gameplayEventRepository.findByPlateAppearanceAndOwner(appearance)
         val inningAppearances = plateAppearanceRepository.findByInningHalfAndOwner(appearance.inningHalf)
 
         processAppearanceResult(appearance, appearanceEvents)
