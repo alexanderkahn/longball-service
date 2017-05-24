@@ -38,7 +38,7 @@ fun List<PxPlateAppearance>.getOuts(basepathResults: List<PxBasepathResult>): In
 
 fun List<PxBasepathResult>.getCurrentOnBase(): List<PxBasepathResult> {
     val sorted = this.sortedByDescending { it.id }
-    return sorted.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResult.SAFE && it.location != PlayLocation.HOME }
+    return sorted.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResult.SAFE && it.location != BaseLocation.HOME }
 }
 
 val List<PxBasepathResult>.hits: Int
@@ -58,5 +58,5 @@ val List<PxBasepathResult>.errors: Int
 
 val List<PxBasepathResult>.runs: Int
     get() {
-        return count { it.location == PlayLocation.HOME && it.playResult == PlayResult.SAFE }
+        return count { it.location == BaseLocation.HOME && it.playResult == PlayResult.SAFE }
     }

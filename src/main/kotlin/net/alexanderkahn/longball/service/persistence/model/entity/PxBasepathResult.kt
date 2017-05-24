@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.service.persistence.model.entity
 
 import net.alexanderkahn.base.servicebase.service.UserContext
-import net.alexanderkahn.longball.service.model.PlayLocation
+import net.alexanderkahn.longball.service.model.BaseLocation
 import net.alexanderkahn.longball.service.model.PlayResult
 import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
@@ -20,7 +20,7 @@ data class PxBasepathResult(
         val lineupPlayer: PxLineupPlayer,
 
         @Column(nullable = false)
-        val location: PlayLocation,
+        val location: BaseLocation,
 
         @Column(nullable = false)
         val playResult: PlayResult,

@@ -62,8 +62,8 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val appearanceEvents = gameplayEventRepository.findByPlateAppearanceAndOwner(appearance)
         val inningAppearances = plateAppearanceRepository.findBySideAndOwner(appearance.side)
 
-        processAppearanceResult(appearance, appearanceEvents)
-        proccessSideResult(appearance.side, inningAppearances)
+        processAppearanceResult(appearance, appearanceEvents, gameplayEvent.basepathResults)
+        processSideResult(appearance.side, inningAppearances)
         processGameResult(game)
         gameRepository.save(game)
         return getPlateAppearanceModel(inningAppearances, appearance)
@@ -76,6 +76,9 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val previousPitches = gameplayEventRepository.findByPlateAppearanceAndOwner(appearance)
         if (gameplayEvent.basepathResults.isNotEmpty() && pitchEndsAtBatWithoutHit(gameplayEvent, previousPitches) && gameplayEvent.basepathResults.isNotEmpty()) {
             throw Exception("Cannot record basepath event on at-bat-ending pitch")
+        }
+        if (gameplayEvent.pitch == Pitch.IN_PLAY && (gameplayEvent.ballInPlay == null || !gameplayEvent.basepathResults.map { it.lineupPlayer }.contains(appearance.batter.id))) {
+            throw Exception("Hit must include ballInPlay and basepathResult for batter")
         }
         validateOnBase(gameplayEvent, appearance)
     }
@@ -131,7 +134,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         return appearance.toModel(getOpposingPitcher(appearance), outs,hits,walks,errors,runs, balls, strikes, basepathResults.getCurrentOnBase())
     }
 
-    private fun proccessSideResult(side: PxInningSide, plateAppearances: List<PxPlateAppearance>) {
+    private fun processSideResult(side: PxInningSide, plateAppearances: List<PxPlateAppearance>) {
         val basepathResults = basepathResultRepository.findByPlateAppearanceAndOwner(plateAppearances)
         if (plateAppearances.getOuts(basepathResults) >= LeagueRuleSet.OUTS_PER_INNING) {
             side.result = side.toResult(basepathResults)
@@ -139,12 +142,13 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         }
     }
 
-    private fun processAppearanceResult(appearance: PxPlateAppearance, pitchEvents: List<PxGameplayEvent>) {
+    private fun processAppearanceResult(appearance: PxPlateAppearance, pitchEvents: List<PxGameplayEvent>, basepathResults: List<BasepathResult>) {
         if (shouldAddResult(pitchEvents)) {
             val lastPitch = pitchEvents.last()
             appearance.plateAppearanceResult = getPlateAppearanceResult(lastPitch)
             when(appearance.plateAppearanceResult) {
-                PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH -> advanceRunners(lastPitch, appearance, getCurrentOnBase(appearance.side))
+                PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH -> advanceRunnersOnBaseAwarded(lastPitch, appearance, getCurrentOnBase(appearance.side))
+                PlateAppearanceResult.IN_PLAY -> advanceRunnersOnBallInPlay(lastPitch, basepathResults)
                 else -> {}
             }
         }
@@ -155,25 +159,33 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         val results = plateAppearances.flatMap { gameplayEventRepository.findByPlateAppearanceAndOwner(it) }
                 .flatMap { basepathResultRepository.findByGameplayEventAndOwner(it) }
         return results.sortedByDescending { it.id }.distinctBy { it.lineupPlayer }
-                .filterNot { it.location == PlayLocation.HOME || it.playResult == PlayResult.OUT }
+                .filterNot { it.location == BaseLocation.HOME || it.playResult == PlayResult.OUT }
     }
 
-    private fun advanceRunners(lastPitch: PxGameplayEvent, appearance: PxPlateAppearance, currentOnBase: List<PxBasepathResult>) {
-        for (base in PlayLocation.values().sortedArrayDescending()) {
+    private fun advanceRunnersOnBaseAwarded(lastPitch: PxGameplayEvent, appearance: PxPlateAppearance, currentOnBase: List<PxBasepathResult>) {
+        for (base in BaseLocation.values().sortedArrayDescending()) {
             val onBase = currentOnBase.firstOrNull { it.location == base }
-            if (onBase != null && currentOnBase.any{ it.location == PlayLocation.FIRST || it.location == PlayLocation.values()[base.ordinal - 1]}) {
-                basepathResultRepository.save(PxBasepathResult(lastPitch, onBase.lineupPlayer, PlayLocation.values()[base.ordinal + 1], PlayResult.SAFE))
+            if (onBase != null && currentOnBase.any{ it.location == BaseLocation.FIRST || it.location == BaseLocation.values()[base.ordinal - 1]}) {
+                basepathResultRepository.save(PxBasepathResult(lastPitch, onBase.lineupPlayer, BaseLocation.values()[base.ordinal + 1], PlayResult.SAFE))
             }
         }
-        basepathResultRepository.save(PxBasepathResult(lastPitch, appearance.batter, PlayLocation.FIRST, PlayResult.SAFE))
+        basepathResultRepository.save(PxBasepathResult(lastPitch, appearance.batter, BaseLocation.FIRST, PlayResult.SAFE))
+    }
+
+    private fun advanceRunnersOnBallInPlay(resultEvent: PxGameplayEvent, basepathResults: List<BasepathResult>) {
+        basepathResults.map { PxBasepathResult(resultEvent, lineupPlayerRepository.findOne(it.lineupPlayer), it.location, it.result) }
+                .forEach { basepathResultRepository.save(it) }
     }
 
     private fun shouldAddResult(events: List<PxGameplayEvent>): Boolean {
         if (events.isNotEmpty() && events.last().pitch == Pitch.HIT_BY_PITCH) {
             return true
+        } else if (events.last().pitch == Pitch.IN_PLAY) {
+            return true
+        } else {
+            return events.strikes >= LeagueRuleSet.STRIKES_PER_OUT ||
+                    events.balls >= LeagueRuleSet.BALLS_PER_WALK
         }
-        return events.strikes >= LeagueRuleSet.STRIKES_PER_OUT ||
-                events.balls >= LeagueRuleSet.BALLS_PER_WALK
     }
 
     private fun getPlateAppearanceResult(lastEvent: PxGameplayEvent): PlateAppearanceResult {
@@ -182,6 +194,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
             Pitch.STRIKE_SWINGING -> return PlateAppearanceResult.STRIKEOUT_SWINGING
             Pitch.STRIKE_LOOKING -> return PlateAppearanceResult.STRIKEOUT_LOOKING
             Pitch.HIT_BY_PITCH -> return PlateAppearanceResult.HIT_BY_PITCH
+            Pitch.IN_PLAY -> return PlateAppearanceResult.IN_PLAY
             else -> throw NotImplementedError()
         }
     }

@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.model
 
-enum class PlayLocation {
+enum class BaseLocation {
     FIRST,
     SECOND,
     THIRD,
