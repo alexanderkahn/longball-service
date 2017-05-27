@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence
 
 
 import javax.persistence.Embeddable

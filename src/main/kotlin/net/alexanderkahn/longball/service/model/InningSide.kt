@@ -1,6 +1,3 @@
 package net.alexanderkahn.longball.service.model
 
-enum class InningSide {
-    TOP,
-    BOTTOM
-}
+data class InningSide(val outs: Int, val hits: Int, val walks: Int, val errors: Int, val runs: Int)

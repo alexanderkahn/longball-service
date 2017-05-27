@@ -1,9 +1,9 @@
-package net.alexanderkahn.longball.service.persistence.model.entity
+package net.alexanderkahn.longball.service.persistence.entity
 
 import net.alexanderkahn.base.servicebase.service.UserContext
-import net.alexanderkahn.longball.service.model.InningSide
-import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
-import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
+import net.alexanderkahn.longball.service.model.Side
+import net.alexanderkahn.longball.service.persistence.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.OwnedIdentifiable
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
 import javax.persistence.*
 
@@ -12,12 +12,11 @@ import javax.persistence.*
 data class PxInningSide(
 
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning"), nullable = false) val inning: PxInning,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_inning"), nullable = false)
+        val inning: PxInning,
 
-        @Column(nullable = false) val side: InningSide,
-
-        @OneToOne(mappedBy = "side", cascade = arrayOf(CascadeType.ALL))
-        var result: PxSideResult? = null,
+        @Column(nullable=false)
+        val side: Side,
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

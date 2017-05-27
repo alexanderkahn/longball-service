@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.service.persistence.repository
 
 import net.alexanderkahn.base.servicebase.service.UserContext
-import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
-import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
+import net.alexanderkahn.longball.service.persistence.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.OwnedIdentifiable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.NoRepositoryBean

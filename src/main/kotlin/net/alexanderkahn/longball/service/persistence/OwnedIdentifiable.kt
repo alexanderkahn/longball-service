@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.service.persistence.model
+package net.alexanderkahn.longball.service.persistence
 
 interface OwnedIdentifiable {
     val id: Long?

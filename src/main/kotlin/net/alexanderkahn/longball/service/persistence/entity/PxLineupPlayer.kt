@@ -1,10 +1,10 @@
-package net.alexanderkahn.longball.service.persistence.model.entity
+package net.alexanderkahn.longball.service.persistence.entity
 
 import net.alexanderkahn.base.servicebase.service.UserContext
 import net.alexanderkahn.longball.service.model.FieldPosition
-import net.alexanderkahn.longball.service.model.InningSide
-import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
-import net.alexanderkahn.longball.service.persistence.model.OwnedIdentifiable
+import net.alexanderkahn.longball.service.model.Side
+import net.alexanderkahn.longball.service.persistence.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.OwnedIdentifiable
 import net.alexanderkahn.longball.service.persistence.repository.getPersistenceUser
 import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
@@ -18,7 +18,7 @@ data class PxLineupPlayer(
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false) val player: PxPlayer,
 
-        @Column(nullable = false) val side: InningSide,
+        @Column(nullable = false) val side: Side,
 
         @Column(nullable = false) val battingOrder: Int,
 

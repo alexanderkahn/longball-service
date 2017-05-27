@@ -2,8 +2,8 @@ package net.alexanderkahn.longball.service.service.assembler
 
 import net.alexanderkahn.base.servicebase.model.User
 import net.alexanderkahn.longball.service.model.*
-import net.alexanderkahn.longball.service.persistence.model.EmbeddableUser
-import net.alexanderkahn.longball.service.persistence.model.entity.*
+import net.alexanderkahn.longball.service.persistence.EmbeddableUser
+import net.alexanderkahn.longball.service.persistence.entity.*
 
 fun User.toPersistence(): EmbeddableUser {
     return EmbeddableUser(issuer, userId)
@@ -56,18 +56,19 @@ fun PxTeam.toModel(): Team {
     return Team(id, abbreviation, location, nickname)
 }
 
-fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int, hits: Int, walks: Int, errors: Int, runs: Int, balls: Int, strikes: Int, currentOnBase: List<PxBasepathResult>): PlateAppearance {
-    if (id == null || pitcher.id == null || batter.id == null) {
-        throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
-    }
-    val inning = Inning(side.side, side.inning.inningNumber, outs, hits, walks, errors, runs)
-    val onBase = currentOnBase.map{ it.toBaserunner() }
-    return PlateAppearance(pitcher.id, batter.id, inning, onBase, PlateAppearanceCount(balls, strikes), plateAppearanceResult)
-}
-
-private fun PxBasepathResult.toBaserunner(): BaseRunner {
-    if (lineupPlayer.player.id == null) {
-        throw UnsupportedOperationException("Not saved")
-    }
-    return BaseRunner(location, lineupPlayer.player.id)
-}
+//FIXME
+//fun PxPlateAppearance.toModel(pitcher: PxPlayer, outs: Int, hits: Int, walks: Int, errors: Int, runs: Int, balls: Int, strikes: Int, currentOnBase: List<PxBasepathResult>): PlateAppearance {
+//    if (id == null || pitcher.id == null || batter.id == null) {
+//        throw UnsupportedOperationException("Cannot convert unsaved plate appearance")
+//    }
+//    val inning = InningSide(side.inning.inningNumber, side.side, outs, hits, walks, errors, runs)
+//    val onBase = currentOnBase.map{ it.toBaserunner() }
+//    return PlateAppearance(pitcher.id, batter.id, inning, onBase, PlateAppearanceCount(balls, strikes), plateAppearanceResult)
+//}
+//
+//private fun PxBasepathResult.toBaserunner(): BaseRunner {
+//    if (lineupPlayer.player.id == null) {
+//        throw UnsupportedOperationException("Not saved")
+//    }
+//    return BaseRunner(location, lineupPlayer.player.id)
+//}
