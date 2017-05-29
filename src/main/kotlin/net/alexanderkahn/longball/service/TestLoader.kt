@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.service
 
-import net.alexanderkahn.base.servicebase.security.jwt.jwtTestUser
-import net.alexanderkahn.base.servicebase.service.UserContext
+import net.alexanderkahn.servicebase.provider.security.jwt.jwtTestUser
+import net.alexanderkahn.servicebase.provider.security.UserContext
 import net.alexanderkahn.longball.service.model.FieldPosition
 import net.alexanderkahn.longball.service.model.Side
 import net.alexanderkahn.longball.service.persistence.entity.*

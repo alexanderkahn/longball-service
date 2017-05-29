@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.service.assembler
 
-import net.alexanderkahn.base.servicebase.model.User
+import net.alexanderkahn.servicebase.model.User
 import net.alexanderkahn.longball.service.model.*
 import net.alexanderkahn.longball.service.persistence.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.entity.*

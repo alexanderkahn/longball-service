@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service
 
-import net.alexanderkahn.base.servicebase.ServiceApplicationBase
+import net.alexanderkahn.servicebase.provider.ServiceApplicationBase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication

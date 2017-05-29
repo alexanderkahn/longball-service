@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.persistence.repository
 
-import net.alexanderkahn.base.servicebase.service.UserContext
+import net.alexanderkahn.servicebase.provider.security.UserContext
 import net.alexanderkahn.longball.service.persistence.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.entity.PxRosterPlayer
 import org.springframework.data.domain.Page

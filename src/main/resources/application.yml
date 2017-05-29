@@ -1,9 +1,9 @@
 server:
   port: 443
 application:
-  name: @application.name@
-  version: @application.version@
-  buildDate: @application.buildDate@
+  name: ${project.name}
+  version: ${project.version}
+  buildDate: ${buildDate}
 oauth:
   issuer:
     algorithm: RS256

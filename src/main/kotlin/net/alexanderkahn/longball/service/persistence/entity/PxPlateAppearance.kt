@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.service.persistence.entity
 
-import net.alexanderkahn.base.servicebase.service.UserContext
+import net.alexanderkahn.servicebase.provider.security.UserContext
 import net.alexanderkahn.longball.service.model.PlateAppearanceResult
 import net.alexanderkahn.longball.service.persistence.EmbeddableUser
 import net.alexanderkahn.longball.service.persistence.OwnedIdentifiable
