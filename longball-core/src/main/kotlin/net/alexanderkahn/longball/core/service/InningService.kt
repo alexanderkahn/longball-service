@@ -25,12 +25,12 @@ class InningService(
 
     fun getInningsForGame(pageable: Pageable, gameId: Long): Page<Inning> {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)
-        return inningRepository.findByGameAndOwner(pageable, game, UserContext.pxUser).map { inningAssembler.toModel(it) }
+        return inningRepository.findByOwnerAndGame(pageable, UserContext.pxUser, game).map { inningAssembler.toModel(it) }
     }
 
     fun advanceInning(gameId: Long) {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)
-        val lastInning = inningRepository.findFirstByGameAndOwnerOrderByIdDesc(game, UserContext.pxUser)
+        val lastInning = inningRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.pxUser, game)
         if (lastInning == null) {
             val firstInning = PxInning(UserContext.pxUser, game, 1)
             inningRepository.save(firstInning)
@@ -45,5 +45,11 @@ class InningService(
                 inningSideRepository.save(PxInningSide(UserContext.pxUser, lastInning, Side.BOTTOM.ordinal))
             }
         }
+    }
+
+    fun getInning(gameId: Long, inningNumber: Int): Inning {
+        val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)
+        return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toModel(it) }
+                ?: throw Exception("Inning $inningNumber not found for game $gameId")
     }
 }

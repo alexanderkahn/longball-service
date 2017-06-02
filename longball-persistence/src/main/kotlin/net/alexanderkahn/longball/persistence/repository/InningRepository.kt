@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface InningRepository: LongballRepository<PxInning> {
-    fun findFirstByGameAndOwnerOrderByIdDesc(game: PxGame, owner: EmbeddableUser): PxInning?
-    fun findByGameAndOwner(pageable: Pageable, game: PxGame, owner: EmbeddableUser): Page<PxInning>
+    fun findFirstByOwnerAndGameOrderByIdDesc(owner: EmbeddableUser, game: PxGame): PxInning?
+    fun findByOwnerAndGameAndInningNumber(owner: EmbeddableUser, game: PxGame, inningNumber: Number): PxInning?
+    fun findByOwnerAndGame(pageable: Pageable, owner: EmbeddableUser, game: PxGame): Page<PxInning>
 }

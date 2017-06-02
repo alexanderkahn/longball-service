@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.RestController
 class InningController(
         @Autowired private val inningService: InningService) {
 
-    @GetMapping("/games/{id}/innings")
-    fun getInnings(pageable: Pageable, @PathVariable id: Long): Page<Inning> {
-        return (inningService.getInningsForGame(pageable, id))
+    @GetMapping("/games/{gameId}/innings")
+    fun getInnings(pageable: Pageable, @PathVariable gameId: Long): Page<Inning> {
+        return (inningService.getInningsForGame(pageable, gameId))
+    }
+
+    @GetMapping("/games/{gameId}/innings/{inningNumber}")
+    fun getInning(@PathVariable gameId: Long, @PathVariable inningNumber: Int): Inning {
+        return (inningService.getInning(gameId, inningNumber))
     }
 
     @PostMapping("/games/{gameId}/innings/next")
