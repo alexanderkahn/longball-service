@@ -4,6 +4,7 @@ package net.alexanderkahn.longball.core.service
 import net.alexanderkahn.longball.core.assembler.InningAssembler
 import net.alexanderkahn.longball.core.assembler.pxUser
 import net.alexanderkahn.longball.model.Inning
+import net.alexanderkahn.longball.model.InningSide
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.persistence.model.PxInning
 import net.alexanderkahn.longball.persistence.model.PxInningSide
@@ -51,5 +52,10 @@ class InningService(
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)
         return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toModel(it) }
                 ?: throw Exception("Inning $inningNumber not found for game $gameId")
+    }
+
+    fun getInningSide(gameId: Long, inningNumber: Int, inningSide: Side): InningSide {
+        val returnedSide: InningSide? = getInning(gameId, inningNumber).let { if (inningSide == Side.TOP) it.top else it.bottom }
+        return returnedSide ?: throw Exception("Could not find $inningSide $inningNumber for game $gameId")
     }
 }
