@@ -32,7 +32,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     fun getLineupPlayers(pageable: Pageable, gameId: Long, side: Side): Page<LineupPlayer> {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)
-        val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side.ordinal, UserContext.pxUser)
+        val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.pxUser)
         return players.map { it.toModel() }
     }
 

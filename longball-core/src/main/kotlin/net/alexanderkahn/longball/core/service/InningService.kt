@@ -5,12 +5,12 @@ import net.alexanderkahn.longball.core.assembler.InningAssembler
 import net.alexanderkahn.longball.core.assembler.pxUser
 import net.alexanderkahn.longball.core.persistence.model.PxInning
 import net.alexanderkahn.longball.core.persistence.model.PxInningSide
-import net.alexanderkahn.longball.model.Inning
-import net.alexanderkahn.longball.model.InningSide
-import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.core.persistence.repository.GameRepository
 import net.alexanderkahn.longball.core.persistence.repository.InningRepository
 import net.alexanderkahn.longball.core.persistence.repository.InningSideRepository
+import net.alexanderkahn.longball.model.Inning
+import net.alexanderkahn.longball.model.InningSide
+import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.servicebase.core.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -35,15 +35,15 @@ class InningService(
         if (lastInning == null) {
             val firstInning = PxInning(UserContext.pxUser, game, 1)
             inningRepository.save(firstInning)
-            inningSideRepository.save(PxInningSide(UserContext.pxUser, firstInning, Side.TOP.ordinal))
+            inningSideRepository.save(PxInningSide(UserContext.pxUser, firstInning, Side.TOP))
         } else {
             val sides = inningSideRepository.findByInningAndOwner(lastInning, UserContext.pxUser)
             if (sides.size >= Side.values().size) {
                 val nextInning = PxInning(UserContext.pxUser, game, lastInning.inningNumber.inc())
                 inningRepository.save(nextInning)
-                inningSideRepository.save(PxInningSide(UserContext.pxUser, nextInning, Side.TOP.ordinal))
+                inningSideRepository.save(PxInningSide(UserContext.pxUser, nextInning, Side.TOP))
             } else {
-                inningSideRepository.save(PxInningSide(UserContext.pxUser, lastInning, Side.BOTTOM.ordinal))
+                inningSideRepository.save(PxInningSide(UserContext.pxUser, lastInning, Side.BOTTOM))
             }
         }
     }

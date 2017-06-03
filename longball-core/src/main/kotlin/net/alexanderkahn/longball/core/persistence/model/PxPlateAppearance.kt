@@ -2,6 +2,7 @@ package net.alexanderkahn.longball.core.persistence.model
 
 import net.alexanderkahn.longball.core.persistence.EmbeddableUser
 import net.alexanderkahn.longball.core.persistence.OwnedIdentifiable
+import net.alexanderkahn.longball.model.PlateAppearanceResult
 import javax.persistence.*
 import javax.persistence.GenerationType.IDENTITY
 
@@ -14,7 +15,7 @@ data class PxPlateAppearance(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_lineup_player"), nullable = false) val batter: PxLineupPlayer,
 
         @Column(nullable = true)
-        var plateAppearanceResult: Int? = null,
+        var plateAppearanceResult: PlateAppearanceResult? = null,
 
         @Id
         @GeneratedValue(strategy = IDENTITY)

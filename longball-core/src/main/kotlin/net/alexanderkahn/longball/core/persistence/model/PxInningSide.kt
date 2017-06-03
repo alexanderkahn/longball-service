@@ -2,6 +2,7 @@ package net.alexanderkahn.longball.core.persistence.model
 
 import net.alexanderkahn.longball.core.persistence.EmbeddableUser
 import net.alexanderkahn.longball.core.persistence.OwnedIdentifiable
+import net.alexanderkahn.longball.model.Side
 import javax.persistence.*
 
 @Entity(name = "inning_side")
@@ -16,7 +17,7 @@ data class PxInningSide(
         val inning: PxInning,
 
         @Column(nullable=false)
-        val side: Int,
+        val side: Side,
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
