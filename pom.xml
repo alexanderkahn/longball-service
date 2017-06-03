@@ -10,7 +10,6 @@
     <modules>
         <module>longball-model</module>
         <module>longball-provider</module>
-        <module>longball-persistence</module>
         <module>longball-core</module>
         <module>longball-presentation</module>
     </modules>
@@ -34,11 +33,6 @@
             <dependency>
                 <groupId>net.alexanderkahn.longball</groupId>
                 <artifactId>longball-model</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.alexanderkahn.longball</groupId>
-                <artifactId>longball-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

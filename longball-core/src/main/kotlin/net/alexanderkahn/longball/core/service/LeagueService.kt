@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.core.service
 import net.alexanderkahn.longball.core.assembler.pxUser
 import net.alexanderkahn.longball.core.assembler.toModel
 import net.alexanderkahn.longball.model.League
-import net.alexanderkahn.longball.persistence.repository.LeagueRepository
+import net.alexanderkahn.longball.core.persistence.repository.LeagueRepository
 import net.alexanderkahn.servicebase.core.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page

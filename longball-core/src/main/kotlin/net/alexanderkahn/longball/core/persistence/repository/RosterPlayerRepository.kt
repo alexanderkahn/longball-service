@@ -1,7 +1,7 @@
-package net.alexanderkahn.longball.persistence.repository
+package net.alexanderkahn.longball.core.persistence.repository
 
-import net.alexanderkahn.longball.persistence.EmbeddableUser
-import net.alexanderkahn.longball.persistence.model.PxRosterPlayer
+import net.alexanderkahn.longball.core.persistence.EmbeddableUser
+import net.alexanderkahn.longball.core.persistence.model.PxRosterPlayer
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

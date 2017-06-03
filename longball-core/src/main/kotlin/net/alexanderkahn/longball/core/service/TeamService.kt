@@ -4,8 +4,8 @@ import net.alexanderkahn.longball.core.assembler.pxUser
 import net.alexanderkahn.longball.core.assembler.toModel
 import net.alexanderkahn.longball.model.RosterPlayer
 import net.alexanderkahn.longball.model.Team
-import net.alexanderkahn.longball.persistence.repository.RosterPlayerRepository
-import net.alexanderkahn.longball.persistence.repository.TeamRepository
+import net.alexanderkahn.longball.core.persistence.repository.RosterPlayerRepository
+import net.alexanderkahn.longball.core.persistence.repository.TeamRepository
 import net.alexanderkahn.servicebase.core.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page

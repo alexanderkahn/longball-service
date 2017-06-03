@@ -1,7 +1,7 @@
-package net.alexanderkahn.longball.persistence.model
+package net.alexanderkahn.longball.core.persistence.model
 
-import net.alexanderkahn.longball.persistence.EmbeddableUser
-import net.alexanderkahn.longball.persistence.OwnedIdentifiable
+import net.alexanderkahn.longball.core.persistence.EmbeddableUser
+import net.alexanderkahn.longball.core.persistence.OwnedIdentifiable
 import java.time.OffsetDateTime
 import javax.persistence.*
 

@@ -1,7 +1,7 @@
-package net.alexanderkahn.longball.persistence.repository
+package net.alexanderkahn.longball.core.persistence.repository
 
-import net.alexanderkahn.longball.persistence.EmbeddableUser
-import net.alexanderkahn.longball.persistence.OwnedIdentifiable
+import net.alexanderkahn.longball.core.persistence.EmbeddableUser
+import net.alexanderkahn.longball.core.persistence.OwnedIdentifiable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.NoRepositoryBean

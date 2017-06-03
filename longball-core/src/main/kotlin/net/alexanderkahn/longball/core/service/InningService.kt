@@ -3,14 +3,14 @@ package net.alexanderkahn.longball.core.service
 
 import net.alexanderkahn.longball.core.assembler.InningAssembler
 import net.alexanderkahn.longball.core.assembler.pxUser
+import net.alexanderkahn.longball.core.persistence.model.PxInning
+import net.alexanderkahn.longball.core.persistence.model.PxInningSide
 import net.alexanderkahn.longball.model.Inning
 import net.alexanderkahn.longball.model.InningSide
 import net.alexanderkahn.longball.model.Side
-import net.alexanderkahn.longball.persistence.model.PxInning
-import net.alexanderkahn.longball.persistence.model.PxInningSide
-import net.alexanderkahn.longball.persistence.repository.GameRepository
-import net.alexanderkahn.longball.persistence.repository.InningRepository
-import net.alexanderkahn.longball.persistence.repository.InningSideRepository
+import net.alexanderkahn.longball.core.persistence.repository.GameRepository
+import net.alexanderkahn.longball.core.persistence.repository.InningRepository
+import net.alexanderkahn.longball.core.persistence.repository.InningSideRepository
 import net.alexanderkahn.servicebase.core.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page

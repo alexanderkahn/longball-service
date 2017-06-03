@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.persistence
+package net.alexanderkahn.longball.core.persistence
 
 interface OwnedIdentifiable {
     val owner: EmbeddableUser

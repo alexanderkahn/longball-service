@@ -1,8 +1,8 @@
-package net.alexanderkahn.longball.persistence.repository
+package net.alexanderkahn.longball.core.persistence.repository
 
-import net.alexanderkahn.longball.persistence.EmbeddableUser
-import net.alexanderkahn.longball.persistence.model.PxInningSide
-import net.alexanderkahn.longball.persistence.model.PxPlateAppearance
+import net.alexanderkahn.longball.core.persistence.EmbeddableUser
+import net.alexanderkahn.longball.core.persistence.model.PxInningSide
+import net.alexanderkahn.longball.core.persistence.model.PxPlateAppearance
 
 interface PlateAppearanceRepository: LongballRepository<PxPlateAppearance> {
     fun findFirstBySideAndOwnerOrderByIdDesc(side: PxInningSide, owner: EmbeddableUser): PxPlateAppearance?

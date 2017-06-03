@@ -1,8 +1,8 @@
-package net.alexanderkahn.longball.persistence.repository
+package net.alexanderkahn.longball.core.persistence.repository
 
-import net.alexanderkahn.longball.persistence.EmbeddableUser
-import net.alexanderkahn.longball.persistence.model.PxGame
-import net.alexanderkahn.longball.persistence.model.PxInning
+import net.alexanderkahn.longball.core.persistence.EmbeddableUser
+import net.alexanderkahn.longball.core.persistence.model.PxGame
+import net.alexanderkahn.longball.core.persistence.model.PxInning
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

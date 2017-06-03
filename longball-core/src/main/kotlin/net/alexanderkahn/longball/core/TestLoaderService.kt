@@ -3,8 +3,8 @@ package net.alexanderkahn.longball.core
 import net.alexanderkahn.longball.core.assembler.pxUser
 import net.alexanderkahn.longball.model.FieldPosition
 import net.alexanderkahn.longball.model.Side
-import net.alexanderkahn.longball.persistence.model.*
-import net.alexanderkahn.longball.persistence.repository.*
+import net.alexanderkahn.longball.core.persistence.model.*
+import net.alexanderkahn.longball.core.persistence.repository.*
 import net.alexanderkahn.servicebase.core.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
