@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class InningService(
@@ -24,37 +25,37 @@ class InningService(
         @Autowired private val inningAssembler: InningAssembler,
         @Autowired private val inningSideRepository: InningSideRepository) : IInningService {
 
-    override fun getInningsForGame(pageable: Pageable, gameId: Long): Page<Inning> {
+    override fun getInningsForGame(pageable: Pageable, gameId: UUID): Page<Inning> {
         val game = gameService.getPxGame(gameId)
         return inningRepository.findByOwnerAndGame(pageable, UserContext.pxUser, game).map { inningAssembler.toModel(it) }
     }
 
-    override fun advanceInning(gameId: Long) {
+    override fun advanceInning(gameId: UUID) {
         val game = gameService.getPxGame(gameId)
         val lastInning = inningRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.pxUser, game)
         if (lastInning == null) {
-            val firstInning = PxInning(UserContext.pxUser, game, 1)
+            val firstInning = PxInning(game, 1)
             inningRepository.save(firstInning)
-            inningSideRepository.save(PxInningSide(UserContext.pxUser, firstInning, Side.TOP))
+            inningSideRepository.save(PxInningSide(firstInning, Side.TOP))
         } else {
             val sides = inningSideRepository.findByInningAndOwner(lastInning, UserContext.pxUser)
             if (sides.size >= Side.values().size) {
-                val nextInning = PxInning(UserContext.pxUser, game, lastInning.inningNumber.inc())
+                val nextInning = PxInning(game, lastInning.inningNumber.inc())
                 inningRepository.save(nextInning)
-                inningSideRepository.save(PxInningSide(UserContext.pxUser, nextInning, Side.TOP))
+                inningSideRepository.save(PxInningSide(nextInning, Side.TOP))
             } else {
-                inningSideRepository.save(PxInningSide(UserContext.pxUser, lastInning, Side.BOTTOM))
+                inningSideRepository.save(PxInningSide(lastInning, Side.BOTTOM))
             }
         }
     }
 
-    override fun getInning(gameId: Long, inningNumber: Int): Inning {
+    override fun getInning(gameId: UUID, inningNumber: Int): Inning {
         val game = gameService.getPxGame(gameId)
         return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toModel(it) }
                 ?: throw Exception("Inning $inningNumber not found for game $gameId")
     }
 
-    override fun getInningSide(gameId: Long, inningNumber: Int, inningSide: Side): InningSide {
+    override fun getInningSide(gameId: UUID, inningNumber: Int, inningSide: Side): InningSide {
         val returnedSide: InningSide? = getInning(gameId, inningNumber).let { if (inningSide == Side.TOP) it.top else it.bottom }
         return returnedSide ?: throw Exception("Could not find $inningSide $inningNumber for game $gameId")
     }

@@ -5,9 +5,10 @@ import net.alexanderkahn.longball.model.LineupPlayer
 import net.alexanderkahn.longball.model.Side
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import java.util.*
 
 interface IGameService {
-    fun getOne(id: Long): Game
+    fun getOne(id: UUID): Game
     fun getAll(pageable: Pageable): Page<Game>
-    fun getLineupPlayers(pageable: Pageable, gameId: Long, side: Side): Page<LineupPlayer>
+    fun getLineupPlayers(pageable: Pageable, gameId: UUID, side: Side): Page<LineupPlayer>
 }

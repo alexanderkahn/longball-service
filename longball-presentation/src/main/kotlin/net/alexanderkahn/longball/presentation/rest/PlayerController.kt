@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping("/players")
@@ -20,7 +21,7 @@ class PlayerController(@Autowired private val playerService: IPlayerService) {
     }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: Long): Player {
+    fun get(@PathVariable id: UUID): Player {
         return playerService.get(id)
     }
 }

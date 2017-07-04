@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class GameController(@Autowired private val gameService: IGameService) {
@@ -21,17 +22,17 @@ class GameController(@Autowired private val gameService: IGameService) {
     }
 
     @GetMapping("/games/{id}")
-    fun getGame(@PathVariable id: Long): Game {
+    fun getGame(@PathVariable id: UUID): Game {
         return gameService.getOne(id)
     }
 
     @GetMapping("/games/{id}/lineups/away")
-    fun getAwayLineup(pageable: Pageable, @PathVariable id: Long): Page<LineupPlayer> {
+    fun getAwayLineup(pageable: Pageable, @PathVariable id: UUID): Page<LineupPlayer> {
         return gameService.getLineupPlayers(pageable, id, Side.TOP)
     }
 
     @GetMapping("/games/{id}/lineups/home")
-    fun getHomeLineup(pageable: Pageable, @PathVariable id: Long): Page<LineupPlayer> {
+    fun getHomeLineup(pageable: Pageable, @PathVariable id: UUID): Page<LineupPlayer> {
         return gameService.getLineupPlayers(pageable, id, Side.BOTTOM)
     }
 

@@ -1,10 +1,8 @@
 package net.alexanderkahn.longball.provider.persistence.model
 
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
-import net.alexanderkahn.longball.provider.persistence.OwnedIdentifiable
+import net.alexanderkahn.longball.provider.persistence.BaseEntity
 import java.time.OffsetDateTime
 import javax.persistence.*
-import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "roster_player")
 class PxRosterPlayer(
@@ -18,11 +16,6 @@ class PxRosterPlayer(
 
         @Column(nullable = false) val startDate: OffsetDateTime,
 
-        @Column(nullable = true) val endDate: OffsetDateTime? = null,
+        @Column(nullable = true) val endDate: OffsetDateTime? = null
 
-        @Id
-        override @GeneratedValue(strategy = IDENTITY) val id: Long? = null,
-
-        @Embedded
-        override val owner: EmbeddableUser
-): OwnedIdentifiable
+) : BaseEntity()

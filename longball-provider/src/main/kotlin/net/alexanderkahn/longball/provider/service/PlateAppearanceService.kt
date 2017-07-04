@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class PlateAppearanceService(
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) : IPlateAppearanceService {
 
-    override fun getPlateAppearances(pageable: Pageable, gameId: Long, inningNumber: Int, side: Side): Page<PlateAppearance> {
+    override fun getPlateAppearances(pageable: Pageable, gameId: UUID, inningNumber: Int, side: Side): Page<PlateAppearance> {
         return plateAppearanceRepository.findByOwnerAndGameAndInningNumberAndSide(pageable, UserContext.pxUser, gameId, inningNumber, side).map { it.toModel() }
     }
 }

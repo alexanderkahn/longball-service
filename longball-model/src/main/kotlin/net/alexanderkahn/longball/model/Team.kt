@@ -1,4 +1,6 @@
 package net.alexanderkahn.longball.model
 
-data class Team(val id: Long, val abbreviation: String, val location: String, val nickname: String) {
+import java.util.*
+
+data class Team(val id: UUID, val abbreviation: String, val location: String, val nickname: String) {
 }

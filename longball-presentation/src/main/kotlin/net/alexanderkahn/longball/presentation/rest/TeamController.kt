@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 
 @RestController
@@ -22,12 +23,12 @@ class TeamController(@Autowired private val teamService: ITeamService) {
     }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: Long): Team {
+    fun get(@PathVariable id: UUID): Team {
         return teamService.get(id)
     }
 
     @GetMapping("/{id}/roster")
-    fun getRoster(@PathVariable id: Long, pageable: Pageable): Page<RosterPlayer> {
+    fun getRoster(@PathVariable id: UUID, pageable: Pageable): Page<RosterPlayer> {
         return teamService.getRoster(id, pageable)
     }
 }

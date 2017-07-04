@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class TeamService(
@@ -24,12 +25,12 @@ class TeamService(
         return teams.map { it.toModel() }
     }
 
-    override fun get(id: Long): Team {
+    override fun get(id: UUID): Team {
         val team = teamRepository.findByIdAndOwner(id, UserContext.pxUser)
         return team?.toModel() ?: throw NotFoundException("Unable to find player with id: $id")
     }
 
-    override fun getRoster(teamId: Long, pageable: Pageable): Page<RosterPlayer> {
+    override fun getRoster(teamId: UUID, pageable: Pageable): Page<RosterPlayer> {
         val teams = rosterPlayerRepository.findByTeamIdAndOwner(pageable, teamId, UserContext.pxUser)
         return teams.map { it.toModel() }
     }

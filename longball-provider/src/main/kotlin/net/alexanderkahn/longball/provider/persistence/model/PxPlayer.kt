@@ -1,21 +1,14 @@
 package net.alexanderkahn.longball.provider.persistence.model
 
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
-import net.alexanderkahn.longball.provider.persistence.OwnedIdentifiable
-import javax.persistence.*
-import javax.persistence.GenerationType.IDENTITY
+import net.alexanderkahn.longball.provider.persistence.BaseEntity
+import javax.persistence.Column
+import javax.persistence.Entity
 
 @Entity(name = "player")
 data class PxPlayer(
 
-        @Embedded
-        override val owner: EmbeddableUser,
-
         @Column(nullable = false) val first: String,
 
-        @Column(nullable = false) val last: String,
+        @Column(nullable = false) val last: String
 
-        @Id
-        @GeneratedValue(strategy = IDENTITY)
-        override val id: Long? = null
-): OwnedIdentifiable
+) : BaseEntity()

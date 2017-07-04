@@ -1,15 +1,11 @@
 package net.alexanderkahn.longball.provider.persistence.model
 
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
-import net.alexanderkahn.longball.provider.persistence.OwnedIdentifiable
+import net.alexanderkahn.longball.provider.persistence.BaseEntity
 import java.time.OffsetDateTime
 import javax.persistence.*
-import javax.persistence.GenerationType.IDENTITY
 
 @Entity(name = "game")
 data class PxGame(
-        @Embedded
-        override val owner: EmbeddableUser,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_league"), nullable = false) val league: PxLeague,
@@ -23,10 +19,6 @@ data class PxGame(
         @Column(nullable = false) val startTime: OffsetDateTime,
 
         @OneToOne(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
-        var result: PxGameResult? = null,
+        var result: PxGameResult? = null
 
-        @Id
-        @GeneratedValue(strategy = IDENTITY)
-        override val id: Long? = null
-
-): OwnedIdentifiable
+): BaseEntity()

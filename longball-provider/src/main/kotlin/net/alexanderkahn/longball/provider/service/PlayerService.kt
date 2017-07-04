@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class PlayerService(@Autowired private val playerRepository: PlayerRepository) : IPlayerService {
@@ -20,7 +21,7 @@ class PlayerService(@Autowired private val playerRepository: PlayerRepository) :
         return players.map { it.toModel() }
     }
 
-    override fun get(id: Long): Player {
+    override fun get(id: UUID): Player {
         val player = playerRepository.findByIdAndOwner(id, UserContext.pxUser)
         return player?.toModel() ?: throw NotFoundException("Unable to find player with id: $id")
     }

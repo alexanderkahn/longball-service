@@ -17,17 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val lineupPlayerRepository: LineupPlayerRepository,
                   @Autowired private val inningRepository: InningRepository) : IGameService {
 
-    override fun getOne(id: Long): Game {
+    override fun getOne(id: UUID): Game {
         return getPxGame(id).toModel()
     }
 
-    fun getPxGame(id: Long): PxGame {
+    fun getPxGame(id: UUID): PxGame {
         val game = gameRepository.findByIdAndOwner(id, UserContext.pxUser)
         return game ?: throw NotFoundException()
     }
@@ -37,7 +38,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
         return games.map { it.toModel() }
     }
 
-    override fun getLineupPlayers(pageable: Pageable, gameId: Long, side: Side): Page<LineupPlayer> {
+    override fun getLineupPlayers(pageable: Pageable, gameId: UUID, side: Side): Page<LineupPlayer> {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)  ?: throw NotFoundException("Unable to find game with id: $gameId")
         val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.pxUser)
         return players.map { it.toModel() }

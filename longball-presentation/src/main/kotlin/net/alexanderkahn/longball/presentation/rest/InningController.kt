@@ -11,28 +11,29 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 class InningController(
         @Autowired private val inningService: IInningService) {
 
     @GetMapping("/games/{gameId}/innings")
-    fun getInnings(pageable: Pageable, @PathVariable gameId: Long): Page<Inning> {
+    fun getInnings(pageable: Pageable, @PathVariable gameId: UUID): Page<Inning> {
         return inningService.getInningsForGame(pageable, gameId)
     }
 
     @GetMapping("/games/{gameId}/innings/{inningNumber}")
-    fun getInning(@PathVariable gameId: Long, @PathVariable inningNumber: Int): Inning {
+    fun getInning(@PathVariable gameId: UUID, @PathVariable inningNumber: Int): Inning {
         return inningService.getInning(gameId, inningNumber)
     }
 
     @GetMapping("/games/{gameId}/innings/{inningNumber}/{side:top|bottom}")
-    fun getInningSide(@PathVariable gameId: Long, @PathVariable inningNumber: Int, @PathVariable side: String): InningSide {
+    fun getInningSide(@PathVariable gameId: UUID, @PathVariable inningNumber: Int, @PathVariable side: String): InningSide {
         return inningService.getInningSide(gameId, inningNumber, getSideFromParam(side))
     }
 
     @PostMapping("/games/{gameId}/innings/next")
-    fun advanceInning(@PathVariable gameId: Long) {
+    fun advanceInning(@PathVariable gameId: UUID) {
         inningService.advanceInning(gameId)
     }
 

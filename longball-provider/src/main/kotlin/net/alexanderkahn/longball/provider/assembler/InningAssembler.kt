@@ -1,14 +1,14 @@
 package net.alexanderkahn.longball.provider.assembler
 
 
-import net.alexanderkahn.longball.provider.persistence.model.PxInning
-import net.alexanderkahn.longball.provider.persistence.model.PxInningSide
-import net.alexanderkahn.longball.provider.persistence.repository.InningSideRepository
-import net.alexanderkahn.longball.provider.persistence.repository.PlateAppearanceRepository
 import net.alexanderkahn.longball.model.Inning
 import net.alexanderkahn.longball.model.InningSide
 import net.alexanderkahn.longball.model.PlateAppearanceResult
 import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.provider.persistence.model.PxInning
+import net.alexanderkahn.longball.provider.persistence.model.PxInningSide
+import net.alexanderkahn.longball.provider.persistence.repository.InningSideRepository
+import net.alexanderkahn.longball.provider.persistence.repository.PlateAppearanceRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -19,9 +19,6 @@ open class InningAssembler(
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) {
 
     fun toModel(entity: PxInning): Inning {
-        if (entity.id == null) {
-            throw UnsupportedOperationException("Cannot convert unsaved inning")
-        }
         return Inning(entity.inningNumber, getInningSide(entity, Side.TOP) ?: throw Exception(),  getInningSide(entity, Side.BOTTOM))
     }
 

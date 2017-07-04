@@ -11,11 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class LeagueService(@Autowired private val leagueRepository: LeagueRepository) : ILeagueService {
 
-    override fun get(id: Long): League {
+    override fun get(id: UUID): League {
         val league = leagueRepository.findByIdAndOwner(id, UserContext.pxUser)
         return league?.toModel() ?: throw NotFoundException("Unable to find league with id: $id")
     }
