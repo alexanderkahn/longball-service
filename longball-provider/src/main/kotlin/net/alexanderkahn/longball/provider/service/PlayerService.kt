@@ -4,7 +4,7 @@ import javassist.NotFoundException
 import net.alexanderkahn.longball.model.Player
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
-import net.alexanderkahn.longball.provider.persistence.repository.PlayerRepository
+import net.alexanderkahn.longball.provider.repository.PlayerRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.IPlayerService
 import org.springframework.beans.factory.annotation.Autowired

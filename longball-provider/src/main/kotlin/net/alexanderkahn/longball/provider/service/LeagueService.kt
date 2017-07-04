@@ -3,8 +3,7 @@ package net.alexanderkahn.longball.provider.service
 import javassist.NotFoundException
 import net.alexanderkahn.longball.model.League
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.assembler.toModel
-import net.alexanderkahn.longball.provider.persistence.repository.LeagueRepository
+import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.ILeagueService
 import org.springframework.beans.factory.annotation.Autowired

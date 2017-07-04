@@ -6,10 +6,10 @@ import net.alexanderkahn.longball.model.LineupPlayer
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
-import net.alexanderkahn.longball.provider.persistence.model.PxGame
-import net.alexanderkahn.longball.provider.persistence.repository.GameRepository
-import net.alexanderkahn.longball.provider.persistence.repository.InningRepository
-import net.alexanderkahn.longball.provider.persistence.repository.LineupPlayerRepository
+import net.alexanderkahn.longball.provider.entity.PxGame
+import net.alexanderkahn.longball.provider.repository.GameRepository
+import net.alexanderkahn.longball.provider.repository.InningRepository
+import net.alexanderkahn.longball.provider.repository.LineupPlayerRepository
 import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.IGameService

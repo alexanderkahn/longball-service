@@ -3,8 +3,8 @@ package net.alexanderkahn.longball.provider
 
 import javafx.geometry.Side
 import net.alexanderkahn.longball.model.FieldPosition
-import net.alexanderkahn.longball.provider.persistence.model.*
-import net.alexanderkahn.longball.provider.persistence.repository.*
+import net.alexanderkahn.longball.provider.entity.*
+import net.alexanderkahn.longball.provider.repository.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime

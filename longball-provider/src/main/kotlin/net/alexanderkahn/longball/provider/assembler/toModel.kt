@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.assembler
 
 import net.alexanderkahn.longball.model.*
-import net.alexanderkahn.longball.provider.persistence.model.*
+import net.alexanderkahn.longball.provider.entity.*
 
 
 fun PxGame.toModel(): Game {

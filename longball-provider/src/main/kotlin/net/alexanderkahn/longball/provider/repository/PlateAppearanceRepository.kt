@@ -1,9 +1,9 @@
-package net.alexanderkahn.longball.provider.persistence.repository
+package net.alexanderkahn.longball.provider.repository
 
 import net.alexanderkahn.longball.model.Side
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
-import net.alexanderkahn.longball.provider.persistence.model.PxInningSide
-import net.alexanderkahn.longball.provider.persistence.model.PxPlateAppearance
+import net.alexanderkahn.longball.provider.entity.EmbeddableUser
+import net.alexanderkahn.longball.provider.entity.PxInningSide
+import net.alexanderkahn.longball.provider.entity.PxPlateAppearance
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Query

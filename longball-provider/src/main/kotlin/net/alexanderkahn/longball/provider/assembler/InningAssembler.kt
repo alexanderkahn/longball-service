@@ -5,10 +5,10 @@ import net.alexanderkahn.longball.model.Inning
 import net.alexanderkahn.longball.model.InningSide
 import net.alexanderkahn.longball.model.PlateAppearanceResult
 import net.alexanderkahn.longball.model.Side
-import net.alexanderkahn.longball.provider.persistence.model.PxInning
-import net.alexanderkahn.longball.provider.persistence.model.PxInningSide
-import net.alexanderkahn.longball.provider.persistence.repository.InningSideRepository
-import net.alexanderkahn.longball.provider.persistence.repository.PlateAppearanceRepository
+import net.alexanderkahn.longball.provider.entity.PxInning
+import net.alexanderkahn.longball.provider.entity.PxInningSide
+import net.alexanderkahn.longball.provider.repository.InningSideRepository
+import net.alexanderkahn.longball.provider.repository.PlateAppearanceRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

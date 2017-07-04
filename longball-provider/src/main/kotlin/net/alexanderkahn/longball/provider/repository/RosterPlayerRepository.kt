@@ -1,8 +1,8 @@
-package net.alexanderkahn.longball.provider.persistence.repository
+package net.alexanderkahn.longball.provider.repository
 
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
-import net.alexanderkahn.longball.provider.persistence.model.PxRosterPlayer
+import net.alexanderkahn.longball.provider.entity.EmbeddableUser
+import net.alexanderkahn.longball.provider.entity.PxRosterPlayer
 import net.alexanderkahn.service.base.api.security.UserContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

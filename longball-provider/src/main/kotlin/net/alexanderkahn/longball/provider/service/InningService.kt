@@ -6,10 +6,10 @@ import net.alexanderkahn.longball.model.InningSide
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.provider.assembler.InningAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.persistence.model.PxInning
-import net.alexanderkahn.longball.provider.persistence.model.PxInningSide
-import net.alexanderkahn.longball.provider.persistence.repository.InningRepository
-import net.alexanderkahn.longball.provider.persistence.repository.InningSideRepository
+import net.alexanderkahn.longball.provider.entity.PxInning
+import net.alexanderkahn.longball.provider.entity.PxInningSide
+import net.alexanderkahn.longball.provider.repository.InningRepository
+import net.alexanderkahn.longball.provider.repository.InningSideRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.IInningService
 import org.springframework.beans.factory.annotation.Autowired

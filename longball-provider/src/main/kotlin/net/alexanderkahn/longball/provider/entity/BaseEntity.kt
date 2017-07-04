@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.provider.persistence
+package net.alexanderkahn.longball.provider.entity
 
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.service.base.api.security.UserContext
@@ -10,9 +10,9 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class BaseEntity(
 
-    @Embedded
+        @Embedded
     val owner: EmbeddableUser = UserContext.pxUser,
 
-    @Id
+        @Id
     val id: UUID = UUID.randomUUID()
 )

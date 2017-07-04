@@ -1,7 +1,6 @@
-package net.alexanderkahn.longball.provider.persistence.model
+package net.alexanderkahn.longball.provider.entity
 
 
-import net.alexanderkahn.longball.provider.persistence.BaseEntity
 import javax.persistence.*
 
 @Entity(name = "inning")

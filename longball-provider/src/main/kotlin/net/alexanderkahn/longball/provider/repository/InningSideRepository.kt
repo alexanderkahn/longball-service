@@ -1,8 +1,8 @@
-package net.alexanderkahn.longball.provider.persistence.repository
+package net.alexanderkahn.longball.provider.repository
 
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
-import net.alexanderkahn.longball.provider.persistence.model.PxInning
-import net.alexanderkahn.longball.provider.persistence.model.PxInningSide
+import net.alexanderkahn.longball.provider.entity.EmbeddableUser
+import net.alexanderkahn.longball.provider.entity.PxInning
+import net.alexanderkahn.longball.provider.entity.PxInningSide
 import net.alexanderkahn.longball.model.Side
 
 interface InningSideRepository: LongballRepository<PxInningSide> {

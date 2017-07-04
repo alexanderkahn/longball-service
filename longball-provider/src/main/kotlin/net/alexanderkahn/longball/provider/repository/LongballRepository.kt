@@ -1,7 +1,7 @@
-package net.alexanderkahn.longball.provider.persistence.repository
+package net.alexanderkahn.longball.provider.repository
 
-import net.alexanderkahn.longball.provider.persistence.BaseEntity
-import net.alexanderkahn.longball.provider.persistence.EmbeddableUser
+import net.alexanderkahn.longball.provider.entity.BaseEntity
+import net.alexanderkahn.longball.provider.entity.EmbeddableUser
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.NoRepositoryBean
