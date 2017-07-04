@@ -7,17 +7,20 @@
     <artifactId>longball-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <modules>
-        <module>longball-model</module>
-        <module>longball-provider</module>
-        <module>longball-core</module>
-        <module>longball-presentation</module>
-    </modules>
+
     <parent>
-        <groupId>net.alexanderkahn.servicebase</groupId>
+        <groupId>net.alexanderkahn.service.base</groupId>
         <artifactId>service-base</artifactId>
-        <version>0.0.5-SNAPSHOT</version>
+        <version>0.0.7-SNAPSHOT</version>
     </parent>
+
+    <modules>
+        <!--<module>longball-api</module>-->
+        <module>longball-model</module>
+        <module>longball-presentation</module>
+        <module>longball-provider</module>
+        <module>longball-api</module>
+    </modules>
 
     <properties>
         <buildDate>${maven.build.timestamp}</buildDate>
@@ -27,7 +30,7 @@
         <dependencies>
             <dependency>
                 <groupId>net.alexanderkahn.longball</groupId>
-                <artifactId>longball-core</artifactId>
+                <artifactId>longball-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -55,7 +58,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
             </dependency>
-            <!--TODO: What does this do again? Should it be in the base?-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>

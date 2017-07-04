@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.core.service.TeamService
 import net.alexanderkahn.longball.model.RosterPlayer
 import net.alexanderkahn.longball.model.Team
+import net.alexanderkahn.service.longball.api.ITeamService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/teams")
-class TeamController(@Autowired private val teamService: TeamService) {
+class TeamController(@Autowired private val teamService: ITeamService) {
 
     @GetMapping
     fun getAll(pageable: Pageable): Page<Team> {

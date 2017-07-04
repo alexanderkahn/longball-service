@@ -1,0 +1,37 @@
+package net.alexanderkahn.longball.provider.service
+
+import javassist.NotFoundException
+import net.alexanderkahn.longball.model.RosterPlayer
+import net.alexanderkahn.longball.model.Team
+import net.alexanderkahn.longball.provider.assembler.pxUser
+import net.alexanderkahn.longball.provider.assembler.toModel
+import net.alexanderkahn.longball.provider.persistence.repository.RosterPlayerRepository
+import net.alexanderkahn.longball.provider.persistence.repository.TeamRepository
+import net.alexanderkahn.service.base.api.security.UserContext
+import net.alexanderkahn.service.longball.api.ITeamService
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+
+@Service
+class TeamService(
+        @Autowired private val teamRepository: TeamRepository,
+        @Autowired private val rosterPlayerRepository: RosterPlayerRepository) : ITeamService {
+
+    override fun getAll(pageable: Pageable): Page<Team> {
+        val teams = teamRepository.findByOwner(pageable, UserContext.pxUser)
+        return teams.map { it.toModel() }
+    }
+
+    override fun get(id: Long): Team {
+        val team = teamRepository.findByIdAndOwner(id, UserContext.pxUser)
+        return team?.toModel() ?: throw NotFoundException("Unable to find player with id: $id")
+    }
+
+    override fun getRoster(teamId: Long, pageable: Pageable): Page<RosterPlayer> {
+        val teams = rosterPlayerRepository.findByTeamIdAndOwner(pageable, teamId, UserContext.pxUser)
+        return teams.map { it.toModel() }
+    }
+}
+

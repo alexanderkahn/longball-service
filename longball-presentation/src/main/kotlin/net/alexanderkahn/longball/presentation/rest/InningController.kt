@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.core.service.InningService
 import net.alexanderkahn.longball.model.Inning
 import net.alexanderkahn.longball.model.InningSide
-import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.presentation.getSideFromParam
+import net.alexanderkahn.service.longball.api.IInningService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class InningController(
-        @Autowired private val inningService: InningService) {
+        @Autowired private val inningService: IInningService) {
 
     @GetMapping("/games/{gameId}/innings")
     fun getInnings(pageable: Pageable, @PathVariable gameId: Long): Page<Inning> {
@@ -28,8 +28,7 @@ class InningController(
 
     @GetMapping("/games/{gameId}/innings/{inningNumber}/{side:top|bottom}")
     fun getInningSide(@PathVariable gameId: Long, @PathVariable inningNumber: Int, @PathVariable side: String): InningSide {
-        val inningSide = if ("top".equals(side, ignoreCase = true)) Side.TOP else Side.BOTTOM
-        return inningService.getInningSide(gameId, inningNumber, inningSide)
+        return inningService.getInningSide(gameId, inningNumber, getSideFromParam(side))
     }
 
     @PostMapping("/games/{gameId}/innings/next")

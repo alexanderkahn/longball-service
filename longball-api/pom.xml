@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>longball-presentation</artifactId>
+    <artifactId>longball-api</artifactId>
 
     <dependencies>
         <dependency>
@@ -17,21 +17,13 @@
             <artifactId>longball-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.alexanderkahn.longball</groupId>
-            <artifactId>longball-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.alexanderkahn.service.base</groupId>
-            <artifactId>base-presentation</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jre8</artifactId>
         </dependency>
+        <!--TODO: find a better way to get pageable/page on the classpath-->
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-            <version>1.13.3.RELEASE</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
     </dependencies>
 

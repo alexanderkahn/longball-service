@@ -1,5 +1,11 @@
 server:
   port: 443
+spring:
+  jpa:
+    database: POSTGRESQL
+  datasource:
+      platform: postgres
+      driver-class-name: org.postgresql.Driver
 application:
   name: ${project.name}
   version: ${project.version}
@@ -16,13 +22,9 @@ oauth:
 spring:
   profiles: dev
   jpa:
-    database: POSTGRESQL
     show-sql: true
     hibernate.ddl-auto: create-drop
-  database:
-    driverClassName: org.postgresql.Driver
   datasource:
-    platform: postgres
     url: jdbc:postgresql://localhost:5432/longball
     username: postgres
 server:

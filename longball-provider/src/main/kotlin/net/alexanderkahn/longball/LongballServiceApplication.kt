@@ -1,16 +1,18 @@
 package net.alexanderkahn.longball
 
-import net.alexanderkahn.longball.presentation.rest.TestLoader
-import net.alexanderkahn.servicebase.provider.ServiceApplicationBase
+import net.alexanderkahn.longball.provider.SampleDataLoader
+import net.alexanderkahn.service.base.ServiceApplicationBase
+import net.alexanderkahn.service.base.api.ITestUserService
+import net.alexanderkahn.service.base.api.security.UserContext
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import javax.annotation.PostConstruct
 
-@SpringBootApplication(scanBasePackages = arrayOf("net.alexanderkahn.longball", "net.alexanderkahn.servicebase"))
-open class LongballServiceApplication: ServiceApplicationBase(), CommandLineRunner {
+@SpringBootApplication(scanBasePackages = arrayOf("net.alexanderkahn.longball", "net.alexanderkahn.service.base"))
+open class LongballServiceApplication: ServiceApplicationBase() {
 
-    //TODO: this is the only thing that ties provider to core. Put a hook to this into presentation and get rid of the dependency.
-    @Autowired private lateinit var testLoader: TestLoader
+    @Autowired private lateinit var sampleDataLoader: SampleDataLoader
+    @Autowired private lateinit var testUserService: ITestUserService
 
     companion object {
         @JvmStatic fun main(args: Array<String>) {
@@ -18,7 +20,9 @@ open class LongballServiceApplication: ServiceApplicationBase(), CommandLineRunn
         }
     }
 
-    override fun run(vararg args: String?) {
-        testLoader.loadWithUser()
+    @PostConstruct
+    fun loadTestData() {
+        UserContext.currentUser = testUserService.testUser
+        sampleDataLoader.loadSampleData()
     }
 }
