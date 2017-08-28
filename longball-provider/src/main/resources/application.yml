@@ -1,5 +1,6 @@
 server:
   port: 443
+  contextPath: /rest/v1
 spring:
   jpa:
     database: POSTGRESQL
