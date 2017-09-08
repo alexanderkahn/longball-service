@@ -5,7 +5,5 @@ import javax.persistence.Entity
 
 @Entity(name = "league")
 class PxLeague(
-
         @Column(nullable = false) val name: String
-
 ) : BaseEntity()

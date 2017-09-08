@@ -16,12 +16,12 @@ import java.util.*
 class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
     @GetMapping
-    fun getGames(pageable: Pageable): Page<League> {
+    fun getLeagues(pageable: Pageable): Page<League> {
         return leagueService.getAll(pageable)
     }
 
     @GetMapping("/{id}")
-    fun getGame(@PathVariable id: UUID): League {
+    fun getLeague(@PathVariable id: UUID): League {
         return leagueService.get(id)
     }
 }

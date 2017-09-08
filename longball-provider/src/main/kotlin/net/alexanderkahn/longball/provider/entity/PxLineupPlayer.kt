@@ -12,9 +12,7 @@ data class PxLineupPlayer(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false) val player: PxPlayer,
 
         @Column(nullable = false) val side: Int,
-
         @Column(nullable = false) val battingOrder: Int,
-
         @Column(nullable = false) val fieldPosition: Int
 
 ) : BaseEntity()

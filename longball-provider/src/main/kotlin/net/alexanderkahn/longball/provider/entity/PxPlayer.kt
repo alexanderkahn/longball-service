@@ -7,7 +7,6 @@ import javax.persistence.Entity
 data class PxPlayer(
 
         @Column(nullable = false) val first: String,
-
         @Column(nullable = false) val last: String
 
 ) : BaseEntity()
