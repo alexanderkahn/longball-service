@@ -22,8 +22,8 @@ class SampleDataLoader(
 
     fun loadSampleData() {
         val league = loadLeague()
-        val awayTeam = loadTeamWithPlayers("Away")
-        val homeTeam = loadTeamWithPlayers("Home")
+        val awayTeam = loadTeamWithPlayers(league, "Away")
+        val homeTeam = loadTeamWithPlayers(league, "Home")
         createGame(league, awayTeam, homeTeam)
     }
 
@@ -33,8 +33,8 @@ class SampleDataLoader(
         return league
     }
 
-    private fun loadTeamWithPlayers(location: String): PxTeam {
-        val team: PxTeam = PxTeam(location.toUpperCase(), location, "Team")
+    private fun loadTeamWithPlayers(league: PxLeague, location: String): PxTeam {
+        val team = PxTeam(league, location.toUpperCase(), location, "Team")
         teamRepository.save(team)
         val awayPlayers: List<PxPlayer> = (1..9).map { PxPlayer(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
@@ -45,7 +45,7 @@ class SampleDataLoader(
     }
 
     private fun createGame(league: PxLeague, awayTeam: PxTeam, homeTeam: PxTeam) {
-        val game: PxGame = PxGame(league, awayTeam, homeTeam, OffsetDateTime.now())
+        val game = PxGame(league, awayTeam, homeTeam, OffsetDateTime.now())
         gameRepository.save(game)
         createLineup(game, awayTeam, Side.TOP)
         createLineup(game, homeTeam, Side.BOTTOM)

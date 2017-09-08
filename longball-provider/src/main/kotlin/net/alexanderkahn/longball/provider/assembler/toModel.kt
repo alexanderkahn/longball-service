@@ -30,7 +30,7 @@ fun PxRosterPlayer.toModel(): RosterPlayer {
 }
 
 fun PxTeam.toModel(): Team {
-    return Team(id, abbreviation, location, nickname)
+    return Team(id, league.id, abbreviation, location, nickname)
 }
 
 fun PxPlateAppearance.toModel(): PlateAppearance {

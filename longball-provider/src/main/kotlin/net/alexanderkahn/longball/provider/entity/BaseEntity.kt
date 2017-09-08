@@ -9,10 +9,6 @@ import javax.persistence.MappedSuperclass
 
 @MappedSuperclass
 abstract class BaseEntity(
-
-        @Embedded
-    val owner: EmbeddableUser = UserContext.pxUser,
-
-        @Id
-    val id: UUID = UUID.randomUUID()
+        @Embedded val owner: EmbeddableUser = UserContext.pxUser,
+        @Id val id: UUID = UUID.randomUUID()
 )
