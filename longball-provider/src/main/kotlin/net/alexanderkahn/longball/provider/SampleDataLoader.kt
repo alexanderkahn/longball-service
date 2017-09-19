@@ -5,6 +5,7 @@ import javafx.geometry.Side
 import net.alexanderkahn.longball.model.FieldPosition
 import net.alexanderkahn.longball.provider.entity.*
 import net.alexanderkahn.longball.provider.repository.*
+import net.alexanderkahn.service.longball.api.ISampleDataLoader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
@@ -18,9 +19,9 @@ class SampleDataLoader(
         @Autowired private val rosterPlayerRepository: RosterPlayerRepository,
         @Autowired private val gameRepository: GameRepository,
         @Autowired private val lineupPlayerRepository: LineupPlayerRepository
-) {
+) : ISampleDataLoader {
 
-    fun loadSampleData() {
+    override fun loadSampleData() {
         val league = loadLeague()
         val awayTeam = loadTeamWithPlayers(league, "Away")
         val homeTeam = loadTeamWithPlayers(league, "Home")
