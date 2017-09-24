@@ -2,8 +2,10 @@ package net.alexanderkahn.longball.provider.service
 
 import javassist.NotFoundException
 import net.alexanderkahn.longball.model.League
+import net.alexanderkahn.longball.model.request.RequestLeague
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
+import net.alexanderkahn.longball.provider.assembler.toPersistence
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.ILeagueService
@@ -24,5 +26,9 @@ class LeagueService(@Autowired private val leagueRepository: LeagueRepository) :
     override fun getAll(pageable: Pageable): Page<League> {
         val leagues = leagueRepository.findByOwner(pageable, UserContext.pxUser)
         return leagues.map { it.toModel() }
+    }
+
+    override fun save(league: RequestLeague) {
+        leagueRepository.save(league.toPersistence())
     }
 }
