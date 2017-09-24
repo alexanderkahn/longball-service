@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.provider.entity.*
 
 
 fun PxGame.toModel(): Game {
-    return Game(id, league.id, awayTeam.id, homeTeam.id, startTime.toZonedDateTime())
+    return Game(id, league.id, awayTeam.id, homeTeam.id, startTime)
 }
 
 fun PxLeague.toModel(): League {
@@ -25,8 +25,8 @@ fun PxRosterPlayer.toModel(): RosterPlayer {
             team.id,
             player.id,
             jerseyNumber,
-            startDate.toZonedDateTime(),
-            endDate?.toZonedDateTime())
+            startDate,
+            endDate)
 }
 
 fun PxTeam.toModel(): Team {
