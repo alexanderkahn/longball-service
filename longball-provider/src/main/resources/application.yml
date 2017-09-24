@@ -29,7 +29,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/longball
     username: postgres
 server:
-  port: 9090
+  port: 8411
 oauth:
   test:
     bypassToken: raspberries
