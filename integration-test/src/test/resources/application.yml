@@ -1,0 +1,27 @@
+#TODO: why isn't this getting picked up from the main properties file?
+server:
+  contextPath: /rest/v1
+application:
+  name: longball-test
+  version: v1000
+  buildDate: yesterday
+oauth:
+  issuer:
+    algorithm: RS256
+    keystore:
+      url: http://fakeurl
+    claims:
+      aud: longball-test
+      iss: https://longball.test
+---
+spring:
+  profiles: test
+  jpa:
+    database: HSQL
+    hibernate.ddl-auto: create-drop
+---
+spring:
+  profiles: bypassToken
+oauth:
+  test:
+    bypassToken: nutterbutters

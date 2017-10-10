@@ -2,7 +2,6 @@ package net.alexanderkahn.longball.provider.service
 
 import javassist.NotFoundException
 import net.alexanderkahn.longball.model.League
-import net.alexanderkahn.longball.model.request.RequestLeague
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.assembler.toPersistence
@@ -28,7 +27,16 @@ class LeagueService(@Autowired private val leagueRepository: LeagueRepository) :
         return leagues.map { it.toModel() }
     }
 
-    override fun save(league: RequestLeague) {
-        leagueRepository.save(league.toPersistence())
+    override fun save(league: League): UUID {
+        val entity = league.toPersistence()
+        leagueRepository.save(entity)
+        return entity.id
+    }
+
+    override fun delete(id: UUID) {
+        if (!leagueRepository.exists(id)) {
+            throw NotFoundException("Unable to find league with id: $id")
+        }
+        leagueRepository.delete(id)
     }
 }

@@ -1,10 +1,15 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.League
-import net.alexanderkahn.longball.model.request.RequestLeague
+import net.alexanderkahn.longball.presentation.rest.model.*
+import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import net.alexanderkahn.service.base.presentation.response.CollectionResponse
+import net.alexanderkahn.service.base.presentation.response.CreatedResponse
+import net.alexanderkahn.service.base.presentation.response.DeletedResponse
+import net.alexanderkahn.service.base.presentation.response.ObjectResponse
+import net.alexanderkahn.service.base.presentation.response.body.data.ResourceIdentifier
+import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceCollection
 import net.alexanderkahn.service.longball.api.ILeagueService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -14,17 +19,28 @@ import java.util.*
 class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
     @GetMapping
-    fun getLeagues(pageable: Pageable): Page<League> {
-        return leagueService.getAll(pageable)
+    fun getLeagues(pageable: Pageable): CollectionResponse<ResponseLeague> {
+        val page = leagueService.getAll(pageable)
+        val objectCollection = ResponseResourceCollection(page.content.map { it.toResponse() })
+        return CollectionResponse(objectCollection, page.toMetaPage())
     }
 
     @GetMapping("/{id}")
-    fun getLeague(@PathVariable id: UUID): League {
-        return leagueService.get(id)
+    fun getLeague(@PathVariable id: UUID): ObjectResponse<ResponseLeague> {
+        val league = leagueService.get(id)
+        return ObjectResponse(league.toResponse())
     }
 
     @PostMapping
-    fun addLeague(@RequestBody league: RequestLeague) {
-        return leagueService.save(league)
+    fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): CreatedResponse {
+        leagueRequest.data.assertType(ModelTypes.LEAGUES.display)
+        val id = leagueService.save(leagueRequest.data.toDto())
+        return CreatedResponse(ResourceIdentifier(ModelTypes.LEAGUES.display, id))
+    }
+
+    @DeleteMapping("/{id}")
+    fun deleteLeague(@PathVariable id: UUID): DeletedResponse {
+        leagueService.delete(id)
+        return DeletedResponse()
     }
 }

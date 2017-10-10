@@ -1,12 +1,6 @@
 server:
   port: 443
   contextPath: /rest/v1
-spring:
-  jpa:
-    database: POSTGRESQL
-  datasource:
-      platform: postgres
-      driver-class-name: org.postgresql.Driver
 application:
   name: ${project.name}
   version: ${project.version}
@@ -30,6 +24,9 @@ spring:
     username: postgres
 server:
   port: 8411
+---
+spring:
+  profiles: bypassToken
 oauth:
   test:
     bypassToken: raspberries
