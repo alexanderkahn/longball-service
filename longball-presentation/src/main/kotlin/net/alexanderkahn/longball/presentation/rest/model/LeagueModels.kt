@@ -8,6 +8,9 @@ import java.util.*
 
 data class RequestLeague(override val type: String, override val attributes: LeagueAttributes) : RequestResourceObject {
     override val relationships = null
+    override fun validate() {
+        assertType(ModelTypes.LEAGUES)
+    }
 }
 
 data class ResponseLeague(override val id: UUID, override val attributes: LeagueAttributes) :ResponseResourceObject {

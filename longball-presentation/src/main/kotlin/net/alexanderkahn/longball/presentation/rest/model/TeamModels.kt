@@ -11,7 +11,11 @@ import java.util.*
 data class RequestTeam(
         override val type: String,
         override val attributes: TeamAttributes,
-        override val relationships: TeamRelationships) : RequestResourceObject
+        override val relationships: TeamRelationships) : RequestResourceObject {
+    override fun validate() {
+        assertType(ModelTypes.TEAMS)
+    }
+}
 
 data class ResponseTeam(
         override val id: UUID,
