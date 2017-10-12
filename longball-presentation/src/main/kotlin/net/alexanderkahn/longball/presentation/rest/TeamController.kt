@@ -1,7 +1,12 @@
 package net.alexanderkahn.longball.presentation.rest
 
 import net.alexanderkahn.longball.model.RosterPlayer
-import net.alexanderkahn.longball.model.Team
+import net.alexanderkahn.longball.presentation.rest.model.ResponseTeam
+import net.alexanderkahn.longball.presentation.rest.model.toMetaPage
+import net.alexanderkahn.longball.presentation.rest.model.toResponse
+import net.alexanderkahn.service.base.presentation.response.CollectionResponse
+import net.alexanderkahn.service.base.presentation.response.ObjectResponse
+import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceCollection
 import net.alexanderkahn.service.longball.api.ITeamService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -18,13 +23,15 @@ import java.util.*
 class TeamController(@Autowired private val teamService: ITeamService) {
 
     @GetMapping
-    fun getAll(pageable: Pageable): Page<Team> {
-        return teamService.getAll(pageable)
+    fun getAll(pageable: Pageable): CollectionResponse<ResponseTeam> {
+        val page = teamService.getAll(pageable)
+        val objectCollection = ResponseResourceCollection(page.content.map { it.toResponse() })
+        return CollectionResponse(objectCollection, page.toMetaPage())
     }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: UUID): Team {
-        return teamService.get(id)
+    fun get(@PathVariable id: UUID): ObjectResponse<ResponseTeam> {
+        return ObjectResponse(teamService.get(id).toResponse())
     }
 
     @GetMapping("/{id}/roster")
