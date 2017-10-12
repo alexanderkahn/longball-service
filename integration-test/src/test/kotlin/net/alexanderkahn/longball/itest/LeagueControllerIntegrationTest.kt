@@ -1,7 +1,8 @@
 package net.alexanderkahn.longball.itest
 
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
+
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNotNull
 import net.alexanderkahn.longball.presentation.rest.model.LeagueAttributes
 import net.alexanderkahn.longball.presentation.rest.model.RequestLeague
 import net.alexanderkahn.longball.presentation.rest.model.ResponseLeague

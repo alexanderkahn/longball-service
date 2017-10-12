@@ -6,7 +6,6 @@ import net.alexanderkahn.service.base.presentation.response.CollectionResponse
 import net.alexanderkahn.service.base.presentation.response.CreatedResponse
 import net.alexanderkahn.service.base.presentation.response.DeletedResponse
 import net.alexanderkahn.service.base.presentation.response.ObjectResponse
-import net.alexanderkahn.service.base.presentation.response.body.data.ResourceIdentifier
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceCollection
 import net.alexanderkahn.service.longball.api.ILeagueService
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,10 +31,10 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
     }
 
     @PostMapping
-    fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): CreatedResponse {
+    fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): CreatedResponse<ResponseLeague> {
         leagueRequest.data.assertType(ModelTypes.LEAGUES.display)
-        val id = leagueService.save(leagueRequest.data.toDto())
-        return CreatedResponse(ResourceIdentifier(ModelTypes.LEAGUES.display, id))
+        val created = leagueService.save(leagueRequest.data.toDto())
+        return CreatedResponse(created.toResponse())
     }
 
     @DeleteMapping("/{id}")

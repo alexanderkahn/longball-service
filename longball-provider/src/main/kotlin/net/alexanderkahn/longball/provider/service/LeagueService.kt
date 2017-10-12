@@ -27,10 +27,10 @@ class LeagueService(@Autowired private val leagueRepository: LeagueRepository) :
         return leagues.map { it.toModel() }
     }
 
-    override fun save(league: League): UUID {
+    override fun save(league: League): League {
         val entity = league.toPersistence()
         leagueRepository.save(entity)
-        return entity.id
+        return entity.toModel()
     }
 
     override fun delete(id: UUID) {

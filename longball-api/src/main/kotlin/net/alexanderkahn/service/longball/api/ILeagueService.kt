@@ -9,6 +9,6 @@ interface ILeagueService {
 
     fun get(id: UUID): League
     fun getAll(pageable: Pageable): Page<League>
-    fun save(league: League): UUID
+    fun save(league: League): League
     fun delete(id: UUID)
 }
