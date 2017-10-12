@@ -1,20 +1,18 @@
 package net.alexanderkahn.longball.presentation.rest
 
 import net.alexanderkahn.longball.model.RosterPlayer
-import net.alexanderkahn.longball.presentation.rest.model.ResponseTeam
-import net.alexanderkahn.longball.presentation.rest.model.toMetaPage
-import net.alexanderkahn.longball.presentation.rest.model.toResponse
+import net.alexanderkahn.longball.presentation.rest.model.*
+import net.alexanderkahn.service.base.presentation.request.ObjectRequest
 import net.alexanderkahn.service.base.presentation.response.CollectionResponse
+import net.alexanderkahn.service.base.presentation.response.CreatedResponse
+import net.alexanderkahn.service.base.presentation.response.DeletedResponse
 import net.alexanderkahn.service.base.presentation.response.ObjectResponse
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceCollection
 import net.alexanderkahn.service.longball.api.ITeamService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 
@@ -32,6 +30,19 @@ class TeamController(@Autowired private val teamService: ITeamService) {
     @GetMapping("/{id}")
     fun get(@PathVariable id: UUID): ObjectResponse<ResponseTeam> {
         return ObjectResponse(teamService.get(id).toResponse())
+    }
+
+    @PostMapping
+    fun post(@RequestBody teamRequest: ObjectRequest<RequestTeam>): CreatedResponse<ResponseTeam> {
+        teamRequest.data.validate()
+        val created = teamService.save(teamRequest.data.toDto())
+        return CreatedResponse(created.toResponse())
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: UUID): DeletedResponse {
+        teamService.delete(id)
+        return DeletedResponse()
     }
 
     @GetMapping("/{id}/roster")

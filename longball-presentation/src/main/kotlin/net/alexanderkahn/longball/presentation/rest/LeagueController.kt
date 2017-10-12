@@ -32,7 +32,7 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
     @PostMapping
     fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): CreatedResponse<ResponseLeague> {
-        leagueRequest.data.assertType(ModelTypes.LEAGUES.display)
+        leagueRequest.data.validate()
         val created = leagueService.save(leagueRequest.data.toDto())
         return CreatedResponse(created.toResponse())
     }

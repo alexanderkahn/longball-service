@@ -3,6 +3,7 @@ package net.alexanderkahn.longball.provider.service
 import javassist.NotFoundException
 import net.alexanderkahn.longball.model.RosterPlayer
 import net.alexanderkahn.longball.model.Team
+import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.repository.RosterPlayerRepository
@@ -18,7 +19,8 @@ import java.util.*
 @Service
 class TeamService(
         @Autowired private val teamRepository: TeamRepository,
-        @Autowired private val rosterPlayerRepository: RosterPlayerRepository) : ITeamService {
+        @Autowired private val rosterPlayerRepository: RosterPlayerRepository,
+        @Autowired private val teamAssembler: TeamAssembler) : ITeamService {
 
     override fun getAll(pageable: Pageable): Page<Team> {
         val teams = teamRepository.findByOwner(pageable, UserContext.pxUser)
@@ -28,6 +30,19 @@ class TeamService(
     override fun get(id: UUID): Team {
         val team = teamRepository.findByIdAndOwner(id, UserContext.pxUser)
         return team?.toModel() ?: throw NotFoundException("Unable to find player with id: $id")
+    }
+
+    override fun save(team: Team): Team {
+        val entity = teamAssembler.toPersistence(team)
+        teamRepository.save(entity)
+        return entity.toModel()
+    }
+
+    override fun delete(id: UUID) {
+        if (!teamRepository.exists(id)) {
+            throw NotFoundException("Unable to find league with id: $id")
+        }
+        teamRepository.delete(id)
     }
 
     override fun getRoster(teamId: UUID, pageable: Pageable): Page<RosterPlayer> {

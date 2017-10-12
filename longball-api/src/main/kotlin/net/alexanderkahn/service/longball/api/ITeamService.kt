@@ -10,6 +10,8 @@ interface ITeamService {
 
     fun getAll(pageable: Pageable): Page<Team>
     fun get(id: UUID): Team
+    fun save(team: Team): Team
+    fun delete(id: UUID)
     fun getRoster(teamId: UUID, pageable: Pageable): Page<RosterPlayer>
 
 }
