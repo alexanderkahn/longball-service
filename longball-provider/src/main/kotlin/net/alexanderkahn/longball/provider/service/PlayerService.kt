@@ -1,10 +1,10 @@
 package net.alexanderkahn.longball.provider.service
 
-import javassist.NotFoundException
 import net.alexanderkahn.longball.model.Player
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.repository.PlayerRepository
+import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.IPlayerService
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +23,6 @@ class PlayerService(@Autowired private val playerRepository: PlayerRepository) :
 
     override fun get(id: UUID): Player {
         val player = playerRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return player?.toModel() ?: throw NotFoundException("Unable to find player with id: $id")
+        return player?.toModel() ?: throw NotFoundException("players", id)
     }
 }

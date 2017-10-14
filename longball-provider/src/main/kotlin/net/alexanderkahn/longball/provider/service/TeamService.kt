@@ -1,6 +1,5 @@
 package net.alexanderkahn.longball.provider.service
 
-import javassist.NotFoundException
 import net.alexanderkahn.longball.model.RosterPlayer
 import net.alexanderkahn.longball.model.Team
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
@@ -8,6 +7,7 @@ import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.repository.RosterPlayerRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
+import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.ITeamService
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +29,7 @@ class TeamService(
 
     override fun get(id: UUID): Team {
         val team = teamRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return team?.toModel() ?: throw NotFoundException("Unable to find player with id: $id")
+        return team?.toModel() ?: throw NotFoundException("players", id)
     }
 
     override fun save(team: Team): Team {
@@ -40,7 +40,7 @@ class TeamService(
 
     override fun delete(id: UUID) {
         if (!teamRepository.exists(id)) {
-            throw NotFoundException("Unable to find league with id: $id")
+            throw NotFoundException("leagues", id)
         }
         teamRepository.delete(id)
     }

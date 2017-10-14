@@ -1,11 +1,11 @@
 package net.alexanderkahn.longball.provider.service
 
-import javassist.NotFoundException
 import net.alexanderkahn.longball.model.League
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.assembler.toPersistence
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
+import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.ILeagueService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +19,7 @@ class LeagueService(@Autowired private val leagueRepository: LeagueRepository) :
 
     override fun get(id: UUID): League {
         val league = leagueRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return league?.toModel() ?: throw NotFoundException("Unable to find league with id: $id")
+        return league?.toModel() ?: throw NotFoundException("leagues", id)
     }
 
     override fun getAll(pageable: Pageable): Page<League> {
@@ -35,7 +35,7 @@ class LeagueService(@Autowired private val leagueRepository: LeagueRepository) :
 
     override fun delete(id: UUID) {
         if (!leagueRepository.exists(id)) {
-            throw NotFoundException("Unable to find league with id: $id")
+            throw NotFoundException("leagues", id)
         }
         leagueRepository.delete(id)
     }

@@ -14,6 +14,7 @@ data class RequestTeam(
         override val relationships: TeamRelationships) : RequestResourceObject {
     override fun validate() {
         assertType(ModelTypes.TEAMS)
+        relationships.league.data.assertType(ModelTypes.LEAGUES)
     }
 }
 

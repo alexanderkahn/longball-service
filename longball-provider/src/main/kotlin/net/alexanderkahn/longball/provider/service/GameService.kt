@@ -30,7 +30,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     fun getPxGame(id: UUID): PxGame {
         val game = gameRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return game ?: throw NotFoundException()
+        return game ?: throw NotFoundException("games", id)
     }
 
     override fun getAll(pageable: Pageable): Page<Game> {
@@ -39,7 +39,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     override fun getLineupPlayers(pageable: Pageable, gameId: UUID, side: Side): Page<LineupPlayer> {
-        val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)  ?: throw NotFoundException("Unable to find game with id: $gameId")
+        val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)  ?: throw NotFoundException("games", gameId)
         val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.pxUser)
         return players.map { it.toModel() }
     }
