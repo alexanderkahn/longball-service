@@ -1,11 +1,11 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.RosterPlayer
+import net.alexanderkahn.longball.model.Player
 import net.alexanderkahn.longball.model.Team
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
-import net.alexanderkahn.longball.provider.repository.RosterPlayerRepository
+import net.alexanderkahn.longball.provider.repository.PlayerRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
@@ -19,7 +19,7 @@ import java.util.*
 @Service
 class TeamService(
         @Autowired private val teamRepository: TeamRepository,
-        @Autowired private val rosterPlayerRepository: RosterPlayerRepository,
+        @Autowired private val playerRepository: PlayerRepository,
         @Autowired private val teamAssembler: TeamAssembler) : ITeamService {
 
     override fun getAll(pageable: Pageable): Page<Team> {
@@ -45,8 +45,8 @@ class TeamService(
         teamRepository.delete(id)
     }
 
-    override fun getRoster(teamId: UUID, pageable: Pageable): Page<RosterPlayer> {
-        val teams = rosterPlayerRepository.findByTeamIdAndOwner(pageable, teamId, UserContext.pxUser)
+    override fun getRoster(teamId: UUID, pageable: Pageable): Page<Player> {
+        val teams = playerRepository.findByTeamIdAndOwner(pageable, teamId, UserContext.pxUser)
         return teams.map { it.toModel() }
     }
 }

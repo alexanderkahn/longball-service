@@ -20,8 +20,8 @@ fun PxPerson.toModel(): Person {
     return Person(id, first, last)
 }
 
-fun PxRosterPlayer.toModel(): RosterPlayer {
-    return RosterPlayer(id,
+fun PxPlayer.toModel(): Player {
+    return Player(id,
             team.id,
             player.id,
             jerseyNumber,

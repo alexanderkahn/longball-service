@@ -1,6 +1,6 @@
 package net.alexanderkahn.service.longball.api
 
-import net.alexanderkahn.longball.model.RosterPlayer
+import net.alexanderkahn.longball.model.Player
 import net.alexanderkahn.longball.model.Team
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -12,6 +12,6 @@ interface ITeamService {
     fun get(id: UUID): Team
     fun save(team: Team): Team
     fun delete(id: UUID)
-    fun getRoster(teamId: UUID, pageable: Pageable): Page<RosterPlayer>
+    fun getRoster(teamId: UUID, pageable: Pageable): Page<Player>
 
 }
