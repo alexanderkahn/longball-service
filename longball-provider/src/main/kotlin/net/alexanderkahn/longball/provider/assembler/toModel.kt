@@ -16,8 +16,8 @@ fun PxLineupPlayer.toModel(): LineupPlayer {
     return LineupPlayer(player.id, battingOrder, FieldPosition.fromNotation(fieldPosition))
 }
 
-fun PxPlayer.toModel(): Player {
-    return Player(id, first, last)
+fun PxPerson.toModel(): Person {
+    return Person(id, first, last)
 }
 
 fun PxRosterPlayer.toModel(): RosterPlayer {

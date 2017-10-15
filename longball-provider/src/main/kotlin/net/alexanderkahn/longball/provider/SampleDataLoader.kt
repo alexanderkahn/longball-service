@@ -15,7 +15,7 @@ import java.util.*
 class SampleDataLoader(
         @Autowired private val leagueRepository: LeagueRepository,
         @Autowired private val teamRepository: TeamRepository,
-        @Autowired private val playerRepository: PlayerRepository,
+        @Autowired private val personRepository: PersonRepository,
         @Autowired private val rosterPlayerRepository: RosterPlayerRepository,
         @Autowired private val gameRepository: GameRepository,
         @Autowired private val lineupPlayerRepository: LineupPlayerRepository
@@ -37,9 +37,9 @@ class SampleDataLoader(
     private fun loadTeamWithPlayers(league: PxLeague, location: String): PxTeam {
         val team = PxTeam(league, location.toUpperCase(), location, "Team")
         teamRepository.save(team)
-        val awayPlayers: List<PxPlayer> = (1..9).map { PxPlayer(first = location, last = it.toString()) }
+        val awayPlayers: List<PxPerson> = (1..9).map { PxPerson(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
-            playerRepository.save(player)
+            personRepository.save(player)
             rosterPlayerRepository.save(PxRosterPlayer(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
         }
         return team

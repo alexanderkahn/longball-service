@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.Player
-import net.alexanderkahn.service.longball.api.IPlayerService
+import net.alexanderkahn.longball.model.Person
+import net.alexanderkahn.service.longball.api.IPersonService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping("/players")
-class PlayerController(@Autowired private val playerService: IPlayerService) {
+@RequestMapping("/people")
+class PersonController(@Autowired private val personService: IPersonService) {
 
     @GetMapping
-    fun getAll(pageable: Pageable): Page<Player> {
-        return playerService.getAll(pageable)
+    fun getAll(pageable: Pageable): Page<Person> {
+        return personService.getAll(pageable)
     }
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: UUID): Player {
-        return playerService.get(id)
+    fun get(@PathVariable id: UUID): Person {
+        return personService.get(id)
     }
 }

@@ -9,7 +9,7 @@ data class PxLineupPlayer(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false) val game: PxGame, //TODO: this should link to a GameLineup or something rather than storing game and side
 
         @ManyToOne
-        @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false) val player: PxPlayer,
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false) val player: PxPerson, //TODO: this should link to a player not a person
 
         @Column(nullable = false) val side: Int,
         @Column(nullable = false) val battingOrder: Int,

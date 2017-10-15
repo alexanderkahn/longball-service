@@ -54,7 +54,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //        return getPlateAppearanceModel(inningAppearances, appearance)
 //    }
 //
-//    private fun getOpposingPitcher(appearance: PxPlateAppearance): PxPlayer {
+//    private fun getOpposingPitcher(appearance: PxPlateAppearance): PxPerson {
 //        val oppositeSide = if (appearance.side.side == Side.TOP) Side.BOTTOM else Side.TOP
 //        val currentPitcher = getPlayerByPosition(appearance.side.inningSide.game, oppositeSide, FieldPosition.PITCHER)
 //        return currentPitcher
@@ -272,7 +272,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //        return lineupPlayerRepository.findFirstByGameAndSideAndBattingOrderAndOwner(game, side, battingOrder)
 //    }
 //
-//    private fun getPlayerByPosition(game: PxGame, side: Side, fieldPosition:FieldPosition): PxPlayer {
+//    private fun getPlayerByPosition(game: PxGame, side: Side, fieldPosition:FieldPosition): PxPerson {
 //        return lineupPlayerRepository.findFirstByGameAndSideAndFieldPositionAndOwner(game, side, fieldPosition).player
 //    }
 }

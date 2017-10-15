@@ -12,7 +12,7 @@ class PxRosterPlayer(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_player"), nullable = false)
-        val player: PxPlayer,
+        val player: PxPerson,
 
         @Column(nullable = false) val jerseyNumber: Int,
         @Column(nullable = false) val startDate: OffsetDateTime,
