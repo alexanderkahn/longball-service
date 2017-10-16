@@ -5,7 +5,8 @@ import net.alexanderkahn.service.base.presentation.response.body.data.ResourceId
 
 enum class ModelTypes(val display: String) {
     LEAGUES("leagues"),
-    TEAMS("teams")
+    TEAMS("teams"),
+    PEOPLE("people")
 }
 
 fun RequestResourceObject.assertType(type: ModelTypes) = assertType(type.display)
