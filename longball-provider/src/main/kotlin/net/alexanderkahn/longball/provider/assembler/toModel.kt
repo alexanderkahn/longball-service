@@ -4,23 +4,23 @@ import net.alexanderkahn.longball.model.*
 import net.alexanderkahn.longball.provider.entity.*
 
 
-fun PxGame.toModel(): Game {
+fun GameEntity.toModel(): Game {
     return Game(id, league.id, awayTeam.id, homeTeam.id, startTime)
 }
 
-fun PxLeague.toModel(): League {
+fun LeagueEntity.toModel(): League {
     return League(id, name)
 }
 
-fun PxLineupPlayer.toModel(): LineupPlayer {
+fun LineupPositionEntity.toModel(): LineupPlayer {
     return LineupPlayer(player.id, battingOrder, FieldPosition.fromNotation(fieldPosition))
 }
 
-fun PxPerson.toModel(): Person {
+fun PersonEntity.toModel(): Person {
     return Person(id, first, last)
 }
 
-fun PxPlayer.toModel(): Player {
+fun PlayerEntity.toModel(): Player {
     return Player(id,
             team.id,
             player.id,
@@ -29,10 +29,10 @@ fun PxPlayer.toModel(): Player {
             endDate)
 }
 
-fun PxTeam.toModel(): Team {
+fun TeamEntity.toModel(): Team {
     return Team(id, league.id, abbreviation, location, nickname)
 }
 
-fun PxPlateAppearance.toModel(): PlateAppearance {
+fun PlateAppearanceEntity.toModel(): PlateAppearance {
     return PlateAppearance(this.plateAppearanceResult)
 }

@@ -28,35 +28,35 @@ class SampleDataLoader(
         createGame(league, awayTeam, homeTeam)
     }
 
-    private fun loadLeague(): PxLeague {
-        val league = PxLeague("Example League")
+    private fun loadLeague(): LeagueEntity {
+        val league = LeagueEntity("Example League")
         leagueRepository.save(league)
         return league
     }
 
-    private fun loadTeamWithPlayers(league: PxLeague, location: String): PxTeam {
-        val team = PxTeam(league, location.toUpperCase(), location, "Team")
+    private fun loadTeamWithPlayers(league: LeagueEntity, location: String): TeamEntity {
+        val team = TeamEntity(league, location.toUpperCase(), location, "Team")
         teamRepository.save(team)
-        val awayPlayers: List<PxPerson> = (1..9).map { PxPerson(first = location, last = it.toString()) }
+        val awayPlayers: List<PersonEntity> = (1..9).map { PersonEntity(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
             personRepository.save(player)
-            playerRepository.save(PxPlayer(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
+            playerRepository.save(PlayerEntity(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
         }
         return team
     }
 
-    private fun createGame(league: PxLeague, awayTeam: PxTeam, homeTeam: PxTeam) {
-        val game = PxGame(league, awayTeam, homeTeam, OffsetDateTime.now())
+    private fun createGame(league: LeagueEntity, awayTeam: TeamEntity, homeTeam: TeamEntity) {
+        val game = GameEntity(league, awayTeam, homeTeam, OffsetDateTime.now())
         gameRepository.save(game)
         createLineup(game, awayTeam, Side.TOP)
         createLineup(game, homeTeam, Side.BOTTOM)
     }
 
-    private fun createLineup(game: PxGame, team: PxTeam, side: Side) {
+    private fun createLineup(game: GameEntity, team: TeamEntity, side: Side) {
         val rosterPlayers = playerRepository.findByTeamIdAndOwner(org.springframework.data.domain.PageRequest(0, 20), team.id)
         var counter = 0
         FieldPosition.values().forEach { it ->
-            val lPosition = PxLineupPlayer(game, rosterPlayers.content[counter].player, side.ordinal, ++counter, it.positionNotation)
+            val lPosition = LineupPositionEntity(game, rosterPlayers.content[counter].player, side.ordinal, ++counter, it.positionNotation)
             lineupPlayerRepository.save(lPosition)
         }
     }

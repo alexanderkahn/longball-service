@@ -1,5 +1,5 @@
 package net.alexanderkahn.longball.provider.repository
 
-import net.alexanderkahn.longball.provider.entity.PxTeam
+import net.alexanderkahn.longball.provider.entity.TeamEntity
 
-interface TeamRepository: LongballRepository<PxTeam>
+interface TeamRepository: LongballRepository<TeamEntity>

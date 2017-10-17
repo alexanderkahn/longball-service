@@ -4,7 +4,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 
 @Entity(name = "person")
-data class PxPerson(
+data class PersonEntity(
 
         @Column(nullable = false) val first: String,
         @Column(nullable = false) val last: String

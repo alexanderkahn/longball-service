@@ -5,11 +5,11 @@ import javax.persistence.*
 
 @Entity(name = "inning")
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("game_id", "inningNumber"))))
-data class PxInning(
+data class InningEntity(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_game"), nullable = false)
-        val game: PxGame,
+        val game: GameEntity,
 
         @Column(nullable = false)
         val inningNumber: Int

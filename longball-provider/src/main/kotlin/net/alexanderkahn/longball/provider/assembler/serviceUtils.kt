@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.assembler
 
 //FIXME
-//fun PxInningSide.toResult(basePathResults: List<PxBasepathResult>): PxSideResult {
+//fun InningSideEntity.toResult(basePathResults: List<PxBasepathResult>): PxSideResult {
 //    return PxSideResult(this,
 //            basePathResults.hits,
 //            basePathResults.walks,
@@ -28,7 +28,7 @@ package net.alexanderkahn.longball.provider.assembler
 //    }
 //
 ////TODO: this assumes a bunch of state (results are related to appearances). It should be in the service probably so the state can be verified.
-//fun List<PxPlateAppearance>.getOuts(basepathResults: List<PxBasepathResult>): Int {
+//fun List<PlateAppearanceEntity>.getOuts(basepathResults: List<PxBasepathResult>): Int {
 //        val outAtPlate = mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING) }
 //        val outOnBase = basepathResults.count { it.playResult == PlayResult.OUT }
 //        return outAtPlate + outOnBase

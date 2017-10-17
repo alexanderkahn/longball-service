@@ -6,11 +6,11 @@ import javax.persistence.*
 
 @Entity(name = "inning_side")
 @Table(uniqueConstraints = arrayOf(UniqueConstraint(columnNames = arrayOf("inning_id", "side"))))
-data class PxInningSide(
+data class InningSideEntity(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_inning"), nullable = false)
-        val inning: PxInning,
+        val inning: InningEntity,
 
         @Column(nullable=false)
         val side: Side

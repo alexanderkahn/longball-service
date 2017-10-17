@@ -6,8 +6,8 @@ import net.alexanderkahn.longball.model.InningSide
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.provider.assembler.InningAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.entity.PxInning
-import net.alexanderkahn.longball.provider.entity.PxInningSide
+import net.alexanderkahn.longball.provider.entity.InningEntity
+import net.alexanderkahn.longball.provider.entity.InningSideEntity
 import net.alexanderkahn.longball.provider.repository.InningRepository
 import net.alexanderkahn.longball.provider.repository.InningSideRepository
 import net.alexanderkahn.service.base.api.security.UserContext
@@ -34,17 +34,17 @@ class InningService(
         val game = gameService.getPxGame(gameId)
         val lastInning = inningRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.pxUser, game)
         if (lastInning == null) {
-            val firstInning = PxInning(game, 1)
+            val firstInning = InningEntity(game, 1)
             inningRepository.save(firstInning)
-            inningSideRepository.save(PxInningSide(firstInning, Side.TOP))
+            inningSideRepository.save(InningSideEntity(firstInning, Side.TOP))
         } else {
             val sides = inningSideRepository.findByInningAndOwner(lastInning, UserContext.pxUser)
             if (sides.size >= Side.values().size) {
-                val nextInning = PxInning(game, lastInning.inningNumber.inc())
+                val nextInning = InningEntity(game, lastInning.inningNumber.inc())
                 inningRepository.save(nextInning)
-                inningSideRepository.save(PxInningSide(nextInning, Side.TOP))
+                inningSideRepository.save(InningSideEntity(nextInning, Side.TOP))
             } else {
-                inningSideRepository.save(PxInningSide(lastInning, Side.BOTTOM))
+                inningSideRepository.save(InningSideEntity(lastInning, Side.BOTTOM))
             }
         }
     }

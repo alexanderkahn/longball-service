@@ -1,5 +1,5 @@
 package net.alexanderkahn.longball.provider.repository
 
-import net.alexanderkahn.longball.provider.entity.PxGame
+import net.alexanderkahn.longball.provider.entity.GameEntity
 
-interface GameRepository: LongballRepository<PxGame>
+interface GameRepository: LongballRepository<GameEntity>

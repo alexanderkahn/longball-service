@@ -4,15 +4,15 @@ import java.time.OffsetDateTime
 import javax.persistence.*
 
 @Entity(name = "player")
-class PxPlayer(
+class PlayerEntity(
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_team"), nullable = false)
-        val team: PxTeam,
+        val team: TeamEntity,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_person"), nullable = false)
-        val player: PxPerson,
+        val player: PersonEntity,
 
         @Column(nullable = false) val jerseyNumber: Int,
         @Column(nullable = false) val startDate: OffsetDateTime,
