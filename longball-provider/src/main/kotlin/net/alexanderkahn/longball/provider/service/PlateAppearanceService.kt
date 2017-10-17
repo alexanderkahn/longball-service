@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.PlateAppearance
+import net.alexanderkahn.longball.model.PlateAppearanceDTO
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
@@ -17,7 +17,7 @@ import java.util.*
 class PlateAppearanceService(
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) : IPlateAppearanceService {
 
-    override fun getPlateAppearances(pageable: Pageable, gameId: UUID, inningNumber: Int, side: Side): Page<PlateAppearance> {
+    override fun getPlateAppearances(pageable: Pageable, gameId: UUID, inningNumber: Int, side: Side): Page<PlateAppearanceDTO> {
         return plateAppearanceRepository.findByOwnerAndGameAndInningNumberAndSide(pageable, UserContext.pxUser, gameId, inningNumber, side).map { it.toModel() }
     }
 }

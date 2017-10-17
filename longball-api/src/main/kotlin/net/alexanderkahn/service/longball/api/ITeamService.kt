@@ -1,17 +1,17 @@
 package net.alexanderkahn.service.longball.api
 
-import net.alexanderkahn.longball.model.Player
-import net.alexanderkahn.longball.model.Team
+import net.alexanderkahn.longball.model.PlayerDTO
+import net.alexanderkahn.longball.model.TeamDTO
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.*
 
 interface ITeamService {
 
-    fun getAll(pageable: Pageable): Page<Team>
-    fun get(id: UUID): Team
-    fun save(team: Team): Team
+    fun getAll(pageable: Pageable): Page<TeamDTO>
+    fun get(id: UUID): TeamDTO
+    fun save(team: TeamDTO): TeamDTO
     fun delete(id: UUID)
-    fun getRoster(teamId: UUID, pageable: Pageable): Page<Player>
+    fun getRoster(teamId: UUID, pageable: Pageable): Page<PlayerDTO>
 
 }

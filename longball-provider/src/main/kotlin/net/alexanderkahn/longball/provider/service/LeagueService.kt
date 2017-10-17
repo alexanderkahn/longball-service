@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.League
+import net.alexanderkahn.longball.model.LeagueDTO
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.assembler.toPersistence
@@ -17,17 +17,17 @@ import java.util.*
 @Service
 class LeagueService(@Autowired private val leagueRepository: LeagueRepository) : ILeagueService {
 
-    override fun get(id: UUID): League {
+    override fun get(id: UUID): LeagueDTO {
         val league = leagueRepository.findByIdAndOwner(id, UserContext.pxUser)
         return league?.toModel() ?: throw NotFoundException("leagues", id)
     }
 
-    override fun getAll(pageable: Pageable): Page<League> {
+    override fun getAll(pageable: Pageable): Page<LeagueDTO> {
         val leagues = leagueRepository.findByOwner(pageable, UserContext.pxUser)
         return leagues.map { it.toModel() }
     }
 
-    override fun save(league: League): League {
+    override fun save(league: LeagueDTO): LeagueDTO {
         val entity = league.toPersistence()
         leagueRepository.save(entity)
         return entity.toModel()

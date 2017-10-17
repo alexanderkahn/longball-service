@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.presentation.rest
 
 
-import net.alexanderkahn.longball.model.Game
-import net.alexanderkahn.longball.model.LineupPlayer
+import net.alexanderkahn.longball.model.GameDTO
+import net.alexanderkahn.longball.model.LineupPositionDTO
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.service.longball.api.IGameService
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,22 +17,22 @@ import java.util.*
 class GameController(@Autowired private val gameService: IGameService) {
 
     @GetMapping("/games")
-    fun getGames(pageable: Pageable): Page<Game> {
+    fun getGames(pageable: Pageable): Page<GameDTO> {
         return gameService.getAll(pageable)
     }
 
     @GetMapping("/games/{id}")
-    fun getGame(@PathVariable id: UUID): Game {
+    fun getGame(@PathVariable id: UUID): GameDTO {
         return gameService.getOne(id)
     }
 
     @GetMapping("/games/{id}/lineups/away")
-    fun getAwayLineup(pageable: Pageable, @PathVariable id: UUID): Page<LineupPlayer> {
+    fun getAwayLineup(pageable: Pageable, @PathVariable id: UUID): Page<LineupPositionDTO> {
         return gameService.getLineupPlayers(pageable, id, Side.TOP)
     }
 
     @GetMapping("/games/{id}/lineups/home")
-    fun getHomeLineup(pageable: Pageable, @PathVariable id: UUID): Page<LineupPlayer> {
+    fun getHomeLineup(pageable: Pageable, @PathVariable id: UUID): Page<LineupPositionDTO> {
         return gameService.getLineupPlayers(pageable, id, Side.BOTTOM)
     }
 

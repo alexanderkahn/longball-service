@@ -11,7 +11,7 @@ package net.alexanderkahn.longball.provider.assembler
 //
 //val List<PxGameplayEvent>.balls: Int
 //    get() {
-//        return count { it.pitch == Pitch.BALL }
+//        return count { it.pitch == PitchType.BALL }
 //    }
 //
 //val List<PxGameplayEvent>.strikes: Int
@@ -19,8 +19,8 @@ package net.alexanderkahn.longball.provider.assembler
 //        var strikes = 0
 //        forEach {
 //            when(it.pitch) {
-//                Pitch.STRIKE_LOOKING, Pitch.STRIKE_SWINGING -> strikes++
-//                Pitch.FOUL_TIP -> if (strikes < (LeagueRuleSet.STRIKES_PER_OUT - 1)) strikes++
+//                PitchType.STRIKE_LOOKING, PitchType.STRIKE_SWINGING -> strikes++
+//                PitchType.FOUL_TIP -> if (strikes < (LeagueRuleSetDTO.strikesPerOut - 1)) strikes++
 //                else -> {}
 //            }
 //        }

@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.Inning
-import net.alexanderkahn.longball.model.InningSide
+import net.alexanderkahn.longball.model.InningDTO
+import net.alexanderkahn.longball.model.InningSideDTO
 import net.alexanderkahn.longball.presentation.getSideFromParam
 import net.alexanderkahn.service.longball.api.IInningService
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,17 +18,17 @@ class InningController(
         @Autowired private val inningService: IInningService) {
 
     @GetMapping("/games/{gameId}/innings")
-    fun getInnings(pageable: Pageable, @PathVariable gameId: UUID): Page<Inning> {
+    fun getInnings(pageable: Pageable, @PathVariable gameId: UUID): Page<InningDTO> {
         return inningService.getInningsForGame(pageable, gameId)
     }
 
     @GetMapping("/games/{gameId}/innings/{inningNumber}")
-    fun getInning(@PathVariable gameId: UUID, @PathVariable inningNumber: Int): Inning {
+    fun getInning(@PathVariable gameId: UUID, @PathVariable inningNumber: Int): InningDTO {
         return inningService.getInning(gameId, inningNumber)
     }
 
     @GetMapping("/games/{gameId}/innings/{inningNumber}/{side:top|bottom}")
-    fun getInningSide(@PathVariable gameId: UUID, @PathVariable inningNumber: Int, @PathVariable side: String): InningSide {
+    fun getInningSide(@PathVariable gameId: UUID, @PathVariable inningNumber: Int, @PathVariable side: String): InningSideDTO {
         return inningService.getInningSide(gameId, inningNumber, getSideFromParam(side))
     }
 

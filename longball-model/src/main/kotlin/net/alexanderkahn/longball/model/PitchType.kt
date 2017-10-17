@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.model
 
-enum class Pitch {
+enum class PitchType {
     BALL,
     STRIKE_LOOKING,
     STRIKE_SWINGING,

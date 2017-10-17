@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.service
 
 
-import net.alexanderkahn.longball.model.Inning
-import net.alexanderkahn.longball.model.InningSide
+import net.alexanderkahn.longball.model.InningDTO
+import net.alexanderkahn.longball.model.InningSideDTO
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.provider.assembler.InningAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
@@ -25,7 +25,7 @@ class InningService(
         @Autowired private val inningAssembler: InningAssembler,
         @Autowired private val inningSideRepository: InningSideRepository) : IInningService {
 
-    override fun getInningsForGame(pageable: Pageable, gameId: UUID): Page<Inning> {
+    override fun getInningsForGame(pageable: Pageable, gameId: UUID): Page<InningDTO> {
         val game = gameService.getPxGame(gameId)
         return inningRepository.findByOwnerAndGame(pageable, UserContext.pxUser, game).map { inningAssembler.toModel(it) }
     }
@@ -49,14 +49,14 @@ class InningService(
         }
     }
 
-    override fun getInning(gameId: UUID, inningNumber: Int): Inning {
+    override fun getInning(gameId: UUID, inningNumber: Int): InningDTO {
         val game = gameService.getPxGame(gameId)
         return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toModel(it) }
-                ?: throw Exception("Inning $inningNumber not found for game $gameId")
+                ?: throw Exception("InningDTO $inningNumber not found for game $gameId")
     }
 
-    override fun getInningSide(gameId: UUID, inningNumber: Int, inningSide: Side): InningSide {
-        val returnedSide: InningSide? = getInning(gameId, inningNumber).let { if (inningSide == Side.TOP) it.top else it.bottom }
+    override fun getInningSide(gameId: UUID, inningNumber: Int, inningSide: Side): InningSideDTO {
+        val returnedSide: InningSideDTO? = getInning(gameId, inningNumber).let { if (inningSide == Side.TOP) it.top else it.bottom }
         return returnedSide ?: throw Exception("Could not find $inningSide $inningNumber for game $gameId")
     }
 }

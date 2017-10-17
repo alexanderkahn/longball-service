@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.PlateAppearance
+import net.alexanderkahn.longball.model.PlateAppearanceDTO
 import net.alexanderkahn.longball.presentation.getSideFromParam
 import net.alexanderkahn.service.longball.api.IPlateAppearanceService
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +15,7 @@ import java.util.*
 class PlateAppearanceController(@Autowired private val plateAppearanceService: IPlateAppearanceService) {
 
     @GetMapping("/games/{gameId}/innings/{inningNumber}/{side:top|bottom}/plateAppearances")
-    fun getInningSide(pageable: Pageable, @PathVariable gameId: UUID, @PathVariable inningNumber: Int, @PathVariable side: String): Page<PlateAppearance> {
+    fun getInningSide(pageable: Pageable, @PathVariable gameId: UUID, @PathVariable inningNumber: Int, @PathVariable side: String): Page<PlateAppearanceDTO> {
         return plateAppearanceService.getPlateAppearances(pageable, gameId, inningNumber, getSideFromParam(side))
     }
 

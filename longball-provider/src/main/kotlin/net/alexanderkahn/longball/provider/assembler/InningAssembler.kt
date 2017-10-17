@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.assembler
 
 
-import net.alexanderkahn.longball.model.Inning
-import net.alexanderkahn.longball.model.InningSide
+import net.alexanderkahn.longball.model.InningDTO
+import net.alexanderkahn.longball.model.InningSideDTO
 import net.alexanderkahn.longball.model.PlateAppearanceResult
 import net.alexanderkahn.longball.model.Side
 import net.alexanderkahn.longball.provider.entity.InningEntity
@@ -18,19 +18,19 @@ open class InningAssembler(
         @Autowired private val inningSideRepository: InningSideRepository,
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) {
 
-    fun toModel(entity: InningEntity): Inning {
-        return Inning(entity.inningNumber, getInningSide(entity, Side.TOP) ?: throw Exception(),  getInningSide(entity, Side.BOTTOM))
+    fun toModel(entity: InningEntity): InningDTO {
+        return InningDTO(entity.inningNumber, getInningSide(entity, Side.TOP) ?: throw Exception(),  getInningSide(entity, Side.BOTTOM))
     }
 
-    private fun getInningSide(inning: InningEntity, side: Side): InningSide? {
+    private fun getInningSide(inning: InningEntity, side: Side): InningSideDTO? {
         return inningSideRepository.findByInningAndSideAndOwner(inning, side, UserContext.pxUser)?.toModel()
     }
 
-    fun InningSideEntity.toModel(): InningSide {
+    fun InningSideEntity.toModel(): InningSideDTO {
         val appearances = plateAppearanceRepository.findBySideAndOwner(this, UserContext.pxUser)
         val hits = appearances.count { it.plateAppearanceResult in listOf(PlateAppearanceResult.IN_PLAY) }
         //FIXME These values can be calculated from PlateAppearanceResult. Come finish this when PlateAppearances look right
-        return InningSide(0, 0, 0, 0, 0)
+        return InningSideDTO(0, 0, 0, 0, 0)
     }
 
 }

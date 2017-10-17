@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.model
 
-import net.alexanderkahn.longball.model.League
+import net.alexanderkahn.longball.model.LeagueDTO
 import net.alexanderkahn.service.base.api.exception.InvalidStateException
 import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
@@ -20,11 +20,11 @@ data class ResponseLeague(override val id: UUID, override val attributes: League
 
 data class LeagueAttributes(val name: String)
 
-fun League.toResponse(): ResponseLeague {
+fun LeagueDTO.toResponse(): ResponseLeague {
     val leagueId = id ?: throw InvalidStateException("Response must contain a valid ID")
     return ResponseLeague(leagueId, LeagueAttributes(name))
 }
 
-fun RequestLeague.toDto(): League {
-    return League(null, this.attributes.name)
+fun RequestLeague.toDto(): LeagueDTO {
+    return LeagueDTO(null, this.attributes.name)
 }

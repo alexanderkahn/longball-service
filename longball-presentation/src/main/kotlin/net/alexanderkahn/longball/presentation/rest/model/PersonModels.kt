@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.model
 
-import net.alexanderkahn.longball.model.Person
+import net.alexanderkahn.longball.model.PersonDTO
 import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
 import sun.plugin.dom.exception.InvalidStateException
@@ -25,11 +25,11 @@ data class ResponsePerson(
 
 data class PersonAttributes(val first: String, val last: String)
 
-fun RequestPerson.toDto(): Person {
-    return Person(null, attributes.first, attributes.last)
+fun RequestPerson.toDto(): PersonDTO {
+    return PersonDTO(null, attributes.first, attributes.last)
 }
 
-fun Person.toResponse(): ResponsePerson {
+fun PersonDTO.toResponse(): ResponsePerson {
     val personId = id ?: throw InvalidStateException("No id found for person") //TODO extend with UnsavedObjectException or something
     return ResponsePerson(personId, PersonAttributes(first, last))
 }

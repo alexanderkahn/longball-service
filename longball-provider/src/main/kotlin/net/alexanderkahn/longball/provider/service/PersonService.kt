@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.Person
+import net.alexanderkahn.longball.model.PersonDTO
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.assembler.toPersistence
@@ -17,17 +17,17 @@ import java.util.*
 @Service
 class PersonService(@Autowired private val personRepository: PersonRepository) : IPersonService {
 
-    override fun getAll(pageable: Pageable): Page<Person> {
+    override fun getAll(pageable: Pageable): Page<PersonDTO> {
         val players = personRepository.findByOwner(pageable, UserContext.pxUser)
         return players.map { it.toModel() }
     }
 
-    override fun get(id: UUID): Person {
+    override fun get(id: UUID): PersonDTO {
         val player = personRepository.findByIdAndOwner(id, UserContext.pxUser)
         return player?.toModel() ?: throw NotFoundException("players", id)
     }
 
-    override fun save(person: Person): Person {
+    override fun save(person: PersonDTO): PersonDTO {
         val entity = person.toPersistence()
         personRepository.save(entity)
         return entity.toModel()
