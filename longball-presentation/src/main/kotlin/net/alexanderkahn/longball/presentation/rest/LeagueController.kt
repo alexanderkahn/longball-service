@@ -24,17 +24,17 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
         return CollectionResponse(objectCollection, page.toMetaPage())
     }
 
-    @GetMapping("/{id}")
-    fun getLeague(@PathVariable id: UUID): ObjectResponse<ResponseLeague> {
-        val league = leagueService.get(id)
-        return ObjectResponse(league.toResponse())
-    }
-
     @PostMapping
     fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): CreatedResponse<ResponseLeague> {
         leagueRequest.data.validate()
         val created = leagueService.save(leagueRequest.data.toDto())
         return CreatedResponse(created.toResponse())
+    }
+
+    @GetMapping("/{id}")
+    fun getLeague(@PathVariable id: UUID): ObjectResponse<ResponseLeague> {
+        val league = leagueService.get(id)
+        return ObjectResponse(league.toResponse())
     }
 
     @DeleteMapping("/{id}")

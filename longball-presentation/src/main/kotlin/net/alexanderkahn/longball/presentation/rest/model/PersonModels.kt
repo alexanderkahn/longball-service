@@ -25,7 +25,7 @@ data class ResponsePerson(
 
 data class PersonAttributes(val first: String, val last: String)
 
-fun RequestPerson.toModel(): Person {
+fun RequestPerson.toDto(): Person {
     return Person(null, attributes.first, attributes.last)
 }
 

@@ -9,5 +9,7 @@ interface IPersonService {
 
     fun getAll(pageable: Pageable): Page<Person>
     fun get(id: UUID): Person
+    fun save(person: Person): Person
+    fun delete(id: UUID)
 
 }
