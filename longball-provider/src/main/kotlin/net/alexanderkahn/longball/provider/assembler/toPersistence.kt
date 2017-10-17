@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.model.LeagueDTO
-import net.alexanderkahn.longball.model.PersonDTO
+import net.alexanderkahn.longball.model.dto.LeagueDTO
+import net.alexanderkahn.longball.model.dto.PersonDTO
 import net.alexanderkahn.longball.provider.entity.EmbeddableUser
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.PersonEntity

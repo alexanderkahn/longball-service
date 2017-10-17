@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.LeagueDTO
+import net.alexanderkahn.longball.model.dto.LeagueDTO
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.assembler.toPersistence

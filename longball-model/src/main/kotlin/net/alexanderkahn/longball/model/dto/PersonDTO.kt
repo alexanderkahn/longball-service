@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.model
+package net.alexanderkahn.longball.model.dto
 
 import java.util.*
 

@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.model
 
-import net.alexanderkahn.longball.model.PersonDTO
+import net.alexanderkahn.longball.model.dto.PersonDTO
 import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
 import sun.plugin.dom.exception.InvalidStateException

@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.provider.repository
 import net.alexanderkahn.longball.provider.entity.EmbeddableUser
 import net.alexanderkahn.longball.provider.entity.GameEntity
 import net.alexanderkahn.longball.provider.entity.LineupPositionEntity
-import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.model.type.Side
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 

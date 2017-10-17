@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.model
 
-import net.alexanderkahn.longball.model.TeamDTO
+import net.alexanderkahn.longball.model.dto.TeamDTO
 import net.alexanderkahn.service.base.api.exception.InvalidStateException
 import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceIdentifier

@@ -1,6 +1,6 @@
-package net.alexanderkahn.longball.model
+package net.alexanderkahn.longball.model.type
 
-enum class PlateAppearanceResult {
+enum class PlateAppearanceResultType {
     NONE,
     STRIKEOUT_LOOKING,
     STRIKEOUT_SWINGING,

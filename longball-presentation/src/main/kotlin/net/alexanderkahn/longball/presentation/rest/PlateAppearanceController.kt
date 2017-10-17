@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.PlateAppearanceDTO
+import net.alexanderkahn.longball.model.dto.PlateAppearanceDTO
 import net.alexanderkahn.longball.presentation.getSideFromParam
 import net.alexanderkahn.service.longball.api.IPlateAppearanceService
 import org.springframework.beans.factory.annotation.Autowired

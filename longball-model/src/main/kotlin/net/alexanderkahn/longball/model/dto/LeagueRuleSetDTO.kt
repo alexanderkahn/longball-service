@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.model
+package net.alexanderkahn.longball.model.dto
 
 data class LeagueRuleSetDTO(
         val battersPerLineup: Int = 9,

@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.provider
 
 
 import javafx.geometry.Side
-import net.alexanderkahn.longball.model.FieldPosition
+import net.alexanderkahn.longball.model.type.FieldPosition
 import net.alexanderkahn.longball.provider.entity.*
 import net.alexanderkahn.longball.provider.repository.*
 import net.alexanderkahn.service.longball.api.ISampleDataLoader

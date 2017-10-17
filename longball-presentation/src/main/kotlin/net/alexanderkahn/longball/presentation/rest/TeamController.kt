@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.PlayerDTO
+import net.alexanderkahn.longball.model.dto.PlayerDTO
 import net.alexanderkahn.longball.presentation.rest.model.*
 import net.alexanderkahn.service.base.presentation.request.ObjectRequest
 import net.alexanderkahn.service.base.presentation.response.CollectionResponse

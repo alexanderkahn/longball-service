@@ -29,14 +29,14 @@ package net.alexanderkahn.longball.provider.assembler
 //
 ////TODO: this assumes a bunch of state (results are related to appearances). It should be in the service probably so the state can be verified.
 //fun List<PlateAppearanceEntity>.getOuts(basepathResults: List<PxBasepathResult>): Int {
-//        val outAtPlate = mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResult.STRIKEOUT_LOOKING, PlateAppearanceResult.STRIKEOUT_SWINGING) }
-//        val outOnBase = basepathResults.count { it.playResult == PlayResult.OUT }
+//        val outAtPlate = mapNotNull { it.plateAppearanceResult }.count { it in arrayOf(PlateAppearanceResultType.STRIKEOUT_LOOKING, PlateAppearanceResultType.STRIKEOUT_SWINGING) }
+//        val outOnBase = basepathResults.count { it.playResult == PlayResultType.OUT }
 //        return outAtPlate + outOnBase
 //}
 //
 //fun List<PxBasepathResult>.getCurrentOnBase(): List<PxBasepathResult> {
 //    val sorted = this.sortedByDescending { it.id }
-//    return sorted.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResult.SAFE && it.location != BaseLocation.HOME }
+//    return sorted.distinctBy { it.lineupPlayer.battingOrder }.filter { it.playResult == PlayResultType.SAFE && it.location != BaseLocation.HOME }
 //}
 //
 //val List<PxBasepathResult>.hits: Int
@@ -46,7 +46,7 @@ package net.alexanderkahn.longball.provider.assembler
 //
 //val List<PxBasepathResult>.walks: Int
 //    get() {
-//        return mapNotNull { it.gameplayEvent.plateAppearance }.distinct().count { it.plateAppearanceResult in arrayOf(PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH) }
+//        return mapNotNull { it.gameplayEvent.plateAppearance }.distinct().count { it.plateAppearanceResult in arrayOf(PlateAppearanceResultType.BASE_ON_BALLS, PlateAppearanceResultType.HIT_BY_PITCH) }
 //    }
 //
 //val List<PxBasepathResult>.errors: Int
@@ -56,5 +56,5 @@ package net.alexanderkahn.longball.provider.assembler
 //
 //val List<PxBasepathResult>.runs: Int
 //    get() {
-//        return count { it.location == BaseLocation.HOME && it.playResult == PlayResult.SAFE }
+//        return count { it.location == BaseLocation.HOME && it.playResult == PlayResultType.SAFE }
 //    }

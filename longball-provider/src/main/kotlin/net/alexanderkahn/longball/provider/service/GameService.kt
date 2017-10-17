@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.provider.service
 
 
-import net.alexanderkahn.longball.model.GameDTO
-import net.alexanderkahn.longball.model.LineupPositionDTO
-import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.model.dto.GameDTO
+import net.alexanderkahn.longball.model.dto.LineupPositionDTO
+import net.alexanderkahn.longball.model.type.Side
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.entity.GameEntity
@@ -156,8 +156,8 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //            val lastPitch = pitchEvents.last()
 //            appearance.plateAppearanceResult = getPlateAppearanceResult(lastPitch)
 //            when(appearance.plateAppearanceResult) {
-//                PlateAppearanceResult.BASE_ON_BALLS, PlateAppearanceResult.HIT_BY_PITCH -> advanceRunnersOnBaseAwarded(lastPitch, appearance, getCurrentOnBase(appearance.side))
-//                PlateAppearanceResult.IN_PLAY -> advanceRunnersOnBallInPlay(lastPitch, basepathResults)
+//                PlateAppearanceResultType.BASE_ON_BALLS, PlateAppearanceResultType.HIT_BY_PITCH -> advanceRunnersOnBaseAwarded(lastPitch, appearance, getCurrentOnBase(appearance.side))
+//                PlateAppearanceResultType.IN_PLAY -> advanceRunnersOnBallInPlay(lastPitch, basepathResults)
 //                else -> {}
 //            }
 //        }
@@ -168,17 +168,17 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //        val results = plateAppearances.flatMap { gameplayEventRepository.findByPlateAppearanceAndOwner(it) }
 //                .flatMap { basepathResultRepository.findByGameplayEventAndOwner(it) }
 //        return results.sortedByDescending { it.id }.distinctBy { it.lineupPlayer }
-//                .filterNot { it.location == BaseLocation.HOME || it.playResult == PlayResult.OUT }
+//                .filterNot { it.location == BaseLocation.HOME || it.playResult == PlayResultType.OUT }
 //    }
 //
 //    private fun advanceRunnersOnBaseAwarded(lastPitch: PxGameplayEvent, appearance: PlateAppearanceEntity, currentOnBase: List<PxBasepathResult>) {
 //        for (base in BaseLocation.values().sortedArrayDescending()) {
 //            val onBase = currentOnBase.firstOrNull { it.location == base }
 //            if (onBase != null && currentOnBase.any{ it.location == BaseLocation.FIRST || it.location == BaseLocation.values()[base.ordinal - 1]}) {
-//                basepathResultRepository.save(PxBasepathResult(lastPitch, onBase.lineupPlayer, BaseLocation.values()[base.ordinal + 1], PlayResult.SAFE))
+//                basepathResultRepository.save(PxBasepathResult(lastPitch, onBase.lineupPlayer, BaseLocation.values()[base.ordinal + 1], PlayResultType.SAFE))
 //            }
 //        }
-//        basepathResultRepository.save(PxBasepathResult(lastPitch, appearance.batter, BaseLocation.FIRST, PlayResult.SAFE))
+//        basepathResultRepository.save(PxBasepathResult(lastPitch, appearance.batter, BaseLocation.FIRST, PlayResultType.SAFE))
 //    }
 //
 //    private fun advanceRunnersOnBallInPlay(resultEvent: PxGameplayEvent, basepathResults: List<BasepathResultDTO>) {
@@ -197,13 +197,13 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //        }
 //    }
 //
-//    private fun getPlateAppearanceResult(lastEvent: PxGameplayEvent): PlateAppearanceResult {
+//    private fun getPlateAppearanceResult(lastEvent: PxGameplayEvent): PlateAppearanceResultType {
 //        when(lastEvent.pitch) {
-//            PitchType.BALL -> return PlateAppearanceResult.BASE_ON_BALLS
-//            PitchType.STRIKE_SWINGING -> return PlateAppearanceResult.STRIKEOUT_SWINGING
-//            PitchType.STRIKE_LOOKING -> return PlateAppearanceResult.STRIKEOUT_LOOKING
-//            PitchType.HIT_BY_PITCH -> return PlateAppearanceResult.HIT_BY_PITCH
-//            PitchType.IN_PLAY -> return PlateAppearanceResult.IN_PLAY
+//            PitchType.BALL -> return PlateAppearanceResultType.BASE_ON_BALLS
+//            PitchType.STRIKE_SWINGING -> return PlateAppearanceResultType.STRIKEOUT_SWINGING
+//            PitchType.STRIKE_LOOKING -> return PlateAppearanceResultType.STRIKEOUT_LOOKING
+//            PitchType.HIT_BY_PITCH -> return PlateAppearanceResultType.HIT_BY_PITCH
+//            PitchType.IN_PLAY -> return PlateAppearanceResultType.IN_PLAY
 //            else -> throw NotImplementedError()
 //        }
 //    }

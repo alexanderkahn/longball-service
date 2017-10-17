@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.entity
 
-import net.alexanderkahn.longball.model.PlateAppearanceResult
+import net.alexanderkahn.longball.model.type.PlateAppearanceResultType
 import javax.persistence.*
 
 @Entity(name = "plate_appearance")
@@ -15,6 +15,6 @@ data class PlateAppearanceEntity(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_batter"), nullable = false) val batter: LineupPositionEntity,
 
         @Column(nullable = true)
-        var plateAppearanceResult: PlateAppearanceResult? = null
+        var plateAppearanceResult: PlateAppearanceResultType? = null
 
 ) : BaseEntity()

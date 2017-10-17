@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.PlateAppearanceDTO
-import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.model.dto.PlateAppearanceDTO
+import net.alexanderkahn.longball.model.type.Side
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
 import net.alexanderkahn.longball.provider.repository.PlateAppearanceRepository

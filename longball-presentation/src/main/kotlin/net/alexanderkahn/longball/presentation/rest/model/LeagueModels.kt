@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.model
 
-import net.alexanderkahn.longball.model.LeagueDTO
+import net.alexanderkahn.longball.model.dto.LeagueDTO
 import net.alexanderkahn.service.base.api.exception.InvalidStateException
 import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject

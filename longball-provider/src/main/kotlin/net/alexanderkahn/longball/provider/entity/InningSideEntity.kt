@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.entity
 
 
-import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.model.type.Side
 import javax.persistence.*
 
 @Entity(name = "inning_side")

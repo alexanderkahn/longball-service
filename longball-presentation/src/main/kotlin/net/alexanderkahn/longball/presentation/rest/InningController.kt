@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.presentation.rest
 
-import net.alexanderkahn.longball.model.InningDTO
-import net.alexanderkahn.longball.model.InningSideDTO
+import net.alexanderkahn.longball.model.dto.InningDTO
+import net.alexanderkahn.longball.model.dto.InningSideDTO
 import net.alexanderkahn.longball.presentation.getSideFromParam
 import net.alexanderkahn.service.longball.api.IInningService
 import org.springframework.beans.factory.annotation.Autowired

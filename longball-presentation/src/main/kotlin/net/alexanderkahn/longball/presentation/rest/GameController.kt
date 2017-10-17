@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest
 
 
-import net.alexanderkahn.longball.model.GameDTO
-import net.alexanderkahn.longball.model.LineupPositionDTO
-import net.alexanderkahn.longball.model.Side
+import net.alexanderkahn.longball.model.dto.GameDTO
+import net.alexanderkahn.longball.model.dto.LineupPositionDTO
+import net.alexanderkahn.longball.model.type.Side
 import net.alexanderkahn.service.longball.api.IGameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page

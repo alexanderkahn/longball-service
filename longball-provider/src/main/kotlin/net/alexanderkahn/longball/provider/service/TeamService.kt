@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.PlayerDTO
-import net.alexanderkahn.longball.model.TeamDTO
+import net.alexanderkahn.longball.model.dto.PlayerDTO
+import net.alexanderkahn.longball.model.dto.TeamDTO
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
 import net.alexanderkahn.longball.provider.assembler.toModel
