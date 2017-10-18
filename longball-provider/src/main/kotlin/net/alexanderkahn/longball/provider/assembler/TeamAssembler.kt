@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class TeamAssembler(@Autowired private val leagueRepository: LeagueRepository) {
 
-    fun toPersistence(team: TeamDTO): TeamEntity {
+    fun toEntity(team: TeamDTO): TeamEntity {
         val league = leagueRepository.findOne(team.league) ?: throw NotFoundException("leagues", team.league)
         return TeamEntity(league, team.abbreviation, team.location, team.nickname)
     }

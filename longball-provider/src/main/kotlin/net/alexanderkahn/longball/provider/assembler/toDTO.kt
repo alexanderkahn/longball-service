@@ -5,23 +5,23 @@ import net.alexanderkahn.longball.model.type.FieldPosition
 import net.alexanderkahn.longball.provider.entity.*
 
 
-fun GameEntity.toModel(): GameDTO {
+fun GameEntity.toDTO(): GameDTO {
     return GameDTO(id, league.id, awayTeam.id, homeTeam.id, startTime)
 }
 
-fun LeagueEntity.toModel(): LeagueDTO {
+fun LeagueEntity.toDTO(): LeagueDTO {
     return LeagueDTO(id, name)
 }
 
-fun LineupPositionEntity.toModel(): LineupPositionDTO {
+fun LineupPositionEntity.toDTO(): LineupPositionDTO {
     return LineupPositionDTO(player.id, battingOrder, FieldPosition.fromNotation(fieldPosition))
 }
 
-fun PersonEntity.toModel(): PersonDTO {
+fun PersonEntity.toDTO(): PersonDTO {
     return PersonDTO(id, first, last)
 }
 
-fun PlayerEntity.toModel(): PlayerDTO {
+fun PlayerEntity.toDTO(): PlayerDTO {
     return PlayerDTO(id,
             team.id,
             player.id,
@@ -30,10 +30,10 @@ fun PlayerEntity.toModel(): PlayerDTO {
             endDate)
 }
 
-fun TeamEntity.toModel(): TeamDTO {
+fun TeamEntity.toDTO(): TeamDTO {
     return TeamDTO(id, league.id, abbreviation, location, nickname)
 }
 
-fun PlateAppearanceEntity.toModel(): PlateAppearanceDTO {
+fun PlateAppearanceEntity.toDTO(): PlateAppearanceDTO {
     return PlateAppearanceDTO(this.plateAppearanceResult)
 }

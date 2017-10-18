@@ -2,8 +2,8 @@ package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.model.dto.PersonDTO
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.assembler.toModel
-import net.alexanderkahn.longball.provider.assembler.toPersistence
+import net.alexanderkahn.longball.provider.assembler.toDTO
+import net.alexanderkahn.longball.provider.assembler.toEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
@@ -19,18 +19,18 @@ class PersonService(@Autowired private val personRepository: PersonRepository) :
 
     override fun getAll(pageable: Pageable): Page<PersonDTO> {
         val players = personRepository.findByOwner(pageable, UserContext.pxUser)
-        return players.map { it.toModel() }
+        return players.map { it.toDTO() }
     }
 
     override fun get(id: UUID): PersonDTO {
         val player = personRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return player?.toModel() ?: throw NotFoundException("players", id)
+        return player?.toDTO() ?: throw NotFoundException("players", id)
     }
 
     override fun save(person: PersonDTO): PersonDTO {
-        val entity = person.toPersistence()
+        val entity = person.toEntity()
         personRepository.save(entity)
-        return entity.toModel()
+        return entity.toDTO()
     }
 
     override fun delete(id: UUID) {

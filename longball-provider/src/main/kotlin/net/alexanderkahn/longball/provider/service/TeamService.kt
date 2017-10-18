@@ -4,7 +4,7 @@ import net.alexanderkahn.longball.model.dto.PlayerDTO
 import net.alexanderkahn.longball.model.dto.TeamDTO
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.assembler.toModel
+import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.repository.PlayerRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.service.base.api.exception.NotFoundException
@@ -24,18 +24,18 @@ class TeamService(
 
     override fun getAll(pageable: Pageable): Page<TeamDTO> {
         val teams = teamRepository.findByOwner(pageable, UserContext.pxUser)
-        return teams.map { it.toModel() }
+        return teams.map { it.toDTO() }
     }
 
     override fun get(id: UUID): TeamDTO {
         val team = teamRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return team?.toModel() ?: throw NotFoundException("players", id)
+        return team?.toDTO() ?: throw NotFoundException("players", id)
     }
 
     override fun save(team: TeamDTO): TeamDTO {
-        val entity = teamAssembler.toPersistence(team)
+        val entity = teamAssembler.toEntity(team)
         teamRepository.save(entity)
-        return entity.toModel()
+        return entity.toDTO()
     }
 
     override fun delete(id: UUID) {
@@ -47,7 +47,7 @@ class TeamService(
 
     override fun getRoster(teamId: UUID, pageable: Pageable): Page<PlayerDTO> {
         val teams = playerRepository.findByTeamIdAndOwner(pageable, teamId, UserContext.pxUser)
-        return teams.map { it.toModel() }
+        return teams.map { it.toDTO() }
     }
 }
 

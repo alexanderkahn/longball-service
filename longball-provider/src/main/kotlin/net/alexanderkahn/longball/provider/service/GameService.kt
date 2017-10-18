@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.model.dto.GameDTO
 import net.alexanderkahn.longball.model.dto.LineupPositionDTO
 import net.alexanderkahn.longball.model.type.Side
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.assembler.toModel
+import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.entity.GameEntity
 import net.alexanderkahn.longball.provider.repository.GameRepository
 import net.alexanderkahn.longball.provider.repository.InningRepository
@@ -25,7 +25,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
                   @Autowired private val inningRepository: InningRepository) : IGameService {
 
     override fun getOne(id: UUID): GameDTO {
-        return getPxGame(id).toModel()
+        return getPxGame(id).toDTO()
     }
 
     fun getPxGame(id: UUID): GameEntity {
@@ -35,13 +35,13 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 
     override fun getAll(pageable: Pageable): Page<GameDTO> {
         val games = gameRepository.findByOwner(pageable, UserContext.pxUser)
-        return games.map { it.toModel() }
+        return games.map { it.toDTO() }
     }
 
     override fun getLineupPlayers(pageable: Pageable, gameId: UUID, side: Side): Page<LineupPositionDTO> {
         val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)  ?: throw NotFoundException("games", gameId)
         val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.pxUser)
-        return players.map { it.toModel() }
+        return players.map { it.toDTO() }
     }
 
 //    fun getCurrentPlateAppearance(gameId: Long): PlateAppearanceDTO {
@@ -64,7 +64,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //    fun addGameplayEvent(gameId: Long, gameplayEvent: GameplayEvent): PlateAppearanceDTO {
 //        val game = gameRepository.findByIdAndOwner(gameId)
 //        val appearance = getOrCreatePlateAppearance(game)
-//        val pxEvent = gameplayEvent.toPersistence(null, appearance)
+//        val pxEvent = gameplayEvent.toEntity(null, appearance)
 //        validateEvent(gameplayEvent, appearance, game)
 //        gameplayEventRepository.save(pxEvent)
 //
@@ -140,7 +140,7 @@ class GameService(@Autowired private val gameRepository: GameRepository,
 //        val walks = sideBasepathResults.walks
 //        val errors = sideBasepathResults.errors
 //        val runs = sideBasepathResults.runs
-//        return appearance.toModel(getOpposingPitcher(appearance), outs,hits,walks,errors,runs, balls, strikes, basepathResults.getCurrentOnBase())
+//        return appearance.toDTO(getOpposingPitcher(appearance), outs,hits,walks,errors,runs, balls, strikes, basepathResults.getCurrentOnBase())
 //    }
 //
 //    private fun processSideResult(side: InningSideEntity, plateAppearances: List<PlateAppearanceEntity>) {

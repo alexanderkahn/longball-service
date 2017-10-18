@@ -27,7 +27,7 @@ class InningService(
 
     override fun getInningsForGame(pageable: Pageable, gameId: UUID): Page<InningDTO> {
         val game = gameService.getPxGame(gameId)
-        return inningRepository.findByOwnerAndGame(pageable, UserContext.pxUser, game).map { inningAssembler.toModel(it) }
+        return inningRepository.findByOwnerAndGame(pageable, UserContext.pxUser, game).map { inningAssembler.toDTO(it) }
     }
 
     override fun advanceInning(gameId: UUID) {
@@ -51,7 +51,7 @@ class InningService(
 
     override fun getInning(gameId: UUID, inningNumber: Int): InningDTO {
         val game = gameService.getPxGame(gameId)
-        return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toModel(it) }
+        return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toDTO(it) }
                 ?: throw Exception("InningDTO $inningNumber not found for game $gameId")
     }
 

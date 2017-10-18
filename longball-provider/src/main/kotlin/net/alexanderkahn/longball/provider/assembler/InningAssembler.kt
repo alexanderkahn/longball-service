@@ -18,15 +18,15 @@ open class InningAssembler(
         @Autowired private val inningSideRepository: InningSideRepository,
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) {
 
-    fun toModel(entity: InningEntity): InningDTO {
+    fun toDTO(entity: InningEntity): InningDTO {
         return InningDTO(entity.inningNumber, getInningSide(entity, Side.TOP) ?: throw Exception(), getInningSide(entity, Side.BOTTOM))
     }
 
     private fun getInningSide(inning: InningEntity, side: Side): InningSideDTO? {
-        return inningSideRepository.findByInningAndSideAndOwner(inning, side, UserContext.pxUser)?.toModel()
+        return inningSideRepository.findByInningAndSideAndOwner(inning, side, UserContext.pxUser)?.toDTO()
     }
 
-    fun InningSideEntity.toModel(): InningSideDTO {
+    private fun InningSideEntity.toDTO(): InningSideDTO {
         val appearances = plateAppearanceRepository.findBySideAndOwner(this, UserContext.pxUser)
         val hits = appearances.count { it.plateAppearanceResult in listOf(PlateAppearanceResultType.IN_PLAY) }
         //FIXME These values can be calculated from PlateAppearanceResult. Come finish this when PlateAppearances look right

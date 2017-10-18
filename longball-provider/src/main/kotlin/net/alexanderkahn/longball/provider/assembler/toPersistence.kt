@@ -10,10 +10,10 @@ import net.alexanderkahn.service.base.api.security.UserContext
 val UserContext.Companion.pxUser: EmbeddableUser
     get() = UserContext.currentUser.let { EmbeddableUser(it.issuer, it.userId) }
 
-fun LeagueDTO.toPersistence(): LeagueEntity {
+fun LeagueDTO.toEntity(): LeagueEntity {
     return LeagueEntity(name)
 }
 
-fun PersonDTO.toPersistence(): PersonEntity {
+fun PersonDTO.toEntity(): PersonEntity {
     return PersonEntity(first, last)
 }

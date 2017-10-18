@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.provider.service
 import net.alexanderkahn.longball.model.dto.PlateAppearanceDTO
 import net.alexanderkahn.longball.model.type.Side
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.assembler.toModel
+import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.repository.PlateAppearanceRepository
 import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.IPlateAppearanceService
@@ -18,6 +18,6 @@ class PlateAppearanceService(
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) : IPlateAppearanceService {
 
     override fun getPlateAppearances(pageable: Pageable, gameId: UUID, inningNumber: Int, side: Side): Page<PlateAppearanceDTO> {
-        return plateAppearanceRepository.findByOwnerAndGameAndInningNumberAndSide(pageable, UserContext.pxUser, gameId, inningNumber, side).map { it.toModel() }
+        return plateAppearanceRepository.findByOwnerAndGameAndInningNumberAndSide(pageable, UserContext.pxUser, gameId, inningNumber, side).map { it.toDTO() }
     }
 }

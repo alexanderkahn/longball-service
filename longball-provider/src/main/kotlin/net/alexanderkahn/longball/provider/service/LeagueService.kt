@@ -2,8 +2,8 @@ package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.model.dto.LeagueDTO
 import net.alexanderkahn.longball.provider.assembler.pxUser
-import net.alexanderkahn.longball.provider.assembler.toModel
-import net.alexanderkahn.longball.provider.assembler.toPersistence
+import net.alexanderkahn.longball.provider.assembler.toDTO
+import net.alexanderkahn.longball.provider.assembler.toEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.api.exception.NotFoundException
 import net.alexanderkahn.service.base.api.security.UserContext
@@ -19,18 +19,18 @@ class LeagueService(@Autowired private val leagueRepository: LeagueRepository) :
 
     override fun get(id: UUID): LeagueDTO {
         val league = leagueRepository.findByIdAndOwner(id, UserContext.pxUser)
-        return league?.toModel() ?: throw NotFoundException("leagues", id)
+        return league?.toDTO() ?: throw NotFoundException("leagues", id)
     }
 
     override fun getAll(pageable: Pageable): Page<LeagueDTO> {
         val leagues = leagueRepository.findByOwner(pageable, UserContext.pxUser)
-        return leagues.map { it.toModel() }
+        return leagues.map { it.toDTO() }
     }
 
     override fun save(league: LeagueDTO): LeagueDTO {
-        val entity = league.toPersistence()
+        val entity = league.toEntity()
         leagueRepository.save(entity)
-        return entity.toModel()
+        return entity.toDTO()
     }
 
     override fun delete(id: UUID) {
