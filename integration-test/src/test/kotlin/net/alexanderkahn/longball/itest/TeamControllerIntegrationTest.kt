@@ -7,13 +7,29 @@ import net.alexanderkahn.longball.presentation.rest.model.RequestTeam
 import net.alexanderkahn.longball.presentation.rest.model.ResponseTeam
 import net.alexanderkahn.longball.presentation.rest.model.TeamAttributes
 import net.alexanderkahn.longball.presentation.rest.model.TeamRelationships
+import net.alexanderkahn.longball.provider.entity.LeagueEntity
+import net.alexanderkahn.longball.provider.repository.LeagueRepository
+import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import org.apache.commons.lang3.RandomStringUtils
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.http.HttpStatus
+import org.junit.After
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
 class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
+
+    //TODO see about mocking the leagueRepository
+    @Autowired private lateinit var leagueRepository: LeagueRepository
+    @Autowired private lateinit var teamRepository: TeamRepository
+
+    @After
+    fun tearDown() {
+        teamRepository.deleteAll()
+        leagueRepository.deleteAll()
+    }
 
     @Test
     fun postAndDelete() {
@@ -97,5 +113,11 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
         val attributes = TeamAttributes(randomAlphabetic(3).toUpperCase(), randomAlphabetic(10), randomAlphabetic(10))
         val relationships = TeamRelationships(leagueId)
         return ObjectRequest(RequestTeam("teams", attributes, relationships))
+    }
+
+    private fun addLeague(): UUID {
+        val entity = LeagueEntity(RandomStringUtils.randomAlphabetic(10))
+        leagueRepository.save(entity)
+        return entity.id
     }
 }

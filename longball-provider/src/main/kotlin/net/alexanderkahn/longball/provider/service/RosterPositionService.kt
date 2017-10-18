@@ -11,8 +11,10 @@ import net.alexanderkahn.service.longball.api.IRosterPositionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
 import java.util.*
 
+@Service
 class RosterPositionService(
         @Autowired private val rosterPositionRepository: RosterPositionRepository,
         @Autowired private val rosterPositionAssembler: RosterPositionAssembler) : IRosterPositionService {

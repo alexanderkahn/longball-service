@@ -1,16 +1,29 @@
 package net.alexanderkahn.longball.itest
 
 
+import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import net.alexanderkahn.longball.presentation.rest.model.LeagueAttributes
 import net.alexanderkahn.longball.presentation.rest.model.RequestLeague
 import net.alexanderkahn.longball.presentation.rest.model.ResponseLeague
+import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import org.apache.commons.lang3.RandomStringUtils
 import org.apache.http.HttpStatus
+import org.junit.After
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
 class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
+
+    @Autowired lateinit var leagueRepository: LeagueRepository
+
+    @After
+    fun tearDown() {
+        leagueRepository.deleteAll()
+    }
 
     @Test
     fun getLeagues() {
@@ -22,7 +35,6 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
         val leagues: List<ResponseLeague> = response.jsonPath().getList<ResponseLeague>("data")
         assertEquals(5, leagues.size)
         assertNotNull(response.jsonPath().getString("data[0].attributes.name"))
-        deleteLeagues()
     }
 
     //TODO: test pageInfo
@@ -30,19 +42,22 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     @Test
     fun deleteLeague() {
         addLeagues(1)
-        val leaguesInFirstResponse = withBypassToken()
+        val firstResponse = withBypassToken()
                 .`when`().get("/leagues")
                 .then().statusCode(200)
-                .extract().response().jsonPath().getList<ResponseLeague>("data").size
-        assertEquals(1, leaguesInFirstResponse)
+                .extract().response().jsonPath()
+        assertEquals(1, firstResponse.getList<ResponseLeague>("data").size)
 
-        deleteLeagues()
+        val leagueId = firstResponse.getUUID("data[0].id")
+        withBypassToken()
+                .`when`().delete("/leagues/$leagueId")
+                .then().statusCode(HttpStatus.SC_OK)
 
-        val leaguesInSecondResponse = withBypassToken()
+        val secondResponse = withBypassToken()
                 .`when`().get("/leagues")
                 .then().statusCode(200)
-                .extract().response().jsonPath().getList<ResponseLeague>("data").size
-        assertEquals(0, leaguesInSecondResponse)
+                .extract().response().jsonPath()
+        assertEquals(0, secondResponse.getList<ResponseLeague>("data").size)
     }
 
     @Test
@@ -51,4 +66,20 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
                 .`when`().post("/leagues")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
     }
+
+    private fun addLeagues(number: Int) {
+        IntRange(0, number - 1).forEach { addLeague() }
+    }
+
+    private fun addLeague(league: RequestLeague = randomRequestLeague()): UUID {
+        val response = withBypassToken().body(ObjectRequest(league))
+                .`when`().post("/leagues")
+                .then().statusCode(HttpStatus.SC_CREATED)
+                .extract().response()
+        val leagueId = UUID.fromString(response.jsonPath().getString("data.id"))
+        TestCase.assertNotNull(leagueId)
+        return leagueId
+    }
+
+    private fun randomRequestLeague() = RequestLeague("leagues", LeagueAttributes(RandomStringUtils.randomAlphabetic(10)))
 }
