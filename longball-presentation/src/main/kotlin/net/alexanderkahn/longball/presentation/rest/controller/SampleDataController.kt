@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.presentation.rest
+package net.alexanderkahn.longball.presentation.rest.controller
 
 import net.alexanderkahn.service.longball.api.ISampleDataLoader
 import org.springframework.beans.factory.annotation.Autowired

@@ -16,7 +16,7 @@ class SampleDataLoader(
         @Autowired private val leagueRepository: LeagueRepository,
         @Autowired private val teamRepository: TeamRepository,
         @Autowired private val personRepository: PersonRepository,
-        @Autowired private val playerRepository: PlayerRepository,
+        @Autowired private val rosterPositionRepository: RosterPositionRepository,
         @Autowired private val gameRepository: GameRepository,
         @Autowired private val lineupPlayerRepository: LineupPlayerRepository
 ) : ISampleDataLoader {
@@ -40,7 +40,7 @@ class SampleDataLoader(
         val awayPlayers: List<PersonEntity> = (1..9).map { PersonEntity(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
             personRepository.save(player)
-            playerRepository.save(PlayerEntity(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
+            rosterPositionRepository.save(RosterPositionEntity(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
         }
         return team
     }
@@ -53,7 +53,7 @@ class SampleDataLoader(
     }
 
     private fun createLineup(game: GameEntity, team: TeamEntity, side: Side) {
-        val rosterPlayers = playerRepository.findByTeamIdAndOwner(org.springframework.data.domain.PageRequest(0, 20), team.id)
+        val rosterPlayers = rosterPositionRepository.findByTeamIdAndOwner(org.springframework.data.domain.PageRequest(0, 20), team.id)
         var counter = 0
         FieldPosition.values().forEach { it ->
             val lPosition = LineupPositionEntity(game, rosterPlayers.content[counter].player, side.ordinal, ++counter, it.positionNotation)

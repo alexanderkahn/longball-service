@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.model.dto.InningDTO
 import net.alexanderkahn.longball.model.dto.InningSideDTO
 import net.alexanderkahn.longball.model.type.Side
 import net.alexanderkahn.longball.provider.assembler.InningAssembler
-import net.alexanderkahn.longball.provider.assembler.pxUser
+import net.alexanderkahn.longball.provider.assembler.embeddableUser
 import net.alexanderkahn.longball.provider.entity.InningEntity
 import net.alexanderkahn.longball.provider.entity.InningSideEntity
 import net.alexanderkahn.longball.provider.repository.InningRepository
@@ -27,18 +27,18 @@ class InningService(
 
     override fun getInningsForGame(pageable: Pageable, gameId: UUID): Page<InningDTO> {
         val game = gameService.getPxGame(gameId)
-        return inningRepository.findByOwnerAndGame(pageable, UserContext.pxUser, game).map { inningAssembler.toDTO(it) }
+        return inningRepository.findByOwnerAndGame(pageable, UserContext.embeddableUser, game).map { inningAssembler.toDTO(it) }
     }
 
     override fun advanceInning(gameId: UUID) {
         val game = gameService.getPxGame(gameId)
-        val lastInning = inningRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.pxUser, game)
+        val lastInning = inningRepository.findFirstByOwnerAndGameOrderByIdDesc(UserContext.embeddableUser, game)
         if (lastInning == null) {
             val firstInning = InningEntity(game, 1)
             inningRepository.save(firstInning)
             inningSideRepository.save(InningSideEntity(firstInning, Side.TOP))
         } else {
-            val sides = inningSideRepository.findByInningAndOwner(lastInning, UserContext.pxUser)
+            val sides = inningSideRepository.findByInningAndOwner(lastInning, UserContext.embeddableUser)
             if (sides.size >= Side.values().size) {
                 val nextInning = InningEntity(game, lastInning.inningNumber.inc())
                 inningRepository.save(nextInning)
@@ -51,7 +51,7 @@ class InningService(
 
     override fun getInning(gameId: UUID, inningNumber: Int): InningDTO {
         val game = gameService.getPxGame(gameId)
-        return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.pxUser, game, inningNumber)?.let { inningAssembler.toDTO(it) }
+        return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.embeddableUser, game, inningNumber)?.let { inningAssembler.toDTO(it) }
                 ?: throw Exception("InningDTO $inningNumber not found for game $gameId")
     }
 

@@ -23,11 +23,11 @@ open class InningAssembler(
     }
 
     private fun getInningSide(inning: InningEntity, side: Side): InningSideDTO? {
-        return inningSideRepository.findByInningAndSideAndOwner(inning, side, UserContext.pxUser)?.toDTO()
+        return inningSideRepository.findByInningAndSideAndOwner(inning, side, UserContext.embeddableUser)?.toDTO()
     }
 
     private fun InningSideEntity.toDTO(): InningSideDTO {
-        val appearances = plateAppearanceRepository.findBySideAndOwner(this, UserContext.pxUser)
+        val appearances = plateAppearanceRepository.findBySideAndOwner(this, UserContext.embeddableUser)
         val hits = appearances.count { it.plateAppearanceResult in listOf(PlateAppearanceResultType.IN_PLAY) }
         //FIXME These values can be calculated from PlateAppearanceResult. Come finish this when PlateAppearances look right
         return InningSideDTO(0, 0, 0, 0, 0)

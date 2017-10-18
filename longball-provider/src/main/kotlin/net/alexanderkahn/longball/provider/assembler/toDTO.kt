@@ -21,8 +21,8 @@ fun PersonEntity.toDTO(): PersonDTO {
     return PersonDTO(id, first, last)
 }
 
-fun PlayerEntity.toDTO(): PlayerDTO {
-    return PlayerDTO(id,
+fun RosterPositionEntity.toDTO(): RosterPositionDTO {
+    return RosterPositionDTO(id,
             team.id,
             player.id,
             jerseyNumber,

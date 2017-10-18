@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest.model
 
 import net.alexanderkahn.longball.model.dto.PersonDTO
+import net.alexanderkahn.service.base.api.exception.InvalidStateException
 import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
-import sun.plugin.dom.exception.InvalidStateException
 import java.util.*
 
 data class RequestPerson(
@@ -20,7 +20,7 @@ data class ResponsePerson(
         override val id: UUID,
         override val attributes: PersonAttributes) : ResponseResourceObject {
     override val relationships = null
-    override val type = ModelTypes.TEAMS.display
+    override val type = ModelTypes.PEOPLE.display
 }
 
 data class PersonAttributes(val first: String, val last: String)

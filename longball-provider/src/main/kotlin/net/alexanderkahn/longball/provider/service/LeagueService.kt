@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.model.dto.LeagueDTO
-import net.alexanderkahn.longball.provider.assembler.pxUser
+import net.alexanderkahn.longball.provider.assembler.embeddableUser
 import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.assembler.toEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
@@ -18,12 +18,12 @@ import java.util.*
 class LeagueService(@Autowired private val leagueRepository: LeagueRepository) : ILeagueService {
 
     override fun get(id: UUID): LeagueDTO {
-        val league = leagueRepository.findByIdAndOwner(id, UserContext.pxUser)
+        val league = leagueRepository.findByIdAndOwner(id, UserContext.embeddableUser)
         return league?.toDTO() ?: throw NotFoundException("leagues", id)
     }
 
     override fun getAll(pageable: Pageable): Page<LeagueDTO> {
-        val leagues = leagueRepository.findByOwner(pageable, UserContext.pxUser)
+        val leagues = leagueRepository.findByOwner(pageable, UserContext.embeddableUser)
         return leagues.map { it.toDTO() }
     }
 

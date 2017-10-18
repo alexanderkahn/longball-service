@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.model.dto.PersonDTO
-import net.alexanderkahn.longball.provider.assembler.pxUser
+import net.alexanderkahn.longball.provider.assembler.embeddableUser
 import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.assembler.toEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
@@ -18,12 +18,12 @@ import java.util.*
 class PersonService(@Autowired private val personRepository: PersonRepository) : IPersonService {
 
     override fun getAll(pageable: Pageable): Page<PersonDTO> {
-        val players = personRepository.findByOwner(pageable, UserContext.pxUser)
+        val players = personRepository.findByOwner(pageable, UserContext.embeddableUser)
         return players.map { it.toDTO() }
     }
 
     override fun get(id: UUID): PersonDTO {
-        val player = personRepository.findByIdAndOwner(id, UserContext.pxUser)
+        val player = personRepository.findByIdAndOwner(id, UserContext.embeddableUser)
         return player?.toDTO() ?: throw NotFoundException("players", id)
     }
 

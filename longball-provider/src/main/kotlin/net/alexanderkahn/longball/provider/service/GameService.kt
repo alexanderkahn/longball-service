@@ -4,7 +4,7 @@ package net.alexanderkahn.longball.provider.service
 import net.alexanderkahn.longball.model.dto.GameDTO
 import net.alexanderkahn.longball.model.dto.LineupPositionDTO
 import net.alexanderkahn.longball.model.type.Side
-import net.alexanderkahn.longball.provider.assembler.pxUser
+import net.alexanderkahn.longball.provider.assembler.embeddableUser
 import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.entity.GameEntity
 import net.alexanderkahn.longball.provider.repository.GameRepository
@@ -29,18 +29,18 @@ class GameService(@Autowired private val gameRepository: GameRepository,
     }
 
     fun getPxGame(id: UUID): GameEntity {
-        val game = gameRepository.findByIdAndOwner(id, UserContext.pxUser)
+        val game = gameRepository.findByIdAndOwner(id, UserContext.embeddableUser)
         return game ?: throw NotFoundException("games", id)
     }
 
     override fun getAll(pageable: Pageable): Page<GameDTO> {
-        val games = gameRepository.findByOwner(pageable, UserContext.pxUser)
+        val games = gameRepository.findByOwner(pageable, UserContext.embeddableUser)
         return games.map { it.toDTO() }
     }
 
     override fun getLineupPlayers(pageable: Pageable, gameId: UUID, side: Side): Page<LineupPositionDTO> {
-        val game = gameRepository.findByIdAndOwner(gameId, UserContext.pxUser)  ?: throw NotFoundException("games", gameId)
-        val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.pxUser)
+        val game = gameRepository.findByIdAndOwner(gameId, UserContext.embeddableUser)  ?: throw NotFoundException("games", gameId)
+        val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.embeddableUser)
         return players.map { it.toDTO() }
     }
 

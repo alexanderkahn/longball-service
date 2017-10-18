@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.service.base.api.security.UserContext
 
-val UserContext.Companion.pxUser: EmbeddableUser
+val UserContext.Companion.embeddableUser: EmbeddableUser
     get() = UserContext.currentUser.let { EmbeddableUser(it.issuer, it.userId) }
 
 fun LeagueDTO.toEntity(): LeagueEntity {

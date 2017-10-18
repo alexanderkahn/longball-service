@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.presentation.rest
+package net.alexanderkahn.longball.presentation.rest.controller
 
 import net.alexanderkahn.longball.presentation.rest.model.*
 import net.alexanderkahn.service.base.presentation.request.ObjectRequest

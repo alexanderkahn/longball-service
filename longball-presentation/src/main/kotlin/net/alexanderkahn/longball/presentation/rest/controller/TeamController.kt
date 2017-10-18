@@ -1,6 +1,6 @@
-package net.alexanderkahn.longball.presentation.rest
+package net.alexanderkahn.longball.presentation.rest.controller
 
-import net.alexanderkahn.longball.model.dto.PlayerDTO
+import net.alexanderkahn.longball.model.dto.RosterPositionDTO
 import net.alexanderkahn.longball.presentation.rest.model.*
 import net.alexanderkahn.service.base.presentation.request.ObjectRequest
 import net.alexanderkahn.service.base.presentation.response.CollectionResponse
@@ -46,7 +46,7 @@ class TeamController(@Autowired private val teamService: ITeamService) {
     }
 
     @GetMapping("/{id}/roster")
-    fun getRoster(@PathVariable id: UUID, pageable: Pageable): Page<PlayerDTO> {
+    fun getRoster(@PathVariable id: UUID, pageable: Pageable): Page<RosterPositionDTO> {
         return teamService.getRoster(id, pageable)
     }
 }
