@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.itest
 
+import com.google.gson.*
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
@@ -16,7 +17,11 @@ import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
+import java.lang.reflect.Type
 import java.util.concurrent.atomic.AtomicBoolean
+import java.time.format.DateTimeFormatter
+import java.time.LocalDate
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner::class)
@@ -47,6 +52,10 @@ abstract class AbstractBypassTokenIntegrationTest {
         UserContext.clearCurrentUser()
     }
 
+    protected val gson = GsonBuilder()
+            .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
+            .create()
+
     protected fun withBypassToken(): RequestSpecification {
         return RestAssured.given()
                 .header("Authorization", "Bearer $configuredToken")
@@ -55,3 +64,10 @@ abstract class AbstractBypassTokenIntegrationTest {
 }
 
 val isInitialized = AtomicBoolean(false)
+
+internal class LocalDateAdapter : JsonSerializer<LocalDate> {
+
+    override fun serialize(date: LocalDate, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+        return JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE)) // "yyyy-mm-dd"
+    }
+}

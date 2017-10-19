@@ -4,6 +4,7 @@ import net.alexanderkahn.longball.model.dto.RosterPositionDTO
 import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
+import net.alexanderkahn.service.base.api.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -13,8 +14,8 @@ class RosterPositionAssembler @Autowired constructor(
         private val personRepository: PersonRepository) {
 
     fun toEntity(rosterPosition: RosterPositionDTO): RosterPositionEntity {
-        val team = teamRepository.findOne(rosterPosition.team)
-        val player = personRepository.findOne(rosterPosition.player)
+        val team = teamRepository.findOne(rosterPosition.team) ?: throw NotFoundException("teams", rosterPosition.team)
+        val player = personRepository.findOne(rosterPosition.player) ?: throw NotFoundException("people", rosterPosition.player)
         return RosterPositionEntity(team, player, rosterPosition.jerseyNumber, rosterPosition.startDate, rosterPosition.endDate)
     }
 }

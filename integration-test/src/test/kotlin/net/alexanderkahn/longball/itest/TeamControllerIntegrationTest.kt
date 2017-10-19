@@ -51,7 +51,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun postWrongType() {
-        val requestPayload = Gson().toJson(buildRequestTeam()).replace("teams", "tames")
+        val requestPayload = gson.toJson(buildRequestTeam()).replace("teams", "tames")
         withBypassToken().body(requestPayload)
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
@@ -59,7 +59,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun postWrongRelationshipType() {
-        val requestPayload = Gson().toJson(buildRequestTeam()).replace("leagues", "legumes")
+        val requestPayload = gson.toJson(buildRequestTeam()).replace("leagues", "legumes")
         withBypassToken().body(requestPayload)
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
@@ -68,7 +68,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     @Test
     fun postBadLeagueId() {
         val requestTeam = buildRequestTeam()
-        val badIdTeam = Gson().toJson(requestTeam).replace(requestTeam.data.relationships.league.data.id.toString(), UUID.randomUUID().toString())
+        val badIdTeam = gson.toJson(requestTeam).replace(requestTeam.data.relationships.league.data.id.toString(), UUID.randomUUID().toString())
         withBypassToken().body(badIdTeam)
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
