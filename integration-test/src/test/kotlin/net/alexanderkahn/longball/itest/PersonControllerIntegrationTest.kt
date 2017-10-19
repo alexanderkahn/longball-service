@@ -53,7 +53,6 @@ class PersonControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
         withBypassToken().`when`().get("/people/${entityToDelete.id}")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
-
     }
 
     @Test

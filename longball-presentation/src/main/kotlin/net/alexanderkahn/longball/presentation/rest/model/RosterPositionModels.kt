@@ -6,7 +6,7 @@ import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceIdentifier
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceObjectRelationship
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
-import java.time.OffsetDateTime
+import java.time.LocalDate
 import java.util.*
 
 data class RequestRosterPosition(
@@ -28,12 +28,12 @@ data class ResponseRosterPosition(
     override val type = ModelTypes.ROSTER_POSITIONS.display
 }
 
-data class RosterPositionAttributes(val jerseyNumber: Number, val startDate: OffsetDateTime, val endDate: OffsetDateTime?)
+data class RosterPositionAttributes(val jerseyNumber: Number, val startDate: LocalDate, val endDate: LocalDate? = null)
 
 data class RosterPositionRelationships(val team: ResourceObjectRelationship, val player: ResourceObjectRelationship) {
     constructor(teamId: UUID, playerId: UUID): this(
             ResourceObjectRelationship(ResourceIdentifier("teams", teamId)),
-            ResourceObjectRelationship(ResourceIdentifier("players", playerId)))
+            ResourceObjectRelationship(ResourceIdentifier("people", playerId)))
 }
 
 fun RequestRosterPosition.toDto(): RosterPositionDTO {
