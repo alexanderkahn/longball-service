@@ -21,7 +21,6 @@ import java.util.*
 
 class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
-    //TODO see about mocking the leagueRepository
     @Autowired private lateinit var leagueRepository: LeagueRepository
     @Autowired private lateinit var teamRepository: TeamRepository
 
