@@ -1,6 +1,6 @@
 server:
   port: 443
-  contextPath: /rest/v1
+  contextPath: /rest
 application:
   name: ${project.name}
   version: ${project.version}

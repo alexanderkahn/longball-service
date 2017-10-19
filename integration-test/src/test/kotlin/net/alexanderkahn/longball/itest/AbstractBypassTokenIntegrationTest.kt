@@ -40,7 +40,7 @@ abstract class AbstractBypassTokenIntegrationTest {
         UserContext.currentUser = bypassTokenManager.tokenBypassUser
         if (!isInitialized.getAndSet(true)) {
             RestAssured.port = port
-            RestAssured.basePath = "/rest/v1"
+            RestAssured.basePath = "/rest"
             RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
         }
     }

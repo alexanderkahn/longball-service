@@ -1,6 +1,6 @@
 #TODO: why isn't this getting picked up from the main properties file?
 server:
-  contextPath: /rest/v1
+  contextPath: /rest
 application:
   name: longball-test
   version: v1000
