@@ -8,6 +8,7 @@ import net.alexanderkahn.longball.provider.repository.*
 import net.alexanderkahn.service.longball.api.ISampleDataLoader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -40,7 +41,7 @@ class SampleDataLoader(
         val awayPlayers: List<PersonEntity> = (1..9).map { PersonEntity(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->
             personRepository.save(player)
-            rosterPositionRepository.save(RosterPositionEntity(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = OffsetDateTime.now()))
+            rosterPositionRepository.save(RosterPositionEntity(team = team, player = player, jerseyNumber = Random().nextInt(99), startDate = LocalDate.now()))
         }
         return team
     }
