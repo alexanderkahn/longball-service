@@ -30,13 +30,13 @@ class SampleDataLoader(
     }
 
     private fun loadLeague(): LeagueEntity {
-        val league = LeagueEntity("Example LeagueDTO")
+        val league = LeagueEntity("Example League")
         leagueRepository.save(league)
         return league
     }
 
     private fun loadTeamWithPlayers(league: LeagueEntity, location: String): TeamEntity {
-        val team = TeamEntity(league, location.toUpperCase(), location, "TeamDTO")
+        val team = TeamEntity(league, location.toUpperCase(), location, "Team")
         teamRepository.save(team)
         val awayPlayers: List<PersonEntity> = (1..9).map { PersonEntity(first = location, last = it.toString()) }
         awayPlayers.forEach { player ->

@@ -52,7 +52,7 @@ class InningService(
     override fun getInning(gameId: UUID, inningNumber: Int): InningDTO {
         val game = gameService.getPxGame(gameId)
         return inningRepository.findByOwnerAndGameAndInningNumber(UserContext.embeddableUser, game, inningNumber)?.let { inningAssembler.toDTO(it) }
-                ?: throw Exception("InningDTO $inningNumber not found for game $gameId")
+                ?: throw Exception("Inning $inningNumber not found for game $gameId")
     }
 
     override fun getInningSide(gameId: UUID, inningNumber: Int, inningSide: Side): InningSideDTO {
