@@ -6,7 +6,6 @@ import net.alexanderkahn.service.base.presentation.response.CollectionResponse
 import net.alexanderkahn.service.base.presentation.response.CreatedResponse
 import net.alexanderkahn.service.base.presentation.response.DeletedResponse
 import net.alexanderkahn.service.base.presentation.response.ObjectResponse
-import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceCollection
 import net.alexanderkahn.service.longball.api.ILeagueService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
@@ -20,8 +19,7 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
     @GetMapping
     fun getLeagues(pageable: Pageable): CollectionResponse<ResponseLeague> {
         val page = leagueService.getAll(pageable)
-        val objectCollection = ResponseResourceCollection(page.content.map { it.toResponse() })
-        return CollectionResponse(objectCollection, page.toMetaPage())
+        return page.map { it.toResponse() }.toCollectionResponse()
     }
 
     @PostMapping

@@ -20,7 +20,7 @@ class PersonController(@Autowired private val personService: IPersonService) {
     @GetMapping
     fun getAll(pageable: Pageable): CollectionResponse<ResponsePerson> {
         val people = personService.getAll(pageable)
-        return CollectionResponse(ResponseResourceCollection( people.content.map { it.toResponse() }), people.toMetaPage())
+        return people.map { it.toResponse() }.toCollectionResponse()
     }
 
     @PostMapping

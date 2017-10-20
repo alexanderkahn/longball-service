@@ -20,7 +20,7 @@ class RosterPositionController(@Autowired private val rosterPositionService: IRo
     @GetMapping
     fun getAll(pageable: Pageable): CollectionResponse<ResponseRosterPosition> {
         val positions = rosterPositionService.getAll(pageable)
-        return CollectionResponse(ResponseResourceCollection( positions.content.map { it.toResponse() }), positions.toMetaPage())
+        return positions.map { it.toResponse() }.toCollectionResponse()
     }
 
     @PostMapping

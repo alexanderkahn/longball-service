@@ -13,7 +13,7 @@ data class RequestLeague(override val type: String, override val attributes: Lea
     }
 }
 
-data class ResponseLeague(override val id: UUID, override val attributes: LeagueAttributes) :ResponseResourceObject {
+data class ResponseLeague(override val id: UUID, override val attributes: LeagueAttributes) : ResponseResourceObject {
     override val type = ModelTypes.LEAGUES.display
     override val relationships = null
 }

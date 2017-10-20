@@ -23,8 +23,7 @@ class TeamController(@Autowired private val teamService: ITeamService) {
     @GetMapping
     fun getAll(pageable: Pageable): CollectionResponse<ResponseTeam> {
         val page = teamService.getAll(pageable)
-        val objectCollection = ResponseResourceCollection(page.content.map { it.toResponse() })
-        return CollectionResponse(objectCollection, page.toMetaPage())
+        return page.map { it.toResponse() }.toCollectionResponse()
     }
 
     @GetMapping("/{id}")
