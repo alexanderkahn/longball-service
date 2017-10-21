@@ -6,7 +6,6 @@ import net.alexanderkahn.service.base.presentation.response.CollectionResponse
 import net.alexanderkahn.service.base.presentation.response.CreatedResponse
 import net.alexanderkahn.service.base.presentation.response.DeletedResponse
 import net.alexanderkahn.service.base.presentation.response.ObjectResponse
-import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceCollection
 import net.alexanderkahn.service.longball.api.IPersonService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable

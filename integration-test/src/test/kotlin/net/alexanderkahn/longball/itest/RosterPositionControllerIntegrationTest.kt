@@ -3,6 +3,7 @@ package net.alexanderkahn.longball.itest
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import net.alexanderkahn.longball.presentation.rest.model.*
+import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
@@ -28,18 +29,16 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
     @Autowired private lateinit var teamRepository: TeamRepository
     @Autowired private lateinit var rosterPositionRepository: RosterPositionRepository
 
-    private lateinit var babe: PersonEntity
-    private lateinit var team: TeamEntity
+    private lateinit var babe: RosterPositionEntity
 
     @Before
     fun setUp() {
-        val league = LeagueEntity("National Association of Professional Base Ball Players")
-        babe = PersonEntity("George", "Ruth")
-        team = TeamEntity(league, "BOB", "Boston", "Braves") //that's right. Babe Ruth, the famous Brave.
-
+        val league = LeagueEntity("MLB")
+        val team = TeamEntity(league, "HOU", "Houston", "Astros") //that's right. Babe Ruth, the famous Astro.
         leagueRepository.save(league)
         teamRepository.save(team)
-        personRepository.save(babe)
+
+        babe = getTestRosterPosition("Babe", "Ruth")
     }
 
     @After
@@ -52,7 +51,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun post() {
-        val requestRosterPos = requestRosterPosition()
+        val requestRosterPos = babeRequest()
         val responseRosterPos = withBypassToken().body(ObjectRequest(requestRosterPos))
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_CREATED)
@@ -63,7 +62,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun postWrongType() {
-        val badRequest = gson.toJson(ObjectRequest(requestRosterPosition())).replace("rosterpositions", "romperpartitions")
+        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace("rosterpositions", "romperpartitions")
         withBypassToken().body(badRequest)
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
@@ -71,7 +70,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun postWrongRelationshipType() {
-        val badRequest = gson.toJson(ObjectRequest(requestRosterPosition())).replace("people", "pringle")
+        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace("people", "pringle")
         withBypassToken().body(badRequest)
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
@@ -79,7 +78,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun postBadTeamId() {
-        val badRequest = gson.toJson(ObjectRequest(requestRosterPosition())).replace(team.id.toString(), UUID.randomUUID().toString())
+        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace(babe.team.id.toString(), UUID.randomUUID().toString())
         withBypassToken().body(badRequest)
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
@@ -87,7 +86,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun postBadPersonId() {
-        val badRequest = gson.toJson(ObjectRequest(requestRosterPosition())).replace(babe.id.toString(), UUID.randomUUID().toString())
+        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace(babe.player.id.toString(), UUID.randomUUID().toString())
         withBypassToken().body(badRequest)
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
@@ -95,40 +94,41 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun delete() {
-        val position = RosterPositionEntity(team, babe, 3, LocalDate.now())
-        rosterPositionRepository.save(position)
+        rosterPositionRepository.save(babe)
         withBypassToken()
-                .`when`().delete("/rosterpositions/${position.id}")
+                .`when`().delete("/rosterpositions/${babe.id}")
                 .then().statusCode(HttpStatus.SC_OK)
 
         withBypassToken()
-                .`when`().get("/rosterpositions/${position.id}")
+                .`when`().get("/rosterpositions/${babe.id}")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
 
     @Test
     fun getOne() {
-        val position = RosterPositionEntity(team, babe, 3, LocalDate.now().minusDays(5), LocalDate.now())
-        rosterPositionRepository.save(position)
-        val response = withBypassToken().`when`().get("/rosterpositions/${position.id}")
+        rosterPositionRepository.save(babe)
+        val response = withBypassToken().`when`().get("/rosterpositions/${babe.id}")
                 .then().statusCode(HttpStatus.SC_OK).extract().body().jsonPath().getObject("data", ResponseRosterPosition::class.java)
-        assertEquals(position.id, response.id)
-        assertEquals(position.team.id, response.relationships.team.data.id)
-        assertEquals(position.player.id, response.relationships.player.data.id)
-        assertEquals(position.jerseyNumber, response.attributes.jerseyNumber)
-        assertEquals(position.startDate, response.attributes.startDate)
-        assertEquals(position.endDate, response.attributes.endDate)
+        assertEquals(babe.id, response.id)
+        assertEquals(babe.team.id, response.relationships.team.data.id)
+        assertEquals(babe.player.id, response.relationships.player.data.id)
+        assertEquals(babe.jerseyNumber, response.attributes.jerseyNumber)
+        assertEquals(babe.startDate, response.attributes.startDate)
+        assertEquals(babe.endDate, response.attributes.endDate)
+    }
+
+    @Test
+    fun getOneWithIncluded() {
+        rosterPositionRepository.save(babe)
+        val response = withBypassToken().`when`().get("/rosterpositions/${babe.id}?include=player")
+                .then().statusCode(HttpStatus.SC_OK).extract().body().jsonPath().getObject("included[0]", ResponsePerson::class.java)
+        assertEquals(babe.player.toDTO().toResponse(), response)
     }
 
     @Test
     fun getCollection() {
-        val mick = PersonEntity("Mickey", "Mantle")
-        personRepository.save(mick)
-        listOf(babe, mick)
-                .map { RosterPositionEntity(team, it, RandomUtils.nextInt(1, 99), LocalDate.now()) }
-                .forEach { rosterPositionRepository.save(it) }
-
+        rosterPositionRepository.save(listOf(babe, getTestRosterPosition("Mickey", "Mantle")))
         val getResponse = withBypassToken().`when`().get("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()
@@ -136,9 +136,27 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         assertEquals(2, getResponse.getList<ResponseTeam>("data").size)
     }
 
-    private fun requestRosterPosition(): RequestRosterPosition {
+    @Test
+    fun getCollectionWithIncluded() {
+        rosterPositionRepository.save(listOf(babe, getTestRosterPosition("Hank", "Aaron")))
+        val getResponse = withBypassToken().`when`().get("/rosterpositions?include=player")
+                .then().statusCode(HttpStatus.SC_OK)
+                .extract().response().jsonPath()
+
+        assertEquals(2, getResponse.getList<ResponseTeam>("included").size)
+    }
+
+    private fun getTestRosterPosition(first: String, last: String): RosterPositionEntity {
+        val person = PersonEntity(first, last)
+        personRepository.save(person)
+        return RosterPositionEntity(teamRepository.findAll().first(), person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5), LocalDate.now())
+
+
+    }
+
+    private fun babeRequest(): RequestRosterPosition {
         val attributes = RosterPositionAttributes(3, LocalDate.now())
-        val relationships = RosterPositionRelationships(team.id, babe.id)
+        val relationships = RosterPositionRelationships(babe.team.id, babe.player.id)
         return RequestRosterPosition("rosterpositions", attributes, relationships)
     }
 }

@@ -6,8 +6,8 @@ import net.alexanderkahn.service.base.presentation.response.body.data.ResponseRe
 import net.alexanderkahn.service.base.presentation.response.body.meta.ResponseMetaPage
 import org.springframework.data.domain.Page
 
-fun <RO: ResponseResourceObject> Page<RO>.toCollectionResponse(): CollectionResponse<RO> {
-    return CollectionResponse(ResponseResourceCollection(this.content), this.toMetaPage())
+fun <RO: ResponseResourceObject> Page<RO>.toCollectionResponse(included: List<ResponseResourceObject>? = null): CollectionResponse<RO> {
+    return CollectionResponse(ResponseResourceCollection(this.content), this.toMetaPage(), included)
 }
 
 private fun Page<out Any>.toMetaPage(): ResponseMetaPage {
