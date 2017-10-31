@@ -4,14 +4,12 @@ package net.alexanderkahn.longball.provider.service
 import net.alexanderkahn.longball.model.dto.GameDTO
 import net.alexanderkahn.longball.model.dto.LineupPositionDTO
 import net.alexanderkahn.longball.model.type.Side
-import net.alexanderkahn.longball.provider.assembler.embeddableUser
 import net.alexanderkahn.longball.provider.assembler.toDTO
 import net.alexanderkahn.longball.provider.entity.GameEntity
 import net.alexanderkahn.longball.provider.repository.GameRepository
 import net.alexanderkahn.longball.provider.repository.InningRepository
 import net.alexanderkahn.longball.provider.repository.LineupPlayerRepository
 import net.alexanderkahn.service.base.api.exception.NotFoundException
-import net.alexanderkahn.service.base.api.security.UserContext
 import net.alexanderkahn.service.longball.api.IGameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -20,27 +18,29 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class GameService(@Autowired private val gameRepository: GameRepository,
-                  @Autowired private val lineupPlayerRepository: LineupPlayerRepository,
-                  @Autowired private val inningRepository: InningRepository) : IGameService {
+class GameService @Autowired constructor(
+        private val userService: UserService,
+        private val gameRepository: GameRepository,
+        private val lineupPlayerRepository: LineupPlayerRepository,
+        private val inningRepository: InningRepository) : IGameService {
 
     override fun getOne(id: UUID): GameDTO {
         return getPxGame(id).toDTO()
     }
 
     fun getPxGame(id: UUID): GameEntity {
-        val game = gameRepository.findByIdAndOwner(id, UserContext.embeddableUser)
+        val game = gameRepository.findByIdAndOwner(id, userService.embeddableUser())
         return game ?: throw NotFoundException("games", id)
     }
 
     override fun getAll(pageable: Pageable): Page<GameDTO> {
-        val games = gameRepository.findByOwner(pageable, UserContext.embeddableUser)
+        val games = gameRepository.findByOwner(pageable, userService.embeddableUser())
         return games.map { it.toDTO() }
     }
 
     override fun getLineupPlayers(pageable: Pageable, gameId: UUID, side: Side): Page<LineupPositionDTO> {
-        val game = gameRepository.findByIdAndOwner(gameId, UserContext.embeddableUser)  ?: throw NotFoundException("games", gameId)
-        val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, UserContext.embeddableUser)
+        val game = gameRepository.findByIdAndOwner(gameId, userService.embeddableUser()) ?: throw NotFoundException("games", gameId)
+        val players = lineupPlayerRepository.findByGameAndSideAndOwner(pageable, game, side, userService.embeddableUser())
         return players.map { it.toDTO() }
     }
 

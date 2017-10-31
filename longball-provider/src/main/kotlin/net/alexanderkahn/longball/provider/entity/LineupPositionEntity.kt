@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.provider.entity
 
+import java.util.*
 import javax.persistence.*
 
 @Entity(name = "lineup_player")
@@ -13,6 +14,9 @@ data class LineupPositionEntity(
 
         @Column(nullable = false) val side: Int,
         @Column(nullable = false) val battingOrder: Int,
-        @Column(nullable = false) val fieldPosition: Int
+        @Column(nullable = false) val fieldPosition: Int,
 
-) : BaseEntity()
+        @Embedded override val owner: EmbeddableUser,
+        @Id override val id: UUID = UUID.randomUUID()
+
+) : BaseEntity

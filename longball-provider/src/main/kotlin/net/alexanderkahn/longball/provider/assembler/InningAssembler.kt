@@ -9,12 +9,13 @@ import net.alexanderkahn.longball.provider.entity.InningEntity
 import net.alexanderkahn.longball.provider.entity.InningSideEntity
 import net.alexanderkahn.longball.provider.repository.InningSideRepository
 import net.alexanderkahn.longball.provider.repository.PlateAppearanceRepository
-import net.alexanderkahn.service.base.api.security.UserContext
+import net.alexanderkahn.longball.provider.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
 open class InningAssembler(
+        @Autowired private val userService: UserService,
         @Autowired private val inningSideRepository: InningSideRepository,
         @Autowired private val plateAppearanceRepository: PlateAppearanceRepository) {
 
@@ -23,11 +24,11 @@ open class InningAssembler(
     }
 
     private fun getInningSide(inning: InningEntity, side: Side): InningSideDTO? {
-        return inningSideRepository.findByInningAndSideAndOwner(inning, side, UserContext.embeddableUser)?.toDTO()
+        return inningSideRepository.findByInningAndSideAndOwner(inning, side, userService.embeddableUser())?.toDTO()
     }
 
     private fun InningSideEntity.toDTO(): InningSideDTO {
-        val appearances = plateAppearanceRepository.findBySideAndOwner(this, UserContext.embeddableUser)
+        val appearances = plateAppearanceRepository.findBySideAndOwner(this, userService.embeddableUser())
         val hits = appearances.count { it.plateAppearanceResult in listOf(PlateAppearanceResultType.IN_PLAY) }
         //FIXME These values can be calculated from PlateAppearanceResult. Come finish this when PlateAppearances look right
         return InningSideDTO(0, 0, 0, 0, 0)

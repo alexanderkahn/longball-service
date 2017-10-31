@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.provider.entity
 
 import java.time.OffsetDateTime
+import java.util.*
 import javax.persistence.*
 
 @Entity(name = "game_result")
@@ -11,6 +12,9 @@ data class GameResultEntity(
         val game: GameEntity,
 
         @Column(nullable = false)
-        val endTime: OffsetDateTime
+        val endTime: OffsetDateTime,
 
-) : BaseEntity()
+        @Embedded override val owner: EmbeddableUser,
+        @Id override val id: UUID = UUID.randomUUID()
+
+) : BaseEntity

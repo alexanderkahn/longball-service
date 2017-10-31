@@ -1,6 +1,5 @@
 package net.alexanderkahn.longball.itest
 
-import com.google.gson.Gson
 import junit.framework.TestCase.assertEquals
 import net.alexanderkahn.longball.presentation.rest.model.RequestTeam
 import net.alexanderkahn.longball.presentation.rest.model.ResponseTeam
@@ -28,7 +27,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Before
     fun setup() {
-        parentLeague = LeagueEntity(randomAlphabetic(10))
+        parentLeague = LeagueEntity(randomAlphabetic(10), embeddableUser)
         leagueRepository.save(parentLeague)
     }
 
@@ -76,7 +75,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun delete() {
-        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname")
+        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", embeddableUser)
         teamRepository.save(team)
         withBypassToken()
                 .`when`().delete("/teams/${team.id}")
@@ -89,7 +88,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun getOne() {
-        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname")
+        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", embeddableUser)
         teamRepository.save(team)
         val response = withBypassToken().`when`().get("/teams/${team.id}")
                 .then().statusCode(HttpStatus.SC_OK).extract().body().jsonPath().getObject("data", ResponseTeam::class.java)
@@ -104,7 +103,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     @Test
     fun getCollection() {
         listOf(buildRequestTeam(), buildRequestTeam()).forEach {
-            val team = TeamEntity(parentLeague, randomAlphabetic(3), randomAlphabetic(5), randomAlphabetic(5))
+            val team = TeamEntity(parentLeague, randomAlphabetic(3), randomAlphabetic(5), randomAlphabetic(5), embeddableUser)
             teamRepository.save(team)
         }
 

@@ -2,6 +2,7 @@ package net.alexanderkahn.longball.provider.entity
 
 
 import net.alexanderkahn.longball.model.type.Side
+import java.util.*
 import javax.persistence.*
 
 @Entity(name = "inning_side")
@@ -13,6 +14,9 @@ data class InningSideEntity(
         val inning: InningEntity,
 
         @Column(nullable=false)
-        val side: Side
+        val side: Side,
 
-        ) : BaseEntity()
+        @Embedded override val owner: EmbeddableUser,
+        @Id override val id: UUID = UUID.randomUUID()
+
+        ) : BaseEntity

@@ -46,7 +46,7 @@ class PersonControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun delete() {
-        val entityToDelete = PersonEntity("Alex", "Rodriguez")
+        val entityToDelete = PersonEntity("Alex", "Rodriguez", embeddableUser)
         personRepository.save(entityToDelete)
         withBypassToken().`when`().delete("/people/${entityToDelete.id}")
                 .then().statusCode(HttpStatus.SC_OK)
@@ -57,7 +57,7 @@ class PersonControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun getOne() {
-        val requestPerson = PersonEntity("Ichiro", "Suzuki")
+        val requestPerson = PersonEntity("Ichiro", "Suzuki", embeddableUser)
         personRepository.save(requestPerson)
         val returnedPerson = withBypassToken().`when`().get("/people/${requestPerson.id}")
                 .then().statusCode(HttpStatus.SC_OK)
@@ -69,7 +69,7 @@ class PersonControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun getCollection() {
-        listOf("Yadier", "Bengie", "Jose").map { first -> PersonEntity(first, "Molina") }.forEach { personRepository.save(it) }
+        listOf("Yadier", "Bengie", "Jose").map { first -> PersonEntity(first, "Molina", embeddableUser) }.forEach { personRepository.save(it) }
         val getResponse = withBypassToken().`when`().get("/people")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()

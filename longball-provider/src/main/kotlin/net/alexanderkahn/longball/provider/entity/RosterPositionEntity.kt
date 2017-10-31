@@ -2,6 +2,7 @@ package net.alexanderkahn.longball.provider.entity
 
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.util.*
 import javax.persistence.*
 
 @Entity(name = "roster_position")
@@ -17,6 +18,9 @@ class RosterPositionEntity(
 
         @Column(nullable = false) val jerseyNumber: Number,
         @Column(nullable = false) val startDate: LocalDate,
-        @Column(nullable = true) val endDate: LocalDate? = null
+        @Column(nullable = true) val endDate: LocalDate? = null,
 
-) : BaseEntity()
+        @Embedded override val owner: EmbeddableUser,
+        @Id override val id: UUID = UUID.randomUUID()
+
+) : BaseEntity

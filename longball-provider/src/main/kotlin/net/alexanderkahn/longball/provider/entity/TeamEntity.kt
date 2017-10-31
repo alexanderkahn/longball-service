@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.provider.entity
 
+import java.util.*
 import javax.persistence.*
 
 @Entity(name = "team")
@@ -11,6 +12,9 @@ data class TeamEntity(
 
         @Column(nullable = false) val abbreviation: String,
         @Column(nullable = false) val location: String,
-        @Column(nullable = false) val nickname: String
+        @Column(nullable = false) val nickname: String,
 
-) : BaseEntity()
+        @Embedded override val owner: EmbeddableUser,
+        @Id override val id: UUID = UUID.randomUUID()
+
+) : BaseEntity

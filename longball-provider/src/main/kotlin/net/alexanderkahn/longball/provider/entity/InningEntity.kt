@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.provider.entity
 
 
+import java.util.*
 import javax.persistence.*
 
 @Entity(name = "inning")
@@ -12,6 +13,9 @@ data class InningEntity(
         val game: GameEntity,
 
         @Column(nullable = false)
-        val inningNumber: Int
+        val inningNumber: Int,
 
-        ) : BaseEntity()
+        @Embedded override val owner: EmbeddableUser,
+        @Id override val id: UUID = UUID.randomUUID()
+
+) : BaseEntity
