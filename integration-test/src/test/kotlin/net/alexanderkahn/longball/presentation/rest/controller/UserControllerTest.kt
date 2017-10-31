@@ -1,5 +1,7 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
+import net.alexanderkahn.longball.provider.entity.UserEntity
+import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.longball.provider.service.UserService
 import net.alexanderkahn.service.base.api.auth.JwtAuthentication
 import net.alexanderkahn.service.base.api.auth.JwtCredentials
@@ -9,11 +11,14 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.*
 import org.springframework.security.core.context.SecurityContextHolder
 
 internal class UserControllerTest {
 
-    private val userService = UserService()
+    private val userRepository = mock(UserRepository::class.java)
+    private val userService = UserService(userRepository)
     private val subject = UserController(userService)
 
     @Nested
@@ -24,6 +29,8 @@ internal class UserControllerTest {
         @BeforeEach
         fun setCurrentUser() {
             SecurityContextHolder.getContext().authentication = JwtAuthentication(currentUserCredentials, true)
+            `when`(userRepository.existsByIssuerAndUsername(anyString(), anyString())).thenReturn(true)
+            `when`(userRepository.findOneByIssuerAndUsername(anyString(), anyString())).thenReturn(UserEntity(currentUserCredentials.issuer, currentUserCredentials.username))
         }
 
         @Test

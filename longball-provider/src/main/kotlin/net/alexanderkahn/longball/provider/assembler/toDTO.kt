@@ -1,20 +1,17 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.model.dto.*
-import net.alexanderkahn.longball.model.type.FieldPosition
-import net.alexanderkahn.longball.provider.entity.*
+import net.alexanderkahn.longball.model.dto.LeagueDTO
+import net.alexanderkahn.longball.model.dto.PersonDTO
+import net.alexanderkahn.longball.model.dto.RosterPositionDTO
+import net.alexanderkahn.longball.model.dto.TeamDTO
+import net.alexanderkahn.longball.provider.entity.LeagueEntity
+import net.alexanderkahn.longball.provider.entity.PersonEntity
+import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
+import net.alexanderkahn.longball.provider.entity.TeamEntity
 
-
-fun GameEntity.toDTO(): GameDTO {
-    return GameDTO(id, league.id, awayTeam.id, homeTeam.id, startTime)
-}
 
 fun LeagueEntity.toDTO(): LeagueDTO {
     return LeagueDTO(id, name)
-}
-
-fun LineupPositionEntity.toDTO(): LineupPositionDTO {
-    return LineupPositionDTO(player.id, battingOrder, FieldPosition.fromNotation(fieldPosition))
 }
 
 fun PersonEntity.toDTO(): PersonDTO {
@@ -32,8 +29,4 @@ fun RosterPositionEntity.toDTO(): RosterPositionDTO {
 
 fun TeamEntity.toDTO(): TeamDTO {
     return TeamDTO(id, league.id, abbreviation, location, nickname)
-}
-
-fun PlateAppearanceEntity.toDTO(): PlateAppearanceDTO {
-    return PlateAppearanceDTO(this.plateAppearanceResult)
 }
