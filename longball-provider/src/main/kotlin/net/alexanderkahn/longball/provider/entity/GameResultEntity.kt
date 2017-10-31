@@ -14,7 +14,9 @@ data class GameResultEntity(
         @Column(nullable = false)
         val endTime: OffsetDateTime,
 
-        @Embedded override val owner: EmbeddableUser,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
+        override val owner: UserEntity,
         @Id override val id: UUID = UUID.randomUUID()
 
 ) : BaseEntity

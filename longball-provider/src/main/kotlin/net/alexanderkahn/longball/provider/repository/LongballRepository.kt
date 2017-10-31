@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.provider.repository
 
 import net.alexanderkahn.longball.provider.entity.BaseEntity
-import net.alexanderkahn.longball.provider.entity.EmbeddableUser
+import net.alexanderkahn.longball.provider.entity.UserEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.NoRepositoryBean
@@ -17,8 +17,8 @@ interface LongballRepository<PersistenceObject: BaseEntity>: PagingAndSortingRep
 
     override fun <S : PersistenceObject> save(entity: S): S
 
-    fun findByIdAndOwner(id: UUID, currentUser: EmbeddableUser): PersistenceObject?
+    fun findByIdAndOwner(id: UUID, currentUser: UserEntity): PersistenceObject?
 
-    fun findByOwner(pageable: Pageable, currentUser: EmbeddableUser): Page<PersistenceObject>
+    fun findByOwner(pageable: Pageable, currentUser: UserEntity): Page<PersistenceObject>
 
 }

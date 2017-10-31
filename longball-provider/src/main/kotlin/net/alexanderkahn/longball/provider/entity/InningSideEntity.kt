@@ -16,7 +16,9 @@ data class InningSideEntity(
         @Column(nullable=false)
         val side: Side,
 
-        @Embedded override val owner: EmbeddableUser,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
+        override val owner: UserEntity,
         @Id override val id: UUID = UUID.randomUUID()
 
         ) : BaseEntity

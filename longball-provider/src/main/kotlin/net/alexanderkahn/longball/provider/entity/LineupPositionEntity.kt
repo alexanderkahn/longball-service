@@ -16,7 +16,9 @@ data class LineupPositionEntity(
         @Column(nullable = false) val battingOrder: Int,
         @Column(nullable = false) val fieldPosition: Int,
 
-        @Embedded override val owner: EmbeddableUser,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
+        override val owner: UserEntity,
         @Id override val id: UUID = UUID.randomUUID()
 
 ) : BaseEntity

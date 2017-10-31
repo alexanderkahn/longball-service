@@ -20,7 +20,9 @@ data class GameEntity(
         @OneToOne(mappedBy = "game", cascade = arrayOf(CascadeType.ALL))
         var resultEntity: GameResultEntity? = null,
 
-        @Embedded override val owner: EmbeddableUser,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
+        override val owner: UserEntity,
         @Id override val id: UUID = UUID.randomUUID()
 
 

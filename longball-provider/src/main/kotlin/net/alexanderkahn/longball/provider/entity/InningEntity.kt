@@ -15,7 +15,9 @@ data class InningEntity(
         @Column(nullable = false)
         val inningNumber: Int,
 
-        @Embedded override val owner: EmbeddableUser,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
+        override val owner: UserEntity,
         @Id override val id: UUID = UUID.randomUUID()
 
 ) : BaseEntity

@@ -1,10 +1,7 @@
 package net.alexanderkahn.longball.provider.entity
 
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Embedded
-import javax.persistence.Entity
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity(name = "person")
 data class PersonEntity(
@@ -12,7 +9,9 @@ data class PersonEntity(
         @Column(nullable = false) val first: String,
         @Column(nullable = false) val last: String,
 
-        @Embedded override val owner: EmbeddableUser,
+        @ManyToOne
+        @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
+        override val owner: UserEntity,
         @Id override val id: UUID = UUID.randomUUID()
 
 ) : BaseEntity
