@@ -6,6 +6,8 @@ import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceIdentifier
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceObjectRelationship
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.base.presentation.response.body.meta.ModifiableResourceMeta
+import java.time.OffsetDateTime
 import java.util.*
 
 data class RequestTeam(
@@ -20,6 +22,7 @@ data class RequestTeam(
 
 data class ResponseTeam(
         override val id: UUID,
+        override val meta: ModifiableResourceMeta,
         override val attributes: TeamAttributes,
         override val relationships: TeamRelationships) : ResponseResourceObject {
     override val type = ModelTypes.TEAMS.display
@@ -33,11 +36,12 @@ data class TeamRelationships(val league: ResourceObjectRelationship) {
 
 fun TeamDTO.toResponse(): ResponseTeam {
     val teamId = id ?: throw InvalidStateException("Response must contain a valid ID")
+    val meta = ModifiableResourceMeta(created, lastModified)
     val attributes = TeamAttributes(abbreviation, location, nickname)
     val relationships = TeamRelationships(league)
-    return ResponseTeam(teamId, attributes, relationships)
+    return ResponseTeam(teamId, meta, attributes, relationships)
 }
 
 fun RequestTeam.toDto(): TeamDTO {
-    return TeamDTO(null, relationships.league.data.id, attributes.abbreviation, attributes.location, attributes.nickname)
+    return TeamDTO(null, OffsetDateTime.now(), OffsetDateTime.now(), relationships.league.data.id, attributes.abbreviation, attributes.location, attributes.nickname)
 }

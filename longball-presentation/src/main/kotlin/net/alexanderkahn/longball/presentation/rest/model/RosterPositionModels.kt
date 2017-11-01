@@ -6,7 +6,9 @@ import net.alexanderkahn.service.base.presentation.request.RequestResourceObject
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceIdentifier
 import net.alexanderkahn.service.base.presentation.response.body.data.ResourceObjectRelationship
 import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.base.presentation.response.body.meta.ModifiableResourceMeta
 import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.util.*
 
 data class RequestRosterPosition(
@@ -23,6 +25,7 @@ data class RequestRosterPosition(
 
 data class ResponseRosterPosition(
         override val id: UUID,
+        override val meta: ModifiableResourceMeta,
         override val attributes: RosterPositionAttributes,
         override val relationships: RosterPositionRelationships) : ResponseResourceObject {
     override val type = ModelTypes.ROSTER_POSITIONS.display
@@ -39,6 +42,8 @@ data class RosterPositionRelationships(val team: ResourceObjectRelationship, val
 fun RequestRosterPosition.toDto(): RosterPositionDTO {
     return RosterPositionDTO(
             null,
+            OffsetDateTime.now(),
+            OffsetDateTime.now(),
             relationships.team.data.id,
             relationships.player.data.id,
             attributes.jerseyNumber,
@@ -49,6 +54,7 @@ fun RequestRosterPosition.toDto(): RosterPositionDTO {
 fun RosterPositionDTO.toResponse(): ResponseRosterPosition {
     val positionId = id ?: throw InvalidStateException("No id found for roster position")
     return ResponseRosterPosition(positionId,
+            ModifiableResourceMeta(created, lastModified),
             RosterPositionAttributes(jerseyNumber, startDate, endDate),
             RosterPositionRelationships(team, player)
     )

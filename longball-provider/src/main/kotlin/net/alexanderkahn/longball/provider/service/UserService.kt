@@ -9,11 +9,10 @@ import net.alexanderkahn.service.longball.api.IUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserService(@Autowired private val userRepository: UserRepository) : IUserService {
-    override fun currentUser(): UserDTO = with(getUserFromContext()) { UserDTO(id, issuer, username) }
+    override fun currentUser(): UserDTO = with(getUserFromContext()) { UserDTO(id, created, lastModified, issuer, username) }
     fun embeddableUser(): UserEntity = getUserFromContext()
 
     private fun getUserFromContext(): UserEntity {

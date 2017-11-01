@@ -11,15 +11,17 @@ import net.alexanderkahn.longball.provider.entity.TeamEntity
 
 
 fun LeagueEntity.toDTO(): LeagueDTO {
-    return LeagueDTO(id, name)
+    return LeagueDTO(id, created, lastModified, name)
 }
 
 fun PersonEntity.toDTO(): PersonDTO {
-    return PersonDTO(id, first, last)
+    return PersonDTO(id, created, lastModified, first, last)
 }
 
 fun RosterPositionEntity.toDTO(): RosterPositionDTO {
     return RosterPositionDTO(id,
+            created,
+            lastModified,
             team.id,
             player.id,
             jerseyNumber,
@@ -28,5 +30,5 @@ fun RosterPositionEntity.toDTO(): RosterPositionDTO {
 }
 
 fun TeamEntity.toDTO(): TeamDTO {
-    return TeamDTO(id, league.id, abbreviation, location, nickname)
+    return TeamDTO(id, created, lastModified, league.id, abbreviation, location, nickname)
 }

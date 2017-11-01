@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.model.dto
 
-import java.util.UUID
+import java.time.OffsetDateTime
+import java.util.*
 
-data class LeagueDTO(val id: UUID?, val name: String)
+data class LeagueDTO(val id: UUID?, val created: OffsetDateTime, val lastModified: OffsetDateTime, val name: String)
