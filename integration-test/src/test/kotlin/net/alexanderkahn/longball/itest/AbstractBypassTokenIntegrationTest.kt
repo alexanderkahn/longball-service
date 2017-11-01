@@ -4,6 +4,7 @@ import com.google.gson.*
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
+import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService
@@ -20,9 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import java.lang.reflect.Type
-import java.util.concurrent.atomic.AtomicBoolean
-import java.time.format.DateTimeFormatter
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,16 +37,19 @@ abstract class AbstractBypassTokenIntegrationTest {
     @Autowired private lateinit var teamRepository: TeamRepository
 
     @LocalServerPort private var port: Int = -1
+
+    protected lateinit var userEntity: UserEntity
+
     @Value("\${oauth.test.bypassToken}") private lateinit var configuredToken: String
 
     @Before
     fun setUpBase() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
         SecurityContextHolder.getContext().authentication = JwtAuthentication(bypassTokenManager.tokenBypassCredentials, true)
-        if (!isInitialized.getAndSet(true)) {
-            RestAssured.port = port
-            RestAssured.basePath = "/rest"
-            RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
-        }
+        userEntity = userService.embeddableUser()
+        RestAssured.port = port
+        RestAssured.basePath = "/rest"
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
     @After
@@ -53,8 +57,6 @@ abstract class AbstractBypassTokenIntegrationTest {
         teamRepository.deleteAll()
         leagueRepository.deleteAll()
     }
-
-    protected val embeddableUser = userService.embeddableUser()
 
     protected val gson = GsonBuilder()
             .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
@@ -66,8 +68,6 @@ abstract class AbstractBypassTokenIntegrationTest {
                 .contentType(ContentType.JSON)
     }
 }
-
-val isInitialized = AtomicBoolean(false)
 
 internal class LocalDateAdapter : JsonSerializer<LocalDate> {
 

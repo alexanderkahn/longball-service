@@ -25,7 +25,7 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun getLeagues() {
-        IntRange(0, 5 - 1).forEach { leagueRepository.save(LeagueEntity(RandomStringUtils.randomAlphabetic(5), embeddableUser)) }
+        IntRange(0, 5 - 1).forEach { leagueRepository.save(LeagueEntity(RandomStringUtils.randomAlphabetic(5), userEntity)) }
         val response = withBypassToken()
                 .`when`().get("/leagues")
                 .then().statusCode(HttpStatus.SC_OK)
@@ -48,7 +48,7 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun getLeague() {
-        val league = LeagueEntity(RandomStringUtils.randomAlphabetic(5), embeddableUser)
+        val league = LeagueEntity(RandomStringUtils.randomAlphabetic(5), userEntity)
         leagueRepository.save(league)
 
         val responseBody = withBypassToken()
@@ -63,7 +63,7 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun deleteLeague() {
-        val league = LeagueEntity(RandomStringUtils.randomAlphabetic(5), embeddableUser)
+        val league = LeagueEntity(RandomStringUtils.randomAlphabetic(5), userEntity)
         leagueRepository.save(league)
 
         withBypassToken()

@@ -33,8 +33,8 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Before
     fun setUp() {
-        val league = LeagueEntity("MLB", embeddableUser)
-        val team = TeamEntity(league, "HOU", "Houston", "Astros", embeddableUser) //that's right. Babe Ruth, the famous Astro.
+        val league = LeagueEntity("MLB", userEntity)
+        val team = TeamEntity(league, "HOU", "Houston", "Astros", userEntity) //that's right. Babe Ruth, the famous Astro.
         leagueRepository.save(league)
         teamRepository.save(team)
 
@@ -147,9 +147,9 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
     }
 
     private fun getTestRosterPosition(first: String, last: String): RosterPositionEntity {
-        val person = PersonEntity(first, last, embeddableUser)
+        val person = PersonEntity(first, last, userEntity)
         personRepository.save(person)
-        return RosterPositionEntity(teamRepository.findAll().first(), person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5), LocalDate.now(), embeddableUser)
+        return RosterPositionEntity(teamRepository.findAll().first(), person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5), LocalDate.now(), userEntity)
 
 
     }

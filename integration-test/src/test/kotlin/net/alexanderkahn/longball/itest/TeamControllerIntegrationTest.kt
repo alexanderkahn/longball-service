@@ -27,7 +27,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Before
     fun setup() {
-        parentLeague = LeagueEntity(randomAlphabetic(10), embeddableUser)
+        parentLeague = LeagueEntity(randomAlphabetic(10), userEntity)
         leagueRepository.save(parentLeague)
     }
 
@@ -75,7 +75,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun delete() {
-        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", embeddableUser)
+        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", userEntity)
         teamRepository.save(team)
         withBypassToken()
                 .`when`().delete("/teams/${team.id}")
@@ -88,7 +88,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Test
     fun getOne() {
-        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", embeddableUser)
+        val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", userEntity)
         teamRepository.save(team)
         val response = withBypassToken().`when`().get("/teams/${team.id}")
                 .then().statusCode(HttpStatus.SC_OK).extract().body().jsonPath().getObject("data", ResponseTeam::class.java)
@@ -103,7 +103,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     @Test
     fun getCollection() {
         listOf(buildRequestTeam(), buildRequestTeam()).forEach {
-            val team = TeamEntity(parentLeague, randomAlphabetic(3), randomAlphabetic(5), randomAlphabetic(5), embeddableUser)
+            val team = TeamEntity(parentLeague, randomAlphabetic(3), randomAlphabetic(5), randomAlphabetic(5), userEntity)
             teamRepository.save(team)
         }
 
