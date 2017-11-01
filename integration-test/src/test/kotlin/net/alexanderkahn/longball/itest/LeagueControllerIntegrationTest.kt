@@ -2,12 +2,12 @@ package net.alexanderkahn.longball.itest
 
 
 import junit.framework.TestCase.*
-import net.alexanderkahn.longball.presentation.rest.model.LeagueAttributes
-import net.alexanderkahn.longball.presentation.rest.model.RequestLeague
-import net.alexanderkahn.longball.presentation.rest.model.ResponseLeague
+import net.alexanderkahn.longball.model.dto.LeagueAttributes
+import net.alexanderkahn.longball.model.dto.RequestLeague
+import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
-import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.http.HttpStatus
 import org.junit.After

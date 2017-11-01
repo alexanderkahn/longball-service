@@ -1,13 +1,13 @@
 package net.alexanderkahn.longball.itest
 
 import junit.framework.TestCase.assertEquals
-import net.alexanderkahn.longball.presentation.rest.model.PersonAttributes
-import net.alexanderkahn.longball.presentation.rest.model.RequestPerson
-import net.alexanderkahn.longball.presentation.rest.model.ResponsePerson
-import net.alexanderkahn.longball.presentation.rest.model.ResponseTeam
+import net.alexanderkahn.longball.model.dto.PersonAttributes
+import net.alexanderkahn.longball.model.dto.RequestPerson
+import net.alexanderkahn.longball.model.dto.ResponsePerson
+import net.alexanderkahn.longball.model.dto.ResponseTeam
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
-import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.http.HttpStatus
 import org.junit.Before
 import org.junit.Test

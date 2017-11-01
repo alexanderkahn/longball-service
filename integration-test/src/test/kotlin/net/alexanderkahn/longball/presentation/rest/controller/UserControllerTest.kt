@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.longball.provider.service.UserService
 import net.alexanderkahn.service.base.api.auth.JwtAuthentication
 import net.alexanderkahn.service.base.api.auth.JwtCredentials
-import net.alexanderkahn.service.base.api.exception.InvalidStateException
+import net.alexanderkahn.service.base.model.exception.InvalidStateException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach

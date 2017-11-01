@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
-import net.alexanderkahn.service.longball.api.ISampleDataLoader
+import net.alexanderkahn.longball.api.service.ISampleDataLoader
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestMapping

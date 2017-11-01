@@ -1,11 +1,12 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.dto.RosterPositionDTO
+import net.alexanderkahn.longball.api.service.IRosterPositionService
+import net.alexanderkahn.longball.model.dto.RequestRosterPosition
+import net.alexanderkahn.longball.model.dto.ResponseRosterPosition
 import net.alexanderkahn.longball.provider.assembler.RosterPositionAssembler
-import net.alexanderkahn.longball.provider.assembler.toDTO
+import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.RosterPositionRepository
-import net.alexanderkahn.service.base.api.exception.NotFoundException
-import net.alexanderkahn.service.longball.api.IRosterPositionService
+import net.alexanderkahn.service.base.model.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,20 +19,20 @@ class RosterPositionService @Autowired constructor(
         private val rosterPositionRepository: RosterPositionRepository,
         private val rosterPositionAssembler: RosterPositionAssembler) : IRosterPositionService {
 
-    override fun getAll(pageable: Pageable): Page<RosterPositionDTO> {
+    override fun getAll(pageable: Pageable): Page<ResponseRosterPosition> {
         val positions = rosterPositionRepository.findByOwner(pageable, userService.embeddableUser())
-        return positions.map { it.toDTO() }
+        return positions.map { it.toResponse() }
     }
 
-    override fun get(id: UUID): RosterPositionDTO {
+    override fun get(id: UUID): ResponseRosterPosition {
         val position = rosterPositionRepository.findByIdAndOwner(id, userService.embeddableUser())
-        return position?.toDTO() ?: throw NotFoundException("rosterpositions", id)
+        return position?.toResponse() ?: throw NotFoundException("rosterpositions", id)
     }
 
-    override fun save(rosterPosition: RosterPositionDTO): RosterPositionDTO {
+    override fun save(rosterPosition: RequestRosterPosition): ResponseRosterPosition {
         val entity = rosterPositionAssembler.toEntity(rosterPosition)
         rosterPositionRepository.save(entity)
-        return entity.toDTO()
+        return entity.toResponse()
     }
 
     override fun delete(id: UUID) {

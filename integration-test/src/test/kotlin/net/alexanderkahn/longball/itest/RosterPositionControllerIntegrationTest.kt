@@ -2,8 +2,8 @@ package net.alexanderkahn.longball.itest
 
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
-import net.alexanderkahn.longball.presentation.rest.model.*
-import net.alexanderkahn.longball.provider.assembler.toDTO
+import net.alexanderkahn.longball.model.dto.*
+import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
@@ -12,7 +12,7 @@ import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.RosterPositionRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomUtils
 import org.apache.http.HttpStatus
 import org.junit.After
@@ -123,7 +123,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         rosterPositionRepository.save(babe)
         val response = withBypassToken().`when`().get("/rosterpositions/${babe.id}?include=player")
                 .then().statusCode(HttpStatus.SC_OK).extract().body().jsonPath().getObject("included[0]", ResponsePerson::class.java)
-        assertEquals(babe.player.toDTO().toResponse(), response)
+        assertEquals(babe.player.toResponse(), response)
     }
 
     @Test

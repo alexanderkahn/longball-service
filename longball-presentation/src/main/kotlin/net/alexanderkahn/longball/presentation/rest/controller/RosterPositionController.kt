@@ -1,15 +1,17 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
-import net.alexanderkahn.longball.model.dto.RosterPositionDTO
+import net.alexanderkahn.longball.api.service.IRosterPositionService
+import net.alexanderkahn.longball.model.dto.ModelTypes
+import net.alexanderkahn.longball.model.dto.RequestRosterPosition
+import net.alexanderkahn.longball.model.dto.ResponseRosterPosition
+import net.alexanderkahn.longball.model.dto.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.IncludeHelper
-import net.alexanderkahn.longball.presentation.rest.model.*
-import net.alexanderkahn.service.base.presentation.request.ObjectRequest
-import net.alexanderkahn.service.base.presentation.response.CollectionResponse
-import net.alexanderkahn.service.base.presentation.response.CreatedResponse
-import net.alexanderkahn.service.base.presentation.response.DeletedResponse
-import net.alexanderkahn.service.base.presentation.response.ObjectResponse
-import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
-import net.alexanderkahn.service.longball.api.IRosterPositionService
+import net.alexanderkahn.service.base.model.request.ObjectRequest
+import net.alexanderkahn.service.base.model.response.CollectionResponse
+import net.alexanderkahn.service.base.model.response.CreatedResponse
+import net.alexanderkahn.service.base.model.response.DeletedResponse
+import net.alexanderkahn.service.base.model.response.ObjectResponse
+import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
@@ -25,21 +27,21 @@ class RosterPositionController(
     fun getAll(pageable: Pageable, @RequestParam("include", required = false) includeTypes: List<String>?): CollectionResponse<ResponseRosterPosition> {
         val positions = rosterPositionService.getAll(pageable)
         val included = getIncluded(includeTypes, positions.content)
-        return positions.map { it.toResponse() }.toCollectionResponse(included)
+        return positions.toCollectionResponse(included)
     }
 
     @PostMapping
     fun post(@RequestBody rosterRequest: ObjectRequest<RequestRosterPosition>): CreatedResponse<ResponseRosterPosition> {
         rosterRequest.data.validate()
-        val created = rosterPositionService.save(rosterRequest.data.toDto())
-        return CreatedResponse(created.toResponse())
+        val created = rosterPositionService.save(rosterRequest.data)
+        return CreatedResponse(created)
     }
 
     @GetMapping("/{id}")
     fun get(@PathVariable id: UUID, @RequestParam("include", required = false) includeTypes: List<String>?): ObjectResponse<ResponseRosterPosition> {
         val position = rosterPositionService.get(id)
         val included = getIncluded(includeTypes, listOf(position))
-        return ObjectResponse(position.toResponse(), included)
+        return ObjectResponse(position, included)
     }
 
     @DeleteMapping("/{id}")
@@ -48,9 +50,9 @@ class RosterPositionController(
         return DeletedResponse()
     }
 
-    private fun getIncluded(includeTypes: List<String>?, positions: List<RosterPositionDTO>): List<ResponseResourceObject>? {
+    private fun getIncluded(includeTypes: List<String>?, positions: List<ResponseRosterPosition>): List<ResponseResourceObject>? {
         return if (includeTypes?.contains("player") == true) {
-            includeHelper.include(mapOf(ModelTypes.PEOPLE to positions.map { it.player }))
+            includeHelper.include(mapOf(ModelTypes.PEOPLE to positions.map { it.relationships.player.data.id }))
         } else {
             null
         }

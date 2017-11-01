@@ -1,18 +1,21 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.dto.UserDTO
+import net.alexanderkahn.longball.api.service.IUserService
+import net.alexanderkahn.longball.model.dto.ResponseUser
+import net.alexanderkahn.longball.model.dto.UserAttributes
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.service.base.api.auth.JwtAuthentication
-import net.alexanderkahn.service.base.api.exception.InvalidStateException
-import net.alexanderkahn.service.longball.api.IUserService
+import net.alexanderkahn.service.base.model.exception.InvalidStateException
+import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(@Autowired private val userRepository: UserRepository) : IUserService {
-    override fun currentUser(): UserDTO = with(getUserFromContext()) { UserDTO(id, created, lastModified, issuer, username) }
+    override fun currentUser(): ResponseUser = with(getUserFromContext()) {
+        ResponseUser(id, ModifiableResourceMeta(created, lastModified), UserAttributes(issuer, username)) }
     fun embeddableUser(): UserEntity = getUserFromContext()
 
     private fun getUserFromContext(): UserEntity {

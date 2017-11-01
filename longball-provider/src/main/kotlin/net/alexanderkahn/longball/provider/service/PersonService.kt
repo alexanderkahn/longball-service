@@ -1,11 +1,12 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.model.dto.PersonDTO
+import net.alexanderkahn.longball.api.service.IPersonService
+import net.alexanderkahn.longball.model.dto.RequestPerson
+import net.alexanderkahn.longball.model.dto.ResponsePerson
 import net.alexanderkahn.longball.provider.assembler.PersonAssembler
-import net.alexanderkahn.longball.provider.assembler.toDTO
+import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.PersonRepository
-import net.alexanderkahn.service.base.api.exception.NotFoundException
-import net.alexanderkahn.service.longball.api.IPersonService
+import net.alexanderkahn.service.base.model.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -19,20 +20,20 @@ class PersonService @Autowired constructor(
         private val personAssembler: PersonAssembler
 ) : IPersonService {
 
-    override fun getAll(pageable: Pageable): Page<PersonDTO> {
+    override fun getAll(pageable: Pageable): Page<ResponsePerson> {
         val players = personRepository.findByOwner(pageable, userService.embeddableUser())
-        return players.map { it.toDTO() }
+        return players.map { it.toResponse() }
     }
 
-    override fun get(id: UUID): PersonDTO {
+    override fun get(id: UUID): ResponsePerson {
         val player = personRepository.findByIdAndOwner(id, userService.embeddableUser())
-        return player?.toDTO() ?: throw NotFoundException("players", id)
+        return player?.toResponse() ?: throw NotFoundException("players", id)
     }
 
-    override fun save(person: PersonDTO): PersonDTO {
+    override fun save(person: RequestPerson): ResponsePerson {
         val entity = personAssembler.toEntity(person)
         personRepository.save(entity)
-        return entity.toDTO()
+        return entity.toResponse()
     }
 
     override fun delete(id: UUID) {

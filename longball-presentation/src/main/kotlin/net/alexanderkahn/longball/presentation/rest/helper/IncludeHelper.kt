@@ -1,10 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest.helper
 
-import net.alexanderkahn.longball.presentation.rest.model.ModelTypes
-import net.alexanderkahn.longball.presentation.rest.model.ModelTypes.PEOPLE
-import net.alexanderkahn.longball.presentation.rest.model.toResponse
-import net.alexanderkahn.service.base.presentation.response.body.data.ResponseResourceObject
-import net.alexanderkahn.service.longball.api.IPersonService
+import net.alexanderkahn.longball.api.service.IPersonService
+import net.alexanderkahn.longball.model.dto.ModelTypes
+import net.alexanderkahn.longball.model.dto.ModelTypes.PEOPLE
+import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
@@ -19,7 +18,7 @@ class IncludeHelper(@Autowired private val personService: IPersonService) {
 
     private fun getResourceObjectsForType(type: ModelTypes, ids: List<UUID>): List<ResponseResourceObject> {
         return when (type) {
-            PEOPLE -> ids.map { personService.get(it).toResponse() }
+            PEOPLE -> ids.map { personService.get(it) }
             else -> listOf()
         }
     }

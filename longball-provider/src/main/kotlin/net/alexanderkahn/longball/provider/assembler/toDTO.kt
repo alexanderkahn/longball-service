@@ -1,34 +1,32 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.model.dto.LeagueDTO
-import net.alexanderkahn.longball.model.dto.PersonDTO
-import net.alexanderkahn.longball.model.dto.RosterPositionDTO
-import net.alexanderkahn.longball.model.dto.TeamDTO
-import net.alexanderkahn.longball.provider.entity.LeagueEntity
-import net.alexanderkahn.longball.provider.entity.PersonEntity
-import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
-import net.alexanderkahn.longball.provider.entity.TeamEntity
+import net.alexanderkahn.longball.model.dto.*
+import net.alexanderkahn.longball.provider.entity.*
+import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
 
 
-fun LeagueEntity.toDTO(): LeagueDTO {
-    return LeagueDTO(id, created, lastModified, name)
+fun LeagueEntity.toResponse(): ResponseLeague {
+    val attributes = LeagueAttributes(name)
+    return ResponseLeague(id, toMeta(), attributes)
 }
 
-fun PersonEntity.toDTO(): PersonDTO {
-    return PersonDTO(id, created, lastModified, first, last)
+fun PersonEntity.toResponse(): ResponsePerson {
+    val attributes = PersonAttributes(first, last)
+    return ResponsePerson(id, toMeta(), attributes)
 }
 
-fun RosterPositionEntity.toDTO(): RosterPositionDTO {
-    return RosterPositionDTO(id,
-            created,
-            lastModified,
-            team.id,
-            player.id,
-            jerseyNumber,
-            startDate,
-            endDate)
+fun RosterPositionEntity.toResponse(): ResponseRosterPosition {
+    val attributes = RosterPositionAttributes(jerseyNumber, startDate, endDate)
+    val relationships = RosterPositionRelationships(team.id, player.id)
+    return ResponseRosterPosition(id, toMeta(), attributes, relationships)
 }
 
-fun TeamEntity.toDTO(): TeamDTO {
-    return TeamDTO(id, created, lastModified, league.id, abbreviation, location, nickname)
+fun TeamEntity.toResponse(): ResponseTeam {
+    val attributes = TeamAttributes(abbreviation, location, nickname)
+    val relationships = TeamRelationships(league.id)
+    return ResponseTeam(id, toMeta(), attributes, relationships)
+}
+
+fun BaseEntity.toMeta(): ModifiableResourceMeta {
+    return ModifiableResourceMeta(created, lastModified)
 }

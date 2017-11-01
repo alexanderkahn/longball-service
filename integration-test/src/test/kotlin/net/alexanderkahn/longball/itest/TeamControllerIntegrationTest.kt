@@ -1,15 +1,15 @@
 package net.alexanderkahn.longball.itest
 
 import junit.framework.TestCase.assertEquals
-import net.alexanderkahn.longball.presentation.rest.model.RequestTeam
-import net.alexanderkahn.longball.presentation.rest.model.ResponseTeam
-import net.alexanderkahn.longball.presentation.rest.model.TeamAttributes
-import net.alexanderkahn.longball.presentation.rest.model.TeamRelationships
+import net.alexanderkahn.longball.model.dto.RequestTeam
+import net.alexanderkahn.longball.model.dto.ResponseTeam
+import net.alexanderkahn.longball.model.dto.TeamAttributes
+import net.alexanderkahn.longball.model.dto.TeamRelationships
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.service.base.presentation.request.ObjectRequest
+import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.http.HttpStatus
 import org.junit.After

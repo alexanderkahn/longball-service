@@ -19,8 +19,8 @@ data class TeamEntity(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
         override val owner: UserEntity,
 
-        @Column(nullable = false) val created: OffsetDateTime = OffsetDateTime.now(),
-        @Column(nullable = false) val lastModified: OffsetDateTime = created,
+        @Column(nullable = false) override val created: OffsetDateTime = OffsetDateTime.now(),
+        @Column(nullable = false) override val lastModified: OffsetDateTime = created,
         @Id override val id: UUID = UUID.randomUUID()
 
 ) : BaseEntity
