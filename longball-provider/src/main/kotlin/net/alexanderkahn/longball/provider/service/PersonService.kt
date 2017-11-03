@@ -21,7 +21,7 @@ class PersonService @Autowired constructor(
 ) : IPersonService {
 
     override fun getAll(pageable: Pageable): Page<ResponsePerson> {
-        val players = personRepository.findByOwner(pageable, userService.embeddableUser())
+        val players = personRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
         return players.map { it.toResponse() }
     }
 

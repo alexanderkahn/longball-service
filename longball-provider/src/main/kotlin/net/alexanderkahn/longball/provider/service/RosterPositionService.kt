@@ -20,7 +20,7 @@ class RosterPositionService @Autowired constructor(
         private val rosterPositionAssembler: RosterPositionAssembler) : IRosterPositionService {
 
     override fun getAll(pageable: Pageable): Page<ResponseRosterPosition> {
-        val positions = rosterPositionRepository.findByOwner(pageable, userService.embeddableUser())
+        val positions = rosterPositionRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
         return positions.map { it.toResponse() }
     }
 

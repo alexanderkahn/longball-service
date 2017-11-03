@@ -26,7 +26,7 @@ class LeagueService @Autowired constructor(
     }
 
     override fun getAll(pageable: Pageable): Page<ResponseLeague> {
-        val leagues = leagueRepository.findByOwner(pageable, userService.embeddableUser())
+        val leagues = leagueRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
         return leagues.map { it.toResponse() }
     }
 

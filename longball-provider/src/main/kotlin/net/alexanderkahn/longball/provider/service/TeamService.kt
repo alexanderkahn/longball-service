@@ -22,7 +22,7 @@ class TeamService @Autowired constructor(
         private val teamAssembler: TeamAssembler) : ITeamService {
 
     override fun getAll(pageable: Pageable): Page<ResponseTeam> {
-        val teams = teamRepository.findByOwner(pageable, userService.embeddableUser())
+        val teams = teamRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
         return teams.map { it.toResponse() }
     }
 

@@ -19,6 +19,6 @@ interface LongballRepository<PersistenceObject: BaseEntity>: PagingAndSortingRep
 
     fun findByIdAndOwner(id: UUID, currentUser: UserEntity): PersistenceObject?
 
-    fun findByOwner(pageable: Pageable, currentUser: UserEntity): Page<PersistenceObject>
+    fun findByOwnerOrderByCreated(pageable: Pageable, currentUser: UserEntity): Page<PersistenceObject>
 
 }
