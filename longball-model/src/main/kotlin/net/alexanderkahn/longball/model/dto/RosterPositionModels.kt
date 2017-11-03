@@ -29,7 +29,7 @@ data class ResponseRosterPosition(
     override val type = ModelTypes.ROSTER_POSITIONS.display
 }
 
-data class RosterPositionAttributes(val jerseyNumber: Number, val startDate: LocalDate, val endDate: LocalDate? = null)
+data class RosterPositionAttributes(val jerseyNumber: Int, val startDate: LocalDate, val endDate: LocalDate? = null)
 
 data class RosterPositionRelationships(val team: ResourceObjectRelationship, val player: ResourceObjectRelationship) {
     constructor(teamId: UUID, playerId: UUID): this(

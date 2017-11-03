@@ -18,7 +18,7 @@ spring:
   profiles: test
   jpa:
     database: HSQL
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: none
 ---
 spring:
   profiles: bypassToken

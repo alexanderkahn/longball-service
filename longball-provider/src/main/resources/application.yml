@@ -5,6 +5,9 @@ application:
   name: ${project.name}
   version: ${project.version}
   buildDate: ${buildDate}
+
+liquibase:
+  change-log: classpath:db/liquibase-changelog.xml
 oauth:
   issuer:
     algorithm: RS256
@@ -18,7 +21,7 @@ spring:
   profiles: dev
   jpa:
     show-sql: true
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: none
   datasource:
     url: jdbc:postgresql://localhost:5432/longball
     username: postgres

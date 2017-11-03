@@ -16,7 +16,7 @@ class RosterPositionEntity(
         @JoinColumn(foreignKey = ForeignKey(name = "fk_person"), nullable = false)
         val player: PersonEntity,
 
-        @Column(nullable = false) val jerseyNumber: Number,
+        @Column(nullable = false) val jerseyNumber: Int,
         @Column(nullable = false) val startDate: LocalDate,
         @Column(nullable = true) val endDate: LocalDate? = null,
 
