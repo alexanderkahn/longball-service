@@ -5,6 +5,8 @@ application:
   name: longball-test
   version: v1000
   buildDate: yesterday
+liquibase:
+  change-log: classpath:db/liquibase-changelog.xml
 oauth:
   issuer:
     algorithm: RS256
@@ -17,8 +19,8 @@ oauth:
 spring:
   profiles: test
   jpa:
-    database: HSQL
     hibernate.ddl-auto: none
+  datasource.generate-unique-name: true
 ---
 spring:
   profiles: bypassToken

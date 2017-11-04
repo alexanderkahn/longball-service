@@ -22,7 +22,8 @@ class UserService(@Autowired private val userRepository: UserRepository) : IUser
         val auth = SecurityContextHolder.getContext().authentication as? JwtAuthentication ?: throw InvalidStateException("No current user set")
         val principal = auth.principal
         if (!userRepository.existsByIssuerAndUsername(principal.issuer, principal.username)) {
-            userRepository.save(UserEntity(principal.issuer, principal.username))
+            val entity = UserEntity(principal.issuer, principal.username)
+            userRepository.save(entity)
         }
         return userRepository.findOneByIssuerAndUsername(principal.issuer, principal.username) ?: throw InvalidStateException("Failed to save user. Something went wrong!")
     }

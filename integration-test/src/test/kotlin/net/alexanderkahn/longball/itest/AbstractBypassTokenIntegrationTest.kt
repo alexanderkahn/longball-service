@@ -23,7 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner
 import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -44,7 +43,6 @@ abstract class AbstractBypassTokenIntegrationTest {
 
     @Before
     fun setUpBase() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
         SecurityContextHolder.getContext().authentication = JwtAuthentication(bypassTokenManager.tokenBypassCredentials, true)
         userEntity = userService.embeddableUser()
         RestAssured.port = port
