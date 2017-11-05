@@ -19,6 +19,9 @@ oauth:
 spring:
   profiles: test
   jpa:
+    #TODO: this doesn't work yet -- needs Hibernate 5.2.3. See about upgrading.
+    #For now run tests with -Duser.timezone=UTC command line argument
+    properties.hibernate.jdbc.time_zone: UTC
     hibernate.ddl-auto: none
   datasource.generate-unique-name: true
 ---
