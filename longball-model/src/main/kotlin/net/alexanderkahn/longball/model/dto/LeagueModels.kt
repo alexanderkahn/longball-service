@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.model.dto
 
 
+import net.alexanderkahn.service.base.model.exception.BadRequestException
 import net.alexanderkahn.service.base.model.request.RequestResourceObject
 import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceObject
 import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
@@ -10,6 +11,9 @@ data class RequestLeague(override val type: String, override val attributes: Lea
     override val relationships = null
     override fun validate() {
         assertType(ModelTypes.LEAGUES)
+        if (attributes.name.length < MIN_NAME_FIELD_SIZE || attributes.name.length > MAX_NAME_FIELD_SIZE) {
+            throw BadRequestException(invalidFieldLengthMessage("name"))
+        }
     }
 }
 
