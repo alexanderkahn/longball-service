@@ -9,7 +9,7 @@ import java.util.*
 interface ILeagueService {
 
     fun get(id: UUID): ResponseLeague
-    fun getAll(pageable: Pageable): Page<ResponseLeague>
+    fun getAll(pageable: Pageable, nameFilter: String? = null): Page<ResponseLeague>
     fun save(league: RequestLeague): ResponseLeague
     fun delete(id: UUID)
 }

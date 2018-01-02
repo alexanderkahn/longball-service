@@ -25,8 +25,12 @@ class LeagueService @Autowired constructor(
         return league?.toResponse() ?: throw NotFoundException("leagues", id)
     }
 
-    override fun getAll(pageable: Pageable): Page<ResponseLeague> {
-        val leagues = leagueRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
+    override fun getAll(pageable: Pageable, nameFilter: String?): Page<ResponseLeague> {
+        val leagues = if (nameFilter == null) {
+            leagueRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
+        } else {
+            leagueRepository.findByOwnerAndNameIgnoreCaseContainingOrderByCreated(pageable, userService.embeddableUser(), nameFilter)
+        }
         return leagues.map { it.toResponse() }
     }
 

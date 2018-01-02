@@ -19,8 +19,8 @@ import java.util.*
 class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
     @GetMapping
-    fun getLeagues(pageable: Pageable): CollectionResponse<ResponseLeague> {
-        val page = leagueService.getAll(pageable)
+    fun getLeagues(pageable: Pageable, @RequestParam("filter[name]", required = false) nameFilter: String? = null): CollectionResponse<ResponseLeague> {
+        val page = leagueService.getAll(pageable, nameFilter)
         return page.toCollectionResponse()
     }
 
