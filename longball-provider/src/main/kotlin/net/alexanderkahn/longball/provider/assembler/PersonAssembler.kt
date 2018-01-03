@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component
 class PersonAssembler @Autowired constructor(private val userService: UserService) {
 
     fun toEntity(dto: RequestPerson): PersonEntity {
-        return PersonEntity(dto.attributes.first, dto.attributes.last, userService.embeddableUser())
+        return PersonEntity(dto.attributes.first, dto.attributes.last, userService.userEntity())
     }
 }

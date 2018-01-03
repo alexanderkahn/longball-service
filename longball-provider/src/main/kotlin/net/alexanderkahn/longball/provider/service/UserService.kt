@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 class UserService(@Autowired private val userRepository: UserRepository) : IUserService {
     override fun currentUser(): ResponseUser = with(getUserFromContext()) {
         ResponseUser(id, ModifiableResourceMeta(created, lastModified), UserAttributes(issuer, username)) }
-    fun embeddableUser(): UserEntity = getUserFromContext()
+    fun userEntity(): UserEntity = getUserFromContext()
 
     private fun getUserFromContext(): UserEntity {
         val auth = SecurityContextHolder.getContext().authentication as? JwtAuthentication ?: throw InvalidStateException("No current user set")

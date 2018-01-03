@@ -22,12 +22,12 @@ class TeamService @Autowired constructor(
         private val teamAssembler: TeamAssembler) : ITeamService {
 
     override fun getAll(pageable: Pageable): Page<ResponseTeam> {
-        val teams = teamRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
+        val teams = teamRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         return teams.map { it.toResponse() }
     }
 
     override fun get(id: UUID): ResponseTeam {
-        val team = teamRepository.findByIdAndOwner(id, userService.embeddableUser())
+        val team = teamRepository.findByIdAndOwner(id, userService.userEntity())
         return team?.toResponse() ?: throw NotFoundException("players", id)
     }
 

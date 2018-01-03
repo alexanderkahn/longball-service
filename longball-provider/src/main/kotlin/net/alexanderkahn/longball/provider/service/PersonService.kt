@@ -21,12 +21,12 @@ class PersonService @Autowired constructor(
 ) : IPersonService {
 
     override fun getAll(pageable: Pageable): Page<ResponsePerson> {
-        val players = personRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
+        val players = personRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         return players.map { it.toResponse() }
     }
 
     override fun get(id: UUID): ResponsePerson {
-        val player = personRepository.findByIdAndOwner(id, userService.embeddableUser())
+        val player = personRepository.findByIdAndOwner(id, userService.userEntity())
         return player?.toResponse() ?: throw NotFoundException("players", id)
     }
 

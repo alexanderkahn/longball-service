@@ -20,12 +20,12 @@ class RosterPositionService @Autowired constructor(
         private val rosterPositionAssembler: RosterPositionAssembler) : IRosterPositionService {
 
     override fun getAll(pageable: Pageable): Page<ResponseRosterPosition> {
-        val positions = rosterPositionRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
+        val positions = rosterPositionRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         return positions.map { it.toResponse() }
     }
 
     override fun get(id: UUID): ResponseRosterPosition {
-        val position = rosterPositionRepository.findByIdAndOwner(id, userService.embeddableUser())
+        val position = rosterPositionRepository.findByIdAndOwner(id, userService.userEntity())
         return position?.toResponse() ?: throw NotFoundException("rosterpositions", id)
     }
 

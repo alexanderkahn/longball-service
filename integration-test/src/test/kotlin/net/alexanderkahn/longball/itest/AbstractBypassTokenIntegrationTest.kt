@@ -44,7 +44,7 @@ abstract class AbstractBypassTokenIntegrationTest {
     @Before
     fun setUpBase() {
         SecurityContextHolder.getContext().authentication = JwtAuthentication(bypassTokenManager.tokenBypassCredentials, true)
-        userEntity = userService.embeddableUser()
+        userEntity = userService.userEntity()
         RestAssured.port = port
         RestAssured.basePath = "/rest"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()

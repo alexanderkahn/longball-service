@@ -22,17 +22,17 @@ class LeagueService @Autowired constructor(
 ) : ILeagueService {
 
     override fun get(id: UUID): ResponseLeague {
-        val league = leagueRepository.findByIdAndOwner(id, userService.embeddableUser())
+        val league = leagueRepository.findByIdAndOwner(id, userService.userEntity())
         return league?.toResponse() ?: throw NotFoundException("leagues", id)
     }
 
     override fun getAll(pageable: Pageable, search: RequestResourceSearch?): Page<ResponseLeague> {
         val leagues = if (search == null) {
-            leagueRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
+            leagueRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         } else {
-            // TODO: this assumes the filter is name. Need to use predicates to get this stuff right.
-            val nameFilter = search.searchTerm
-            leagueRepository.findByOwnerAndNameIgnoreCaseContainingOrderByCreated(pageable, userService.embeddableUser(), nameFilter)
+            // TODO: specification is still too hardwired. Need to be able to get right predicates based on selected field
+            val specification = SpecificationBuilder.leagueNameMatches(userService.userEntity(), search.searchTerm)
+            leagueRepository.findAll(specification, pageable)
         }
         return leagues.map { it.toResponse() }
     }

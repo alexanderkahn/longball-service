@@ -18,6 +18,6 @@ class RosterPositionAssembler @Autowired constructor(
     fun toEntity(rosterPosition: RequestRosterPosition): RosterPositionEntity {
         val team = rosterPosition.relationships.team.data.id.let { teamRepository.findOne(it) ?: throw NotFoundException("teams", it) }
         val player = rosterPosition.relationships.player.data.id.let { personRepository.findOne(it) ?: throw NotFoundException("people", it) }
-        return with(rosterPosition.attributes) { RosterPositionEntity(team, player, jerseyNumber, startDate, endDate, userService.embeddableUser()) }
+        return with(rosterPosition.attributes) { RosterPositionEntity(team, player, jerseyNumber, startDate, endDate, userService.userEntity()) }
     }
 }

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component
 @Component
 class LeagueAssembler @Autowired constructor(private val userService: UserService) {
     fun toEntity(dto: RequestLeague): LeagueEntity {
-        return LeagueEntity(dto.attributes.name, userService.embeddableUser())
+        return LeagueEntity(dto.attributes.name, userService.userEntity())
     }
 }

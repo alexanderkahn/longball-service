@@ -15,6 +15,6 @@ class TeamAssembler @Autowired constructor(
 
     fun toEntity(team: RequestTeam): TeamEntity {
         val league = team.relationships.league.data.id.let { leagueRepository.findOne(it) ?: throw NotFoundException("leagues", it) }
-        return with(team.attributes) {TeamEntity(league, abbreviation, location, nickname, userService.embeddableUser()) }
+        return with(team.attributes) {TeamEntity(league, abbreviation, location, nickname, userService.userEntity()) }
     }
 }

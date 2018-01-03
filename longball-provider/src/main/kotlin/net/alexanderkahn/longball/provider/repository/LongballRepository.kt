@@ -4,6 +4,7 @@ import net.alexanderkahn.longball.provider.entity.BaseEntity
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.data.repository.PagingAndSortingRepository
 import java.util.*
@@ -13,12 +14,12 @@ import java.util.*
 // (apparently depends on exact method signature match). https://spring.io/blog/2011/07/27/fine-tuning-spring-data-repositories/
 
 @NoRepositoryBean
-interface LongballRepository<PersistenceObject: BaseEntity>: PagingAndSortingRepository<PersistenceObject, UUID> {
+interface LongballRepository<Entity: BaseEntity>: PagingAndSortingRepository<Entity, UUID>, JpaSpecificationExecutor<Entity> {
 
-    override fun <S : PersistenceObject> save(entity: S): S
+    override fun <S : Entity> save(entity: S): S
 
-    fun findByIdAndOwner(id: UUID, currentUser: UserEntity): PersistenceObject?
+    fun findByIdAndOwner(id: UUID, currentUser: UserEntity): Entity?
 
-    fun findByOwnerOrderByCreated(pageable: Pageable, currentUser: UserEntity): Page<PersistenceObject>
+    fun findByOwnerOrderByCreated(currentUser: UserEntity, pageable: Pageable): Page<Entity>
 
 }
