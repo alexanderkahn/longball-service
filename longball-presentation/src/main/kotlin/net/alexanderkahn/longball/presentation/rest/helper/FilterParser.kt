@@ -1,9 +1,11 @@
 package net.alexanderkahn.longball.presentation.rest.helper
 
 import net.alexanderkahn.service.base.model.exception.BadRequestException
-import net.alexanderkahn.service.base.model.request.RequestResourceFilter
-import net.alexanderkahn.service.base.model.request.RequestResourceSearch
+import net.alexanderkahn.service.base.model.request.filter.RequestResourceFilter
+import net.alexanderkahn.service.base.model.request.filter.RequestResourceSearch
+import net.alexanderkahn.service.base.model.request.filter.SEARCH_WILDCARD_SPACE
 import org.springframework.util.MultiValueMap
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.javaType
@@ -17,14 +19,17 @@ val searchParamEnd = "]"
 val valueSeparator = ","
 
 fun getSearchableFieldsFor(clazz: KClass<*>): Collection<String> {
-    return clazz.memberProperties.filter { it.returnType.javaType == String::class.java }.map { it.name }
+    return clazz.memberProperties.filter { it.returnType.javaType == String::class.java }
+            .map { it.name }
+            .plus(SEARCH_WILDCARD_SPACE)
 }
 
+//TODO: probably need a try for the UUID conversion
 fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Set<String>): Collection<RequestResourceFilter> {
     val filters = queryParams
             ?.filter { it.key.startsWith(filterParamStart) && it.key.endsWith(filterParamEnd) && it.value.isNotEmpty() }
             ?.mapKeys { it.key.removePrefix(filterParamStart).removeSuffix(filterParamEnd) }
-            ?.map { RequestResourceFilter(it.key, it.value) } ?: emptyList()
+            ?.map { RequestResourceFilter(it.key, it.value.map { UUID.fromString(it) }) } ?: emptyList()
     assertValidFilters(filters, allowedFields)
     return filters
 }
