@@ -10,16 +10,19 @@ import javax.persistence.criteria.Root
 
 object SpecificationBuilder {
     fun <T : BaseEntity> matchSearch(owner: UserEntity, searchParams: RequestResourceSearch): Specification<T> {
-        val pattern = "%${searchParams.searchTerm.replace(" ", "").toLowerCase()}%"
+        val pattern = "%${searchParams.searchTerm.trim().toLowerCase()}%"
         return Specification {
             root, _, cb -> val concatenatedFields = getConcatenatedFields(cb, root, searchParams.searchFields)
             cb.and(cb.equal(root.get<UserEntity>("owner"), owner), cb.like(concatenatedFields, pattern))
         }
     }
 
+    //TODO: it would be fun to allow the user to specify where whitespace goes. Maybe in the future.
+    //TODO: also would be fun to allow for case sensitivity. Lots of stuff you could do here to make search more robust.
     private fun getConcatenatedFields(cb: CriteriaBuilder, root: Root<*>, fields: List<String>): Expression<String> {
         var expression: Expression<String> = root.get<String>(fields.get(0))
         for (field: String in fields.drop(1)) {
+            expression = cb.concat(expression, " ")
             expression = cb.concat(expression, root.get(field))
         }
         return cb.lower(expression)

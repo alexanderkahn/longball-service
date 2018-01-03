@@ -4,6 +4,9 @@ import net.alexanderkahn.service.base.model.exception.BadRequestException
 import net.alexanderkahn.service.base.model.request.RequestResourceFilter
 import net.alexanderkahn.service.base.model.request.RequestResourceSearch
 import org.springframework.util.MultiValueMap
+import kotlin.reflect.KClass
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.javaType
 
 val filterParamStart = "filter["
 val filterParamEnd = "]"
@@ -12,6 +15,10 @@ val searchParamStart = "search["
 val searchParamEnd = "]"
 
 val valueSeparator = ","
+
+fun getSearchableFieldsFor(clazz: KClass<*>): Collection<String> {
+    return clazz.memberProperties.filter { it.returnType.javaType == String::class.java }.map { it.name }
+}
 
 fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Set<String>): Collection<RequestResourceFilter> {
     val filters = queryParams

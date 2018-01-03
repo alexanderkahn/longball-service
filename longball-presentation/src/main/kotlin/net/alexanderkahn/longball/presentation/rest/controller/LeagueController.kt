@@ -6,6 +6,7 @@ import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch
+import net.alexanderkahn.longball.presentation.rest.helper.getSearchableFieldsFor
 import net.alexanderkahn.service.base.model.request.ObjectRequest
 import net.alexanderkahn.service.base.model.response.CollectionResponse
 import net.alexanderkahn.service.base.model.response.CreatedResponse
@@ -16,14 +17,12 @@ import org.springframework.data.domain.Pageable
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.javaType
 
 @RestController
 @RequestMapping("/leagues")
 class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
-    private val validLeagueSearchFields = LeagueAttributes::class.memberProperties.filter { it.returnType.javaType == String::class.java }.map { it.name }
+    private val validLeagueSearchFields = getSearchableFieldsFor(LeagueAttributes::class)
 
     @GetMapping
     fun getLeagues(pageable: Pageable, @RequestParam(required = false) queryParams: MultiValueMap<String, String>?): CollectionResponse<ResponseLeague> {
