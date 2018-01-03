@@ -13,7 +13,7 @@ val searchParamEnd = "]"
 
 val valueSeparator = ","
 
-fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Set<String>): List<RequestResourceFilter> {
+fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Set<String>): Collection<RequestResourceFilter> {
     val filters = queryParams
             ?.filter { it.key.startsWith(filterParamStart) && it.key.endsWith(filterParamEnd) && it.value.isNotEmpty() }
             ?.mapKeys { it.key.removePrefix(filterParamStart).removeSuffix(filterParamEnd) }
@@ -22,7 +22,7 @@ fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Set<S
     return filters
 }
 
-fun getSearch(queryParams: MultiValueMap<String, String>?, allowedFields: Set<String>): RequestResourceSearch? {
+fun getSearch(queryParams: MultiValueMap<String, String>?, allowedFields: Collection<String>): RequestResourceSearch? {
     val searches = queryParams
             ?.filter { it.key.startsWith(searchParamStart) && it.key.endsWith(searchParamEnd) && it.value.isNotEmpty() }
             ?.mapKeys {it.key.removePrefix(searchParamStart).removeSuffix(searchParamEnd).split(valueSeparator) }
@@ -32,7 +32,7 @@ fun getSearch(queryParams: MultiValueMap<String, String>?, allowedFields: Set<St
 }
 
 //TODO: should this throw an exception or just ignore the param?
-private fun assertValidFilters(filter: List<RequestResourceFilter>, validFields: Set<String>) {
+private fun assertValidFilters(filter: List<RequestResourceFilter>, validFields: Collection<String>) {
     filter.forEach {
         if (!validFields.contains(it.filterField)) {
             throw BadRequestException("Cannot parse filter field: ${it.filterField}")
@@ -42,7 +42,7 @@ private fun assertValidFilters(filter: List<RequestResourceFilter>, validFields:
     }
 }
 
-private fun assertValidSearches(searches: List<RequestResourceSearch>, validFields: Set<String>) {
+private fun assertValidSearches(searches: List<RequestResourceSearch>, validFields: Collection<String>) {
     if (searches.size > 1) {
         throw BadRequestException("Only one search term may be specified per request")
     }

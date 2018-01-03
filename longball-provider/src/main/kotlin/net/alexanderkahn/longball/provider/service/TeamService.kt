@@ -5,9 +5,10 @@ import net.alexanderkahn.longball.model.dto.RequestTeam
 import net.alexanderkahn.longball.model.dto.ResponseTeam
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
-import net.alexanderkahn.longball.provider.repository.RosterPositionRepository
+import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.service.base.model.exception.NotFoundException
+import net.alexanderkahn.service.base.model.request.RequestResourceSearch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,11 +19,15 @@ import java.util.*
 class TeamService @Autowired constructor(
         private val userService: UserService,
         private val teamRepository: TeamRepository,
-        private val rosterPositionRepository: RosterPositionRepository,
         private val teamAssembler: TeamAssembler) : ITeamService {
 
-    override fun getAll(pageable: Pageable): Page<ResponseTeam> {
-        val teams = teamRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
+    override fun getAll(pageable: Pageable, search: RequestResourceSearch?): Page<ResponseTeam> {
+        val teams = if (search == null) {
+            teamRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
+        } else {
+            val specification = SpecificationBuilder.matchSearch<TeamEntity>(userService.userEntity(), search)
+            teamRepository.findAll(specification, pageable)
+        }
         return teams.map { it.toResponse() }
     }
 

@@ -5,6 +5,7 @@ import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.provider.assembler.LeagueAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
+import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.model.exception.NotFoundException
 import net.alexanderkahn.service.base.model.request.RequestResourceSearch
@@ -30,7 +31,7 @@ class LeagueService @Autowired constructor(
         val leagues = if (search == null) {
             leagueRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         } else {
-            val specification = SpecificationBuilder.matchSearch(userService.userEntity(), search)
+            val specification = SpecificationBuilder.matchSearch<LeagueEntity>(userService.userEntity(), search)
             leagueRepository.findAll(specification, pageable)
         }
         return leagues.map { it.toResponse() }

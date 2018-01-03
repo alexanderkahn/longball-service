@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
 import net.alexanderkahn.longball.api.service.ILeagueService
+import net.alexanderkahn.longball.model.dto.LeagueAttributes
 import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
@@ -15,17 +16,18 @@ import org.springframework.data.domain.Pageable
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.javaType
 
 @RestController
 @RequestMapping("/leagues")
 class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
-    //TODO: perhaps these fields should be an enum or something
-    private val validLeagueFilterFields = setOf("name")
+    private val validLeagueSearchFields = LeagueAttributes::class.memberProperties.filter { it.returnType.javaType == String::class.java }.map { it.name }
 
     @GetMapping
     fun getLeagues(pageable: Pageable, @RequestParam(required = false) queryParams: MultiValueMap<String, String>?): CollectionResponse<ResponseLeague> {
-        val search = getSearch(queryParams, validLeagueFilterFields)
+        val search = getSearch(queryParams, validLeagueSearchFields)
         val page = leagueService.getAll(pageable, search)
         return page.toCollectionResponse()
     }
