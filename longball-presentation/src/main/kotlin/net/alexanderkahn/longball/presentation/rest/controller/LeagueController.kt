@@ -4,6 +4,7 @@ import net.alexanderkahn.longball.api.service.ILeagueService
 import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
+import net.alexanderkahn.longball.presentation.rest.helper.getSearch
 import net.alexanderkahn.service.base.model.request.ObjectRequest
 import net.alexanderkahn.service.base.model.response.CollectionResponse
 import net.alexanderkahn.service.base.model.response.CreatedResponse
@@ -11,6 +12,7 @@ import net.alexanderkahn.service.base.model.response.DeletedResponse
 import net.alexanderkahn.service.base.model.response.ObjectResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
+import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -18,9 +20,13 @@ import java.util.*
 @RequestMapping("/leagues")
 class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
+    //TODO: perhaps these fields should be an enum or something
+    private val validLeagueFilterFields = setOf("name")
+
     @GetMapping
-    fun getLeagues(pageable: Pageable, @RequestParam("filter[name]", required = false) nameFilter: String? = null): CollectionResponse<ResponseLeague> {
-        val page = leagueService.getAll(pageable, nameFilter)
+    fun getLeagues(pageable: Pageable, @RequestParam(required = false) queryParams: MultiValueMap<String, String>?): CollectionResponse<ResponseLeague> {
+        val search = getSearch(queryParams, validLeagueFilterFields)
+        val page = leagueService.getAll(pageable, search)
         return page.toCollectionResponse()
     }
 

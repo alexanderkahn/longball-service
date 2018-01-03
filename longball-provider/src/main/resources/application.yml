@@ -25,6 +25,10 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/longball
     username: postgres
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 server:
   port: 8411
 ---

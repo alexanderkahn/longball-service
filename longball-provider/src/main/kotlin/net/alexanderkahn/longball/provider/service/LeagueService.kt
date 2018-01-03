@@ -7,6 +7,7 @@ import net.alexanderkahn.longball.provider.assembler.LeagueAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.model.exception.NotFoundException
+import net.alexanderkahn.service.base.model.request.RequestResourceSearch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -25,10 +26,12 @@ class LeagueService @Autowired constructor(
         return league?.toResponse() ?: throw NotFoundException("leagues", id)
     }
 
-    override fun getAll(pageable: Pageable, nameFilter: String?): Page<ResponseLeague> {
-        val leagues = if (nameFilter == null) {
+    override fun getAll(pageable: Pageable, search: RequestResourceSearch?): Page<ResponseLeague> {
+        val leagues = if (search == null) {
             leagueRepository.findByOwnerOrderByCreated(pageable, userService.embeddableUser())
         } else {
+            // TODO: this assumes the filter is name. Need to use predicates to get this stuff right.
+            val nameFilter = search.searchTerm
             leagueRepository.findByOwnerAndNameIgnoreCaseContainingOrderByCreated(pageable, userService.embeddableUser(), nameFilter)
         }
         return leagues.map { it.toResponse() }
