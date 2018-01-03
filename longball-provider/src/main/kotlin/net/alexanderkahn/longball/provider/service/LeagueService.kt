@@ -30,8 +30,7 @@ class LeagueService @Autowired constructor(
         val leagues = if (search == null) {
             leagueRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         } else {
-            // TODO: specification is still too hardwired. Need to be able to get right predicates based on selected field
-            val specification = SpecificationBuilder.leagueNameMatches(userService.userEntity(), search.searchTerm)
+            val specification = SpecificationBuilder.matchSearch(userService.userEntity(), search)
             leagueRepository.findAll(specification, pageable)
         }
         return leagues.map { it.toResponse() }
