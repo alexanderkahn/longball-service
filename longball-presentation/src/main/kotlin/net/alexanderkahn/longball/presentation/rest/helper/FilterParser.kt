@@ -4,6 +4,7 @@ import net.alexanderkahn.service.base.model.exception.BadRequestException
 import net.alexanderkahn.service.base.model.request.filter.RequestResourceFilter
 import net.alexanderkahn.service.base.model.request.filter.RequestResourceSearch
 import net.alexanderkahn.service.base.model.request.filter.SEARCH_WILDCARD_SPACE
+import net.alexanderkahn.service.base.model.response.body.data.ResourceObjectRelationship
 import org.springframework.util.MultiValueMap
 import java.util.*
 import kotlin.reflect.KClass
@@ -24,14 +25,27 @@ fun getSearchableFieldsFor(clazz: KClass<*>): Collection<String> {
             .plus(SEARCH_WILDCARD_SPACE)
 }
 
-//TODO: probably need a try for the UUID conversion
-fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Set<String>): Collection<RequestResourceFilter> {
+fun getFilterableFieldsFor(clazz: KClass<*>): Collection<String> {
+    return clazz.memberProperties.filter { it.returnType.javaType == ResourceObjectRelationship::class.java }
+            .map { it.name }
+}
+
+fun getFilters(queryParams: MultiValueMap<String, String>?, allowedFields: Collection<String>): Collection<RequestResourceFilter> {
     val filters = queryParams
             ?.filter { it.key.startsWith(filterParamStart) && it.key.endsWith(filterParamEnd) && it.value.isNotEmpty() }
             ?.mapKeys { it.key.removePrefix(filterParamStart).removeSuffix(filterParamEnd) }
-            ?.map { RequestResourceFilter(it.key, it.value.map { UUID.fromString(it) }) } ?: emptyList()
+            ?.mapValues { it.value.flatMap { it.split(valueSeparator) } }
+            ?.map { RequestResourceFilter(it.key, it.value.map { it.toUUID() }) } ?: emptyList()
     assertValidFilters(filters, allowedFields)
     return filters
+}
+
+fun String.toUUID(): UUID {
+    try {
+        return UUID.fromString(this)
+    } catch (e: Exception) {
+        throw BadRequestException("Invalid filter UUID: $this")
+    }
 }
 
 fun getSearch(queryParams: MultiValueMap<String, String>?, allowedFields: Collection<String>): RequestResourceSearch? {

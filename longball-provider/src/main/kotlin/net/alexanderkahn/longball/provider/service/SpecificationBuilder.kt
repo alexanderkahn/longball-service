@@ -2,19 +2,28 @@ package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.provider.entity.BaseEntity
 import net.alexanderkahn.longball.provider.entity.UserEntity
+import net.alexanderkahn.service.base.model.request.filter.RequestResourceFilter
 import net.alexanderkahn.service.base.model.request.filter.RequestResourceSearch
 import net.alexanderkahn.service.base.model.request.filter.SEARCH_WILDCARD_SPACE
 import org.springframework.data.jpa.domain.Specification
+import java.util.*
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.Expression
+import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
 object SpecificationBuilder {
-    fun <T : BaseEntity> matchSearch(owner: UserEntity, searchParams: RequestResourceSearch): Specification<T> {
-        val pattern = "%${searchParams.searchTerm.toLowerCase()}%"
-        return Specification {
-            root, _, cb -> val concatenatedFields = getConcatenatedFields(cb, root, searchParams.searchFields)
-            cb.and(cb.equal(root.get<UserEntity>("owner"), owner), cb.like(concatenatedFields, pattern))
+    fun <T : BaseEntity> build(owner: UserEntity, filterParams: Collection<RequestResourceFilter>, searchParams: RequestResourceSearch?): Specification<T> {
+        return Specification { root, _, cb ->
+            val restrictions = mutableSetOf<Predicate>()
+            restrictions.add(cb.equal(root.get<UserEntity>("owner"), owner))
+            restrictions.addAll(filterParams.map { root.get<BaseEntity>(it.filterField).get<UUID>("id").`in`(it.filterTerms) })
+            if (searchParams != null) {
+                val pattern = "%${searchParams.searchTerm.toLowerCase()}%"
+                val concatenatedFields = getConcatenatedFields(cb, root, searchParams.searchFields)
+                restrictions.add(cb.like(concatenatedFields, pattern))
+            }
+            cb.and(*restrictions.toTypedArray())
         }
     }
 

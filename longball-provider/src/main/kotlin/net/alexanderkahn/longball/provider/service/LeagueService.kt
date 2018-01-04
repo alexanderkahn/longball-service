@@ -31,7 +31,7 @@ class LeagueService @Autowired constructor(
         val leagues = if (search == null) {
             leagueRepository.findByOwnerOrderByCreated(userService.userEntity(), pageable)
         } else {
-            val specification = SpecificationBuilder.matchSearch<LeagueEntity>(userService.userEntity(), search)
+            val specification = SpecificationBuilder.build<LeagueEntity>(userService.userEntity(), emptyList(), search)
             leagueRepository.findAll(specification, pageable)
         }
         return leagues.map { it.toResponse() }

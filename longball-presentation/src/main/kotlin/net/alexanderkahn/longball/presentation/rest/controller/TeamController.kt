@@ -1,10 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
 import net.alexanderkahn.longball.api.service.ITeamService
-import net.alexanderkahn.longball.model.dto.RequestTeam
-import net.alexanderkahn.longball.model.dto.ResponseTeam
-import net.alexanderkahn.longball.model.dto.TeamAttributes
-import net.alexanderkahn.longball.model.dto.toCollectionResponse
+import net.alexanderkahn.longball.model.dto.*
+import net.alexanderkahn.longball.presentation.rest.helper.getFilterableFieldsFor
+import net.alexanderkahn.longball.presentation.rest.helper.getFilters
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch
 import net.alexanderkahn.longball.presentation.rest.helper.getSearchableFieldsFor
 import net.alexanderkahn.service.base.model.request.ObjectRequest
@@ -24,11 +23,13 @@ import java.util.*
 class TeamController(@Autowired private val teamService: ITeamService) {
 
     private val validTeamSearchFields = getSearchableFieldsFor(TeamAttributes::class)
+    private val validTeamFilterFields = getFilterableFieldsFor(TeamRelationships::class)
 
     @GetMapping
     fun getAll(pageable: Pageable, @RequestParam(required = false) queryParams: MultiValueMap<String, String>?): CollectionResponse<ResponseTeam> {
+        val filters = getFilters(queryParams, validTeamFilterFields)
         val search = getSearch(queryParams, validTeamSearchFields)
-        val page = teamService.getAll(pageable, search)
+        val page = teamService.getAll(pageable, filters, search)
         return page.toCollectionResponse()
     }
 
