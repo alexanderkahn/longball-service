@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class UserController(@Autowired private val userService: IUserService) {
 
-    @GetMapping("/user")
+    @GetMapping("/users/current")
     fun getUser(): ObjectResponse<ResponseUser> {
         val currentUser = userService.currentUser()
         return ObjectResponse(currentUser)

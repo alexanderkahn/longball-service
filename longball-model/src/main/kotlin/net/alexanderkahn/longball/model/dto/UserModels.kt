@@ -4,7 +4,7 @@ import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceO
 import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
-class ResponseUser(
+data class ResponseUser(
     override val id: UUID,
     override val meta: ModifiableResourceMeta,
     override val attributes: UserAttributes
@@ -13,4 +13,4 @@ class ResponseUser(
     override val relationships = null
 }
 
-class UserAttributes(val issuer: String, val username: String)
+data class UserAttributes(val issuer: String, val username: String, val displayName: String)

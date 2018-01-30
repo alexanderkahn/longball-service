@@ -15,16 +15,21 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(@Autowired private val userRepository: UserRepository) : IUserService {
     override fun currentUser(): ResponseUser = with(getUserFromContext()) {
-        ResponseUser(id, ModifiableResourceMeta(created, lastModified), UserAttributes(issuer, username)) }
+        ResponseUser(id, ModifiableResourceMeta(created, lastModified), UserAttributes(issuer, username, displayName)) }
+
     fun userEntity(): UserEntity = getUserFromContext()
 
     private fun getUserFromContext(): UserEntity {
         val auth = SecurityContextHolder.getContext().authentication as? JwtAuthentication ?: throw InvalidStateException("No current user set")
         val principal = auth.principal
-        if (!userRepository.existsByIssuerAndUsername(principal.issuer, principal.username)) {
-            val entity = UserEntity(principal.issuer, principal.username)
-            userRepository.save(entity)
+        var userEntity = userRepository.findOneByIssuerAndUsername(principal.issuer, principal.username)
+        if (userEntity == null) {
+            userEntity = UserEntity(principal.issuer, principal.username, auth.details.displayName)
+            userRepository.save(userEntity)
+        } else if (userEntity.displayName != auth.details.displayName) {
+            userEntity.displayName = auth.details.displayName
+            userRepository.save(userEntity)
         }
-        return userRepository.findOneByIssuerAndUsername(principal.issuer, principal.username) ?: throw InvalidStateException("Failed to save user. Something went wrong!")
+        return userEntity
     }
 }

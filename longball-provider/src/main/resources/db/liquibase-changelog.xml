@@ -21,6 +21,7 @@
         </createTable>
         <addPrimaryKey columnNames="id" constraintName="user_pkey" tableName="longball_user"/>
     </changeSet>
+
     <changeSet author="akahn" id="create-league-table">
         <createTable tableName="league">
             <column name="id" type="UUID">
@@ -42,6 +43,7 @@
         <addPrimaryKey columnNames="id" constraintName="league_pkey" tableName="league"/>
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="league" constraintName="fk_league_owner" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="longball_user"/>
     </changeSet>
+
     <changeSet author="akahn" id="create-team-table">
         <createTable tableName="team">
             <column name="id" type="UUID">
@@ -73,6 +75,7 @@
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="team" constraintName="fk_team_owner" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="longball_user"/>
         <addForeignKeyConstraint baseColumnNames="league_id" baseTableName="team" constraintName="fk_team_league" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="league"/>
     </changeSet>
+
     <changeSet author="akahn" id="create-person-table">
         <createTable tableName="person">
             <column name="id" type="UUID">
@@ -97,6 +100,7 @@
         <addPrimaryKey columnNames="id" constraintName="person_pkey" tableName="person"/>
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="person" constraintName="fk_person_owner" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="longball_user"/>
     </changeSet>
+
     <changeSet author="akahn" id="create-roster_position-table">
         <createTable tableName="roster_position">
             <column name="id" type="UUID">
@@ -129,6 +133,13 @@
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="roster_position" constraintName="fk_roster_position_owner" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="longball_user"/>
         <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="roster_position" constraintName="fk_roster_position_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="team"/>
         <addForeignKeyConstraint baseColumnNames="player_id" baseTableName="roster_position" constraintName="fk_roster_position_person" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="person"/>
+    </changeSet>
+
+    <changeSet author="akahn" id="add-longball_user-display_name-column">
+        <addColumn tableName="longball_user">
+            <column name="display_name" type="VARCHAR(255)" value=""/>
+        </addColumn>
+        <addNotNullConstraint tableName="longball_user" columnName="display_name"/>
     </changeSet>
 
 </databaseChangeLog>
