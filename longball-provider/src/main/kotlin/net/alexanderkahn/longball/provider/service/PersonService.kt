@@ -37,9 +37,9 @@ class PersonService @Autowired constructor(
     }
 
     override fun delete(id: UUID) {
-        if (!personRepository.exists(id)) {
+        if (!personRepository.existsById(id)) {
             throw NotFoundException("people", id)
         }
-        personRepository.delete(id)
+        personRepository.deleteById(id)
     }
 }

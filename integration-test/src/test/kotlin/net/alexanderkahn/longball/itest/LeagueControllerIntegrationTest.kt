@@ -43,7 +43,7 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
                 .then().statusCode(HttpStatus.SC_CREATED)
                 .extract().response()
         val leagueId = response.jsonPath().getUUID("data.id")
-        assertTrue(leagueRepository.exists(leagueId))
+        assertTrue(leagueRepository.existsById(leagueId))
     }
 
     @Test

@@ -36,9 +36,9 @@ class RosterPositionService @Autowired constructor(
     }
 
     override fun delete(id: UUID) {
-        if (!rosterPositionRepository.exists(id)) {
+        if (!rosterPositionRepository.existsById(id)) {
             throw NotFoundException("rosterpositions", id)
         }
-        rosterPositionRepository.delete(id)
+        rosterPositionRepository.deleteById(id)
     }
 }

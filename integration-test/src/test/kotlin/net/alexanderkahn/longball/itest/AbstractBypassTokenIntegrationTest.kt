@@ -14,8 +14,8 @@ import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.context.embedded.LocalServerPort
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
@@ -30,11 +30,13 @@ import java.time.format.DateTimeFormatter
 abstract class AbstractBypassTokenIntegrationTest {
 
     @Autowired private lateinit var bypassTokenManager: BypassTokenManager
+
     @Autowired private lateinit var userService: UserService
     @Autowired private lateinit var leagueRepository: LeagueRepository
     @Autowired private lateinit var teamRepository: TeamRepository
 
-    @LocalServerPort private var port: Int = -1
+    @LocalServerPort
+    private var port: Int = -1
 
     protected lateinit var userEntity: UserEntity
 

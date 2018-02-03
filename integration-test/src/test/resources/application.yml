@@ -1,12 +1,13 @@
 #TODO: why isn't this getting picked up from the main properties file?
-server:
-  contextPath: /rest
 application:
   name: longball-test
   version: v1000
   buildDate: yesterday
-liquibase:
-  change-log: classpath:db/liquibase-changelog.xml
+spring:
+  server:
+    contextPath: /rest
+  liquibase:
+    change-log: classpath:db/liquibase-changelog.xml
 oauth:
   issuer:
     algorithm: RS256

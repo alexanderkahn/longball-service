@@ -1,13 +1,18 @@
 server:
+  servlet:
+    contextPath: /rest
   port: 443
-  contextPath: /rest
 application:
   name: ${project.name}
   version: ${project.version}
   buildDate: ${buildDate}
 
-liquibase:
-  change-log: classpath:db/liquibase-changelog.xml
+spring:
+  server:
+#  The following line prevents a startup exception regarding unimplemented postgres driver method createClob()
+  jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+  liquibase:
+    change-log: classpath:db/liquibase-changelog.xml
 oauth:
   issuer:
     algorithm: RS256

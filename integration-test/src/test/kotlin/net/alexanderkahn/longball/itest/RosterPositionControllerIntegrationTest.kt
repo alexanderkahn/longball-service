@@ -128,7 +128,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollection() {
-        rosterPositionRepository.save(listOf(babe, getTestRosterPosition("Mickey", "Mantle")))
+        rosterPositionRepository.saveAll(listOf(babe, getTestRosterPosition("Mickey", "Mantle")))
         val getResponse = withBypassToken().`when`().get("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()
@@ -138,7 +138,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollectionWithIncluded() {
-        rosterPositionRepository.save(listOf(babe, getTestRosterPosition("Hank", "Aaron")))
+        rosterPositionRepository.saveAll(listOf(babe, getTestRosterPosition("Hank", "Aaron")))
         val getResponse = withBypassToken().`when`().get("/rosterpositions?include=player")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()

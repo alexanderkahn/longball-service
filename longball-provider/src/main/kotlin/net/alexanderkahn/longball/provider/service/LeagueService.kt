@@ -44,9 +44,9 @@ class LeagueService @Autowired constructor(
     }
 
     override fun delete(id: UUID) {
-        if (!leagueRepository.exists(id)) {
+        if (!leagueRepository.existsById(id)) {
             throw NotFoundException("leagues", id)
         }
-        leagueRepository.delete(id)
+        leagueRepository.deleteById(id)
     }
 }

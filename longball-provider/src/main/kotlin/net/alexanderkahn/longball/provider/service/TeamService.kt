@@ -44,10 +44,10 @@ class TeamService @Autowired constructor(
     }
 
     override fun delete(id: UUID) {
-        if (!teamRepository.exists(id)) {
+        if (!teamRepository.existsById(id)) {
             throw NotFoundException("leagues", id)
         }
-        teamRepository.delete(id)
+        teamRepository.deleteById(id)
     }
 }
 

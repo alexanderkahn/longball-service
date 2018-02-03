@@ -18,7 +18,7 @@ private fun Page<out Any>.toMetaPage(): ResponseMetaPage {
             totalPages,
             number,
             size,
-            previousPageable()?.pageNumber,
-            nextPageable()?.pageNumber
+            if (hasPrevious()) previousPageable().pageNumber else null,
+            if (hasNext()) nextPageable().pageNumber else null
     )
 }
