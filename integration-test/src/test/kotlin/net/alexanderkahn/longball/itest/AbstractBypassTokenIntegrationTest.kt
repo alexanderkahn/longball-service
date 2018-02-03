@@ -8,7 +8,6 @@ import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.service.base.api.auth.JwtAuthentication
 import net.alexanderkahn.service.base.presentation.security.jwt.BypassTokenManager
 import org.junit.After
 import org.junit.Before
@@ -43,7 +42,8 @@ abstract class AbstractBypassTokenIntegrationTest {
 
     @Before
     fun setUpBase() {
-        SecurityContextHolder.getContext().authentication = JwtAuthentication(bypassTokenManager.tokenBypassCredentials, true)
+        SecurityContextHolder.getContext().authentication = bypassTokenManager.tokenBypassCredentials
+        SecurityContextHolder.getContext().authentication.isAuthenticated = true
         userEntity = userService.userEntity()
         RestAssured.port = port
         RestAssured.basePath = "/rest"

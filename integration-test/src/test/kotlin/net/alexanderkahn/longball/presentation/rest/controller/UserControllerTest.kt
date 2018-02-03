@@ -5,6 +5,7 @@ import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.longball.provider.service.UserService
 import net.alexanderkahn.service.base.api.auth.JwtAuthentication
 import net.alexanderkahn.service.base.api.auth.JwtCredentials
+import net.alexanderkahn.service.base.api.auth.JwtUserDetails
 import net.alexanderkahn.service.base.model.exception.InvalidStateException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -24,12 +25,14 @@ internal class UserControllerTest {
     inner class WithCurrentUser {
 
         private val currentUserCredentials = JwtCredentials("testIssuer", "tokenBypassUser")
+        private val currentUserDetails = JwtUserDetails("Test User")
 
         @BeforeEach
         fun setCurrentUser() {
-            SecurityContextHolder.getContext().authentication = JwtAuthentication(currentUserCredentials, true)
+            val userEntity = UserEntity(currentUserCredentials.issuer, currentUserCredentials.username, currentUserDetails.displayName)
+            SecurityContextHolder.getContext().authentication = JwtAuthentication(currentUserCredentials, currentUserDetails,true)
             `when`(userRepository.existsByIssuerAndUsername(anyString(), anyString())).thenReturn(true)
-            `when`(userRepository.findOneByIssuerAndUsername(anyString(), anyString())).thenReturn(UserEntity(currentUserCredentials.issuer, currentUserCredentials.username))
+            `when`(userRepository.findOneByIssuerAndUsername(anyString(), anyString())).thenReturn(userEntity)
         }
 
         @Test
