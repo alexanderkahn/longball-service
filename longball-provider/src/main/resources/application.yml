@@ -8,9 +8,10 @@ application:
   buildDate: ${buildDate}
 
 spring:
-  server:
+  jpa.properties.hibernate:
 #  The following line prevents a startup exception regarding unimplemented postgres driver method createClob()
-  jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+    temp.use_jdbc_metadata_defaults: false
+    jdbc.time_zone: UTC
   liquibase:
     change-log: classpath:db/liquibase-changelog.xml
 oauth:

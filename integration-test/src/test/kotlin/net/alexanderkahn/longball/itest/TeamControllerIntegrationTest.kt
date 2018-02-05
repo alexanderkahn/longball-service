@@ -12,9 +12,9 @@ import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.http.HttpStatus
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
@@ -25,13 +25,13 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     private lateinit var parentLeague: LeagueEntity
 
-    @Before
+    @BeforeEach
     fun setup() {
         parentLeague = LeagueEntity(randomAlphabetic(10), userEntity)
         leagueRepository.save(parentLeague)
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         teamRepository.deleteAll()
         leagueRepository.deleteAll()

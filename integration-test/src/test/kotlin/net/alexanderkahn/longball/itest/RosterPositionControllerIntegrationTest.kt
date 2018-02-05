@@ -15,9 +15,9 @@ import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomUtils
 import org.apache.http.HttpStatus
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDate
 import java.util.*
@@ -31,7 +31,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     private lateinit var babe: RosterPositionEntity
 
-    @Before
+    @BeforeEach
     fun setUp() {
         val league = LeagueEntity("MLB", userEntity)
         val team = TeamEntity(league, "HOU", "Houston", "Astros", userEntity) //that's right. Babe Ruth, the famous Astro.
@@ -41,7 +41,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         babe = getTestRosterPosition("Babe", "Ruth")
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         rosterPositionRepository.deleteAll()
         teamRepository.deleteAll()

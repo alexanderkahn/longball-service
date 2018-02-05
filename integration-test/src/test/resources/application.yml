@@ -4,10 +4,13 @@ application:
   version: v1000
   buildDate: yesterday
 spring:
-  server:
-    contextPath: /rest
+  jpa.properties.hibernate.jdbc.time_zone: UTC
+  datasource.generate-unique-name: true
   liquibase:
     change-log: classpath:db/liquibase-changelog.xml
+server:
+  servlet:
+      contextPath: /rest
 oauth:
   issuer:
     algorithm: RS256
@@ -16,15 +19,6 @@ oauth:
     claims:
       aud: longball-test
       iss: https://longball.test
----
-spring:
-  profiles: test
-  jpa:
-    #TODO: this doesn't work yet -- needs Hibernate 5.2.3. See about upgrading.
-    #For now run tests with -Duser.timezone=UTC command line argument
-    properties.hibernate.jdbc.time_zone: UTC
-    hibernate.ddl-auto: none
-  datasource.generate-unique-name: true
 ---
 spring:
   profiles: bypassToken

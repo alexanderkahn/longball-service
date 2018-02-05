@@ -10,15 +10,15 @@ import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.http.HttpStatus
-import org.junit.After
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Autowired lateinit var leagueRepository: LeagueRepository
 
-    @After
+    @AfterEach
     fun tearDown() {
         leagueRepository.deleteAll()
     }

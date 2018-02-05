@@ -139,7 +139,7 @@
         <addColumn tableName="longball_user">
             <column name="display_name" type="VARCHAR(255)" value=""/>
         </addColumn>
-        <addNotNullConstraint tableName="longball_user" columnName="display_name"/>
+        <addNotNullConstraint tableName="longball_user" columnName="display_name" columnDataType="VARCHAR(255)"/>
     </changeSet>
 
 </databaseChangeLog>

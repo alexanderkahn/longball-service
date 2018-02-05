@@ -9,8 +9,8 @@ import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.service.base.model.request.ObjectRequest
 import org.apache.http.HttpStatus
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
 
@@ -18,7 +18,7 @@ class PersonControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @Autowired private lateinit var personRepository: PersonRepository
 
-    @Before
+    @BeforeEach
     fun setUp() {
         personRepository.deleteAll()
     }

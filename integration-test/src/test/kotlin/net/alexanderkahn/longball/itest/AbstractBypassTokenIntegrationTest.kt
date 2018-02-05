@@ -9,23 +9,25 @@ import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService
 import net.alexanderkahn.service.base.presentation.security.jwt.BypassTokenManager
-import org.junit.After
-import org.junit.Before
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
+
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @ActiveProfiles("test", "bypassToken")
 abstract class AbstractBypassTokenIntegrationTest {
 
@@ -42,7 +44,7 @@ abstract class AbstractBypassTokenIntegrationTest {
 
     @Value("\${oauth.test.bypassToken}") private lateinit var configuredToken: String
 
-    @Before
+    @BeforeEach
     fun setUpBase() {
         SecurityContextHolder.getContext().authentication = bypassTokenManager.tokenBypassCredentials
         SecurityContextHolder.getContext().authentication.isAuthenticated = true
@@ -52,7 +54,7 @@ abstract class AbstractBypassTokenIntegrationTest {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
-    @After
+    @AfterEach
     fun tearDownBase() {
         teamRepository.deleteAll()
         leagueRepository.deleteAll()
