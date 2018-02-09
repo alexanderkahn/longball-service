@@ -11,15 +11,14 @@
     <parent>
         <groupId>net.alexanderkahn.service.base</groupId>
         <artifactId>service-base</artifactId>
-        <version>0.0.12</version>
+        <version>0.0.12-SNAPSHOT</version>
     </parent>
 
     <modules>
-        <!--<module>longball-api</module>-->
+        <module>longball-api</module>
         <module>longball-model</module>
         <module>longball-presentation</module>
         <module>longball-provider</module>
-        <module>longball-api</module>
         <module>integration-test</module>
     </modules>
 

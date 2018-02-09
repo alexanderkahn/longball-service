@@ -16,7 +16,7 @@ fun PersonEntity.toResponse(): ResponsePerson {
 }
 
 fun RosterPositionEntity.toResponse(): ResponseRosterPosition {
-    val attributes = RosterPositionAttributes(jerseyNumber, startDate, endDate)
+    val attributes = RosterPositionAttributes(jerseyNumber, startDate.fromPersistence(), endDate?.fromPersistence())
     val relationships = RosterPositionRelationships(team.id, player.id)
     return ResponseRosterPosition(id, toMeta(), attributes, relationships)
 }

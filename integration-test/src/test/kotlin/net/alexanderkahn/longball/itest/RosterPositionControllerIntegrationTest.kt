@@ -3,6 +3,7 @@ package net.alexanderkahn.longball.itest
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import net.alexanderkahn.longball.model.dto.*
+import net.alexanderkahn.longball.provider.assembler.toPersistence
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.PersonEntity
@@ -114,8 +115,8 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         assertEquals(babe.team.id, response.relationships.team.data.id)
         assertEquals(babe.player.id, response.relationships.player.data.id)
         assertEquals(babe.jerseyNumber, response.attributes.jerseyNumber)
-        assertEquals(babe.startDate, response.attributes.startDate)
-        assertEquals(babe.endDate, response.attributes.endDate)
+        assertEquals(babe.startDate.toLocalDate(), response.attributes.startDate)
+        assertEquals(babe.endDate?.toLocalDate(), response.attributes.endDate)
     }
 
     @Test
@@ -149,7 +150,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
     private fun getTestRosterPosition(first: String, last: String): RosterPositionEntity {
         val person = PersonEntity(first, last, userEntity)
         personRepository.save(person)
-        return RosterPositionEntity(teamRepository.findAll().first(), person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5), LocalDate.now(), userEntity)
+        return RosterPositionEntity(teamRepository.findAll().first(), person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5).toPersistence(), LocalDate.now().toPersistence(), userEntity)
 
 
     }

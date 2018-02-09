@@ -18,8 +18,12 @@
             <column name="username" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="display_name" type="VARCHAR(255)" value="">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <addPrimaryKey columnNames="id" constraintName="user_pkey" tableName="longball_user"/>
+        <addUniqueConstraint tableName="longball_user" columnNames="issuer, username"/>
     </changeSet>
 
     <changeSet author="akahn" id="create-league-table">
@@ -124,22 +128,15 @@
             <column name="jersey_number" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="start_date" type="DATE">
+            <column name="start_date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="end_date" type="DATE"/>
+            <column name="end_date" type="TIMESTAMP"/>
         </createTable>
         <addPrimaryKey columnNames="id" constraintName="roster_position_pkey" tableName="roster_position"/>
         <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="roster_position" constraintName="fk_roster_position_owner" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="longball_user"/>
         <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="roster_position" constraintName="fk_roster_position_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="team"/>
         <addForeignKeyConstraint baseColumnNames="player_id" baseTableName="roster_position" constraintName="fk_roster_position_person" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="person"/>
-    </changeSet>
-
-    <changeSet author="akahn" id="add-longball_user-display_name-column">
-        <addColumn tableName="longball_user">
-            <column name="display_name" type="VARCHAR(255)" value=""/>
-        </addColumn>
-        <addNotNullConstraint tableName="longball_user" columnName="display_name" columnDataType="VARCHAR(255)"/>
     </changeSet>
 
 </databaseChangeLog>

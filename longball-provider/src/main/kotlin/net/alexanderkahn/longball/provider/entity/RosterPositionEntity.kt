@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.entity
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.util.*
 import javax.persistence.*
@@ -17,8 +17,8 @@ class RosterPositionEntity(
         val player: PersonEntity,
 
         @Column(nullable = false) val jerseyNumber: Int,
-        @Column(nullable = false) val startDate: LocalDate,
-        @Column(nullable = true) val endDate: LocalDate? = null,
+        @Column(nullable = false) val startDate: LocalDateTime,
+        @Column(nullable = true) val endDate: LocalDateTime? = null,
 
         @ManyToOne
         @JoinColumn(foreignKey = ForeignKey(name = "fk_owner"), nullable = false)
