@@ -70,11 +70,9 @@
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
         </dependency>
-        <!--TODO: should I be depending on starter-security here? Probably-->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>5.0.0.M5</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
     </dependencies>
 
