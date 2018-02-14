@@ -2,8 +2,8 @@ package net.alexanderkahn.longball.api.service
 
 import net.alexanderkahn.longball.model.dto.RequestTeam
 import net.alexanderkahn.longball.model.dto.ResponseTeam
-import net.alexanderkahn.service.commons.model.request.filter.RequestResourceFilter
-import net.alexanderkahn.service.commons.model.request.filter.RequestResourceSearch
+import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
+import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.*

@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.model.dto.ResponsePerson
 import net.alexanderkahn.longball.model.dto.ResponseTeam
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

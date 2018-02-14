@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach

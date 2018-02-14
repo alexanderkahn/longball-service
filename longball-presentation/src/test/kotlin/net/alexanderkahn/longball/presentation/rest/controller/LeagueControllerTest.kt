@@ -6,7 +6,7 @@ import net.alexanderkahn.longball.model.dto.ModelTypes
 import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.service.commons.model.exception.BadRequestException
 import net.alexanderkahn.service.commons.model.exception.ConflictException
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue

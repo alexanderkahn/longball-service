@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.model.dto
 
-import net.alexanderkahn.service.commons.model.request.RequestResourceObject
-import net.alexanderkahn.service.commons.model.response.body.data.ResourceIdentifier
+import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
+import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
+import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObjectRelationship
-import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
@@ -21,12 +21,12 @@ data class ResponseTeam(
         override val id: UUID,
         override val meta: ModifiableResourceMeta,
         override val attributes: TeamAttributes,
-        override val relationships: TeamRelationships) : ResponseResourceObject {
+        override val relationships: TeamRelationships) : ResourceObject {
     override val type = ModelTypes.TEAMS.display
 }
 
 data class TeamAttributes(val abbreviation: String, val location: String, val nickname: String)
 
 data class TeamRelationships(val league: ResourceObjectRelationship) {
-    constructor(leagueId: UUID): this(ResourceObjectRelationship(ResourceIdentifier(ModelTypes.LEAGUES.display, leagueId)))
+    constructor(leagueId: UUID): this(ResourceObjectRelationship(RelationshipObject(ModelTypes.LEAGUES.display, leagueId)))
 }

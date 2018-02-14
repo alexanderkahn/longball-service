@@ -7,13 +7,14 @@ import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch
 import net.alexanderkahn.longball.presentation.rest.helper.getSearchableFieldsFor
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
-import net.alexanderkahn.service.commons.model.response.CollectionResponse
-import net.alexanderkahn.service.commons.model.response.CreatedResponse
-import net.alexanderkahn.service.commons.model.response.DeletedResponse
-import net.alexanderkahn.service.commons.model.response.ObjectResponse
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.body.DeletedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectCreatedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -32,10 +33,11 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
     }
 
     @PostMapping
-    fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): CreatedResponse<ResponseLeague> {
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): ObjectCreatedResponse<ResponseLeague> {
         leagueRequest.data.validate()
         val created = leagueService.save(leagueRequest.data)
-        return CreatedResponse(created)
+        return ObjectCreatedResponse(created)
     }
 
     @GetMapping("/{id}")

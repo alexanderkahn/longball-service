@@ -6,13 +6,14 @@ import net.alexanderkahn.longball.presentation.rest.helper.getFilterableFieldsFo
 import net.alexanderkahn.longball.presentation.rest.helper.getFilters
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch
 import net.alexanderkahn.longball.presentation.rest.helper.getSearchableFieldsFor
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
-import net.alexanderkahn.service.commons.model.response.CollectionResponse
-import net.alexanderkahn.service.commons.model.response.CreatedResponse
-import net.alexanderkahn.service.commons.model.response.DeletedResponse
-import net.alexanderkahn.service.commons.model.response.ObjectResponse
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.body.DeletedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectCreatedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -39,10 +40,11 @@ class TeamController(@Autowired private val teamService: ITeamService) {
     }
 
     @PostMapping
-    fun post(@RequestBody teamRequest: ObjectRequest<RequestTeam>): CreatedResponse<ResponseTeam> {
+    @ResponseStatus(HttpStatus.CREATED)
+    fun post(@RequestBody teamRequest: ObjectRequest<RequestTeam>): ObjectCreatedResponse<ResponseTeam> {
         teamRequest.data.validate()
         val created = teamService.save(teamRequest.data)
-        return CreatedResponse(created)
+        return ObjectCreatedResponse(created)
     }
 
     @DeleteMapping("/{id}")

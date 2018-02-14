@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.model.dto
 
-import net.alexanderkahn.service.commons.model.request.RequestResourceObject
+import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceIdentifier
 
 fun RequestResourceObject.assertType(type: ModelTypes) = assertType(type.display)

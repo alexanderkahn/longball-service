@@ -6,14 +6,15 @@ import net.alexanderkahn.longball.model.dto.RequestRosterPosition
 import net.alexanderkahn.longball.model.dto.ResponseRosterPosition
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.IncludeHelper
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
-import net.alexanderkahn.service.commons.model.response.CollectionResponse
-import net.alexanderkahn.service.commons.model.response.CreatedResponse
-import net.alexanderkahn.service.commons.model.response.DeletedResponse
-import net.alexanderkahn.service.commons.model.response.ObjectResponse
-import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.body.DeletedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectCreatedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectResponse
+import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -31,10 +32,11 @@ class RosterPositionController(
     }
 
     @PostMapping
-    fun post(@RequestBody rosterRequest: ObjectRequest<RequestRosterPosition>): CreatedResponse<ResponseRosterPosition> {
+    @ResponseStatus(HttpStatus.CREATED)
+    fun post(@RequestBody rosterRequest: ObjectRequest<RequestRosterPosition>): ObjectCreatedResponse<ResponseRosterPosition> {
         rosterRequest.data.validate()
         val created = rosterPositionService.save(rosterRequest.data)
-        return CreatedResponse(created)
+        return ObjectCreatedResponse(created)
     }
 
     @GetMapping("/{id}")
@@ -50,7 +52,7 @@ class RosterPositionController(
         return DeletedResponse()
     }
 
-    private fun getIncluded(includeTypes: List<String>?, positions: List<ResponseRosterPosition>): List<ResponseResourceObject>? {
+    private fun getIncluded(includeTypes: List<String>?, positions: List<ResponseRosterPosition>): List<ResourceObject>? {
         return if (includeTypes?.contains("player") == true) {
             includeHelper.include(mapOf(ModelTypes.PEOPLE to positions.map { it.relationships.player.data.id }))
         } else {

@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.model.dto
 
 import net.alexanderkahn.service.commons.model.exception.BadRequestException
-import net.alexanderkahn.service.commons.model.request.RequestResourceObject
-import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
+import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
@@ -16,7 +16,7 @@ data class RequestLeague(override val type: String, override val attributes: Lea
     }
 }
 
-data class ResponseLeague(override val id: UUID, override val meta: ModifiableResourceMeta, override val attributes: LeagueAttributes) : ResponseResourceObject {
+data class ResponseLeague(override val id: UUID, override val meta: ModifiableResourceMeta, override val attributes: LeagueAttributes) : ResourceObject {
     override val type = ModelTypes.LEAGUES.display
     override val relationships = null
 }

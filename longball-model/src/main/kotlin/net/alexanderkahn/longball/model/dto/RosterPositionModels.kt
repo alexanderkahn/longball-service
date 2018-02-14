@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.model.dto
 
-import net.alexanderkahn.service.commons.model.request.RequestResourceObject
-import net.alexanderkahn.service.commons.model.response.body.data.ResourceIdentifier
+import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
+import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
+import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObjectRelationship
-import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.time.LocalDate
 import java.util.*
@@ -24,7 +24,7 @@ data class ResponseRosterPosition(
         override val id: UUID,
         override val meta: ModifiableResourceMeta,
         override val attributes: RosterPositionAttributes,
-        override val relationships: RosterPositionRelationships) : ResponseResourceObject {
+        override val relationships: RosterPositionRelationships) : ResourceObject {
     override val type = ModelTypes.ROSTER_POSITIONS.display
 }
 
@@ -32,6 +32,6 @@ data class RosterPositionAttributes(val jerseyNumber: Int, val startDate: LocalD
 
 data class RosterPositionRelationships(val team: ResourceObjectRelationship, val player: ResourceObjectRelationship) {
     constructor(teamId: UUID, playerId: UUID): this(
-            ResourceObjectRelationship(ResourceIdentifier("teams", teamId)),
-            ResourceObjectRelationship(ResourceIdentifier("people", playerId)))
+            ResourceObjectRelationship(RelationshipObject("teams", teamId)),
+            ResourceObjectRelationship(RelationshipObject("people", playerId)))
 }

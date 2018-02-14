@@ -4,13 +4,14 @@ import net.alexanderkahn.longball.api.service.IPersonService
 import net.alexanderkahn.longball.model.dto.RequestPerson
 import net.alexanderkahn.longball.model.dto.ResponsePerson
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
-import net.alexanderkahn.service.commons.model.request.ObjectRequest
-import net.alexanderkahn.service.commons.model.response.CollectionResponse
-import net.alexanderkahn.service.commons.model.response.CreatedResponse
-import net.alexanderkahn.service.commons.model.response.DeletedResponse
-import net.alexanderkahn.service.commons.model.response.ObjectResponse
+import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.body.DeletedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectCreatedResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -25,10 +26,11 @@ class PersonController(@Autowired private val personService: IPersonService) {
     }
 
     @PostMapping
-    fun post(@RequestBody personRequest: ObjectRequest<RequestPerson>): CreatedResponse<ResponsePerson> {
+    @ResponseStatus(HttpStatus.CREATED)
+    fun post(@RequestBody personRequest: ObjectRequest<RequestPerson>): ObjectCreatedResponse<ResponsePerson> {
         personRequest.data.validate()
         val created = personService.save(personRequest.data)
-        return CreatedResponse(created)
+        return ObjectCreatedResponse(created)
     }
 
     @GetMapping("/{id}")

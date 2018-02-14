@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest.helper
 
 import net.alexanderkahn.service.commons.model.exception.BadRequestException
-import net.alexanderkahn.service.commons.model.request.filter.RequestResourceFilter
-import net.alexanderkahn.service.commons.model.request.filter.RequestResourceSearch
-import net.alexanderkahn.service.commons.model.request.filter.SEARCH_WILDCARD_SPACE
+import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
+import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
+import net.alexanderkahn.service.commons.model.request.parameter.SEARCH_WILDCARD_SPACE
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObjectRelationship
 import org.springframework.util.MultiValueMap
 import java.util.*

@@ -37,9 +37,9 @@ internal class UserControllerTest {
 
         @Test
         fun returnsCurrentUser() {
-            assertEquals("users", subject.getUser().body.data.type)
-            assertEquals(currentUserCredentials.issuer, subject.getUser().body.data.attributes.issuer)
-            assertEquals(currentUserCredentials.username, subject.getUser().body.data.attributes.username)
+            assertEquals("users", subject.getUser().data.type)
+            assertEquals(currentUserCredentials.issuer, subject.getUser().data.attributes.issuer)
+            assertEquals(currentUserCredentials.username, subject.getUser().data.attributes.username)
         }
     }
 
