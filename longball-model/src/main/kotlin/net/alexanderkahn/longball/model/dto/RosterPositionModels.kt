@@ -3,7 +3,6 @@ package net.alexanderkahn.longball.model.dto
 import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
 import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
-import net.alexanderkahn.service.commons.model.response.body.data.ResourceObjectRelationship
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.time.LocalDate
 import java.util.*
@@ -30,8 +29,8 @@ data class ResponseRosterPosition(
 
 data class RosterPositionAttributes(val jerseyNumber: Int, val startDate: LocalDate, val endDate: LocalDate? = null)
 
-data class RosterPositionRelationships(val team: ResourceObjectRelationship, val player: ResourceObjectRelationship) {
+data class RosterPositionRelationships(val team: RelationshipObject, val player: RelationshipObject) {
     constructor(teamId: UUID, playerId: UUID): this(
-            ResourceObjectRelationship(RelationshipObject("teams", teamId)),
-            ResourceObjectRelationship(RelationshipObject("people", playerId)))
+            RelationshipObject("teams", teamId),
+            RelationshipObject("people", playerId))
 }

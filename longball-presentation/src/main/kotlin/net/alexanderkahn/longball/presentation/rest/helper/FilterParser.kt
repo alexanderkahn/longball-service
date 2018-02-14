@@ -4,7 +4,7 @@ import net.alexanderkahn.service.commons.model.exception.BadRequestException
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import net.alexanderkahn.service.commons.model.request.parameter.SEARCH_WILDCARD_SPACE
-import net.alexanderkahn.service.commons.model.response.body.data.ResourceObjectRelationship
+import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import org.springframework.util.MultiValueMap
 import java.util.*
 import kotlin.reflect.KClass
@@ -26,7 +26,7 @@ fun getSearchableFieldsFor(clazz: KClass<*>): Collection<String> {
 }
 
 fun getFilterableFieldsFor(clazz: KClass<*>): Collection<String> {
-    return clazz.memberProperties.filter { it.returnType.javaType == ResourceObjectRelationship::class.java }
+    return clazz.memberProperties.filter { it.returnType.javaType == RelationshipObject::class.java }
             .map { it.name }
 }
 
