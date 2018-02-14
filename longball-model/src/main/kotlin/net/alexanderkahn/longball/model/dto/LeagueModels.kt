@@ -1,10 +1,9 @@
 package net.alexanderkahn.longball.model.dto
 
-
-import net.alexanderkahn.service.base.model.exception.BadRequestException
-import net.alexanderkahn.service.base.model.request.RequestResourceObject
-import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceObject
-import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
+import net.alexanderkahn.service.commons.model.exception.BadRequestException
+import net.alexanderkahn.service.commons.model.request.RequestResourceObject
+import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
 data class RequestLeague(override val type: String, override val attributes: LeagueAttributes) : RequestResourceObject {

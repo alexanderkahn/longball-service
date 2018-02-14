@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.api.service
 
 import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
-import net.alexanderkahn.service.base.model.request.filter.RequestResourceSearch
+import net.alexanderkahn.service.commons.model.request.filter.RequestResourceSearch
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.*

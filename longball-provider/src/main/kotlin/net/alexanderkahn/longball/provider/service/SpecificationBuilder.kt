@@ -2,9 +2,9 @@ package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.provider.entity.BaseEntity
 import net.alexanderkahn.longball.provider.entity.UserEntity
-import net.alexanderkahn.service.base.model.request.filter.RequestResourceFilter
-import net.alexanderkahn.service.base.model.request.filter.RequestResourceSearch
-import net.alexanderkahn.service.base.model.request.filter.SEARCH_WILDCARD_SPACE
+import net.alexanderkahn.service.commons.model.request.filter.RequestResourceFilter
+import net.alexanderkahn.service.commons.model.request.filter.RequestResourceSearch
+import net.alexanderkahn.service.commons.model.request.filter.SEARCH_WILDCARD_SPACE
 import org.springframework.data.jpa.domain.Specification
 import java.util.*
 import javax.persistence.criteria.CriteriaBuilder

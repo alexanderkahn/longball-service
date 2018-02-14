@@ -12,10 +12,7 @@
     <artifactId>longball-api</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>net.alexanderkahn.service.base</groupId>
-            <artifactId>base-api</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>net.alexanderkahn.longball</groupId>
             <artifactId>longball-model</artifactId>

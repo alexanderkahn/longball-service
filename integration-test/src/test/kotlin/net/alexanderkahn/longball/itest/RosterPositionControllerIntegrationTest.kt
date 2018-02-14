@@ -13,7 +13,7 @@ import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.RosterPositionRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.service.base.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomUtils
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach

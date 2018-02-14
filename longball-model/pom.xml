@@ -17,12 +17,13 @@
             <artifactId>kotlin-stdlib-jre8</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.alexanderkahn.service.base</groupId>
-            <artifactId>base-model</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.alexanderkahn.service.commons</groupId>
+            <artifactId>json-api-model</artifactId>
+            <version>0.0.13-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -13,10 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.alexanderkahn.service.base</groupId>
-            <artifactId>base-provider</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-maven-noarg</artifactId>
         </dependency>
@@ -33,6 +29,10 @@
             <artifactId>longball-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.alexanderkahn.service.commons</groupId>
+            <artifactId>firebase-jws</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
@@ -40,7 +40,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-properties-migrator</artifactId>
-            <version>2.0.0.RC1</version>
+            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -69,6 +69,12 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
+        </dependency>
+        <!--TODO: should I be depending on starter-security here? Probably-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.0.0.M5</version>
         </dependency>
     </dependencies>
 

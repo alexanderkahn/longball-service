@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.model.dto
 
-import net.alexanderkahn.service.base.model.request.RequestResourceObject
-import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceObject
-import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
+import net.alexanderkahn.service.commons.model.request.RequestResourceObject
+import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
 data class RequestPerson(
@@ -19,7 +19,7 @@ data class ResponsePerson(
         override val id: UUID,
         override val meta: ModifiableResourceMeta,
         override val attributes: PersonAttributes) : ResponseResourceObject {
-    override val relationships = null
+    override val relationships: Nothing? = null
     override val type = ModelTypes.PEOPLE.display
 }
 

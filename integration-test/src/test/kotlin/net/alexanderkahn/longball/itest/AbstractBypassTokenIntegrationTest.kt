@@ -8,7 +8,7 @@ import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.service.base.presentation.security.jwt.BypassTokenManager
+import net.alexanderkahn.service.commons.firebaseauth.jws.filter.BypassTokenManager
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith

@@ -6,7 +6,7 @@ import net.alexanderkahn.longball.model.dto.ResponseRosterPosition
 import net.alexanderkahn.longball.provider.assembler.RosterPositionAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.RosterPositionRepository
-import net.alexanderkahn.service.base.model.exception.NotFoundException
+import net.alexanderkahn.service.commons.model.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

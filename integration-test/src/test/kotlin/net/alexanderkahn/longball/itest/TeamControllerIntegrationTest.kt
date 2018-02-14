@@ -9,7 +9,7 @@ import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.service.base.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.request.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach

@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.config
 
-import net.alexanderkahn.service.base.presentation.config.UnauthenticatedPath
+import net.alexanderkahn.service.commons.firebaseauth.jws.filter.config.UnauthenticatedPath
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import springfox.documentation.builders.RequestHandlerSelectors

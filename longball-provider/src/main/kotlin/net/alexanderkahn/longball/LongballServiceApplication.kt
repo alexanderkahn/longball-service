@@ -1,14 +1,21 @@
 package net.alexanderkahn.longball
 
-import net.alexanderkahn.service.base.ServiceApplicationBase
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import java.util.*
+import javax.annotation.PostConstruct
 
-//TODO: break up the base into discrete dependencies, instantiate them here and get rid of the service base scanning
+//TODO: get rid of the service base scanning
 @SpringBootApplication(scanBasePackages = arrayOf(
         "net.alexanderkahn.longball",
-        "net.alexanderkahn.service.base"))
-open class LongballServiceApplication: ServiceApplicationBase() {
+        "net.alexanderkahn.service.commons"))
+open class LongballServiceApplication {
+
+    @PostConstruct
+    fun configureEnvironment() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
+        //TODO: set up firebase?
+    }
 
     companion object {
         @JvmStatic fun main(args: Array<String>) {

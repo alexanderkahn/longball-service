@@ -7,11 +7,11 @@ import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch
 import net.alexanderkahn.longball.presentation.rest.helper.getSearchableFieldsFor
-import net.alexanderkahn.service.base.model.request.ObjectRequest
-import net.alexanderkahn.service.base.model.response.CollectionResponse
-import net.alexanderkahn.service.base.model.response.CreatedResponse
-import net.alexanderkahn.service.base.model.response.DeletedResponse
-import net.alexanderkahn.service.base.model.response.ObjectResponse
+import net.alexanderkahn.service.commons.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.CreatedResponse
+import net.alexanderkahn.service.commons.model.response.DeletedResponse
+import net.alexanderkahn.service.commons.model.response.ObjectResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.util.MultiValueMap

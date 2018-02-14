@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.provider.assembler
 
 import net.alexanderkahn.longball.model.dto.*
 import net.alexanderkahn.longball.provider.entity.*
-import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
+import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 
 
 fun LeagueEntity.toResponse(): ResponseLeague {

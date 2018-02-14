@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.model.dto
 
-import net.alexanderkahn.service.base.model.response.body.data.ResponseResourceObject
-import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
+import net.alexanderkahn.service.commons.model.response.body.data.ResponseResourceObject
+import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
 data class ResponseUser(

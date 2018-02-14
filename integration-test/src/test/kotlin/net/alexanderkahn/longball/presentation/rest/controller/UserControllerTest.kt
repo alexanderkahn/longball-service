@@ -3,10 +3,10 @@ package net.alexanderkahn.longball.presentation.rest.controller
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.service.base.api.auth.JwtAuthentication
-import net.alexanderkahn.service.base.api.auth.JwtCredentials
-import net.alexanderkahn.service.base.api.auth.JwtUserDetails
-import net.alexanderkahn.service.base.model.exception.InvalidStateException
+import net.alexanderkahn.service.commons.firebaseauth.jws.JwsAuthentication
+import net.alexanderkahn.service.commons.firebaseauth.jws.JwsCredentials
+import net.alexanderkahn.service.commons.firebaseauth.jws.JwsUserDetails
+import net.alexanderkahn.service.commons.model.exception.InvalidStateException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
@@ -24,13 +24,13 @@ internal class UserControllerTest {
     @Nested
     inner class WithCurrentUser {
 
-        private val currentUserCredentials = JwtCredentials("testIssuer", "tokenBypassUser")
-        private val currentUserDetails = JwtUserDetails("Test User")
+        private val currentUserCredentials = JwsCredentials("testIssuer", "tokenBypassUser")
+        private val currentUserDetails = JwsUserDetails("Test User")
 
         @BeforeEach
         fun setCurrentUser() {
             val userEntity = UserEntity(currentUserCredentials.issuer, currentUserCredentials.username, currentUserDetails.displayName)
-            SecurityContextHolder.getContext().authentication = JwtAuthentication(currentUserCredentials, currentUserDetails,true)
+            SecurityContextHolder.getContext().authentication = JwsAuthentication(currentUserCredentials, currentUserDetails,true)
             `when`(userRepository.existsByIssuerAndUsername(anyString(), anyString())).thenReturn(true)
             `when`(userRepository.findOneByIssuerAndUsername(anyString(), anyString())).thenReturn(userEntity)
         }

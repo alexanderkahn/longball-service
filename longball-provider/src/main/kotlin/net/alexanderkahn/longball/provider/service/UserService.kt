@@ -5,9 +5,9 @@ import net.alexanderkahn.longball.model.dto.ResponseUser
 import net.alexanderkahn.longball.model.dto.UserAttributes
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
-import net.alexanderkahn.service.base.api.auth.JwtAuthentication
-import net.alexanderkahn.service.base.model.exception.InvalidStateException
-import net.alexanderkahn.service.base.model.response.body.meta.ModifiableResourceMeta
+import net.alexanderkahn.service.commons.firebaseauth.jws.JwsAuthentication
+import net.alexanderkahn.service.commons.model.exception.InvalidStateException
+import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -20,7 +20,7 @@ class UserService(@Autowired private val userRepository: UserRepository) : IUser
     fun userEntity(): UserEntity = getUserFromContext()
 
     private fun getUserFromContext(): UserEntity {
-        val auth = SecurityContextHolder.getContext().authentication as? JwtAuthentication ?: throw InvalidStateException("No current user set")
+        val auth = SecurityContextHolder.getContext().authentication as? JwsAuthentication ?: throw InvalidStateException("No current user set")
         val principal = auth.principal
         var userEntity = userRepository.findOneByIssuerAndUsername(principal.issuer, principal.username)
         if (userEntity == null) {

@@ -4,11 +4,11 @@ import net.alexanderkahn.longball.api.service.IPersonService
 import net.alexanderkahn.longball.model.dto.RequestPerson
 import net.alexanderkahn.longball.model.dto.ResponsePerson
 import net.alexanderkahn.longball.model.dto.toCollectionResponse
-import net.alexanderkahn.service.base.model.request.ObjectRequest
-import net.alexanderkahn.service.base.model.response.CollectionResponse
-import net.alexanderkahn.service.base.model.response.CreatedResponse
-import net.alexanderkahn.service.base.model.response.DeletedResponse
-import net.alexanderkahn.service.base.model.response.ObjectResponse
+import net.alexanderkahn.service.commons.model.request.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.CreatedResponse
+import net.alexanderkahn.service.commons.model.response.DeletedResponse
+import net.alexanderkahn.service.commons.model.response.ObjectResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
