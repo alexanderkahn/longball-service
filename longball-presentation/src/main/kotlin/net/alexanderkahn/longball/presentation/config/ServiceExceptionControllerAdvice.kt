@@ -15,6 +15,7 @@ class ServiceExceptionControllerAdvice {
 
     val logger = LoggerFactory.getLogger(this::class.java)
 
+    // Business-logic exceptions
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException::class, HttpMessageNotReadableException::class)
     fun handleBadRequest(e: ResponseStatusException): ErrorResponse {

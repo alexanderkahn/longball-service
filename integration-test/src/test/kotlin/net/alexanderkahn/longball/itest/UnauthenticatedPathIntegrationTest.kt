@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.itest
 
 import io.restassured.RestAssured
+import junit.framework.Assert.assertTrue
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach
@@ -12,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
-class UnrecognizedPathIntegrationTest {
+class UnauthenticatedPathIntegrationTest {
 
     @LocalServerPort
     private var port: Int = -1
@@ -31,7 +32,17 @@ class UnrecognizedPathIntegrationTest {
     }
 
     @Test
-    fun allowAboutEndpointUnauthenticated() {
-        RestAssured.`when`().get("/about").then().statusCode(HttpStatus.SC_OK)
+    fun allowInfoEndpointUnauthenticated() {
+        //TODO: since this application.yml file is totally different from the actual production one, this doesn't really test much
+        val info = RestAssured.`when`().get("/actuator/info").then().statusCode(HttpStatus.SC_OK).extract().response().jsonPath()
+        println(info.prettify())
+        assertTrue(info.getString("app.name").isNotBlank())
+        assertTrue(info.getString("app.version").isNotBlank())
+    }
+
+    @Test
+    fun allowHealthEndpointUnauthenticated() {
+        val health = RestAssured.`when`().get("/actuator/health").then().statusCode(HttpStatus.SC_OK).extract().response().jsonPath()
+        assertTrue(health.getString("status").isNotBlank())
     }
 }

@@ -50,13 +50,12 @@
     <build>
 
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-
-        <resources>
-            <resource>
+        <testResources>
+            <testResource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-            </resource>
-        </resources>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>

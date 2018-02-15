@@ -38,5 +38,4 @@ open class SwaggerConfiguration {
     open fun swaggerDocsAuthenticationException(): UnauthenticatedPath {
         return UnauthenticatedPath("/v2/api-docs")
     }
-    
 }
