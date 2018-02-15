@@ -19,6 +19,7 @@ class UserService(@Autowired private val userRepository: UserRepository) : IUser
 
     fun userEntity(): UserEntity = getUserFromContext()
 
+    //TODO: this probably needs to be synchronized
     private fun getUserFromContext(): UserEntity {
         val auth = SecurityContextHolder.getContext().authentication as? JwsAuthentication ?: throw InvalidStateException("No current user set")
         val principal = auth.principal
