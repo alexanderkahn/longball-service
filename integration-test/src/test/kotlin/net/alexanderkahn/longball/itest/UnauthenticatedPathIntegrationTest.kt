@@ -21,6 +21,7 @@ class UnauthenticatedPathIntegrationTest {
     @BeforeEach
     fun setUp() {
         RestAssured.port = port
+        RestAssured.basePath = "/rest"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 

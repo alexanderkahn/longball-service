@@ -6,9 +6,7 @@ import java.util.*
 import javax.annotation.PostConstruct
 
 //TODO: get rid of the service base scanning
-@SpringBootApplication(scanBasePackages = arrayOf(
-        "net.alexanderkahn.longball",
-        "net.alexanderkahn.service.commons"))
+@SpringBootApplication
 open class LongballServiceApplication {
 
     @PostConstruct

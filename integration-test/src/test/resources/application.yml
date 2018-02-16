@@ -17,11 +17,11 @@ oauth:
     keystore:
       url: http://fakeurl
     claims:
-      aud: longball-test
-      iss: https://longball.test
+      audience: longball-test
+      issuer: https://longball.test
 ---
 spring:
   profiles: bypassToken
 oauth:
-  test:
-    bypassToken: nutterbutters
+    bypass-token:
+      token: nutterbutters

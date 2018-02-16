@@ -20,8 +20,15 @@ oauth:
     keystore:
       url: https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com
     claims:
-      aud: longball-7517e
-      iss: https://securetoken.google.com/longball-7517e
+      audience: longball-7517e
+      issuer: https://securetoken.google.com/longball-7517e
+  unauthenticated-paths:
+    - /actuator/info
+    - /actuator/health
+    - /swagger-ui.*
+    - /webjars/springfox-swagger-ui/.*
+    - /swagger-resources.*
+    - /v2/api-docs
 ---
 spring:
   profiles: dev
@@ -41,5 +48,5 @@ server:
 spring:
   profiles: bypassToken
 oauth:
-  test:
-    bypassToken: raspberries
+    bypass-token:
+      token: raspberries

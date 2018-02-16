@@ -4,19 +4,19 @@ import com.google.gson.*
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
+import net.alexanderkahn.longball.presentation.config.JwsFIlterConfiguration
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.service.commons.firebaseauth.jws.filter.BypassTokenManager
+import net.alexanderkahn.longball.provider.repository.UserRepository
+import net.alexanderkahn.service.commons.model.exception.InvalidStateException
+import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.lang.reflect.Type
@@ -31,27 +31,33 @@ import java.time.format.DateTimeFormatter
 @ActiveProfiles("test", "bypassToken")
 abstract class AbstractBypassTokenIntegrationTest {
 
-    @Autowired private lateinit var bypassTokenManager: BypassTokenManager
-
-    @Autowired private lateinit var userService: UserService
+    @Autowired private lateinit var userRepository: UserRepository
     @Autowired private lateinit var leagueRepository: LeagueRepository
     @Autowired private lateinit var teamRepository: TeamRepository
+
+    @Autowired private lateinit var jwsConfig: JwsFIlterConfiguration.LongballFirebaseJwsConfig
 
     @LocalServerPort
     private var port: Int = -1
 
     protected lateinit var userEntity: UserEntity
 
-    @Value("\${oauth.test.bypassToken}") private lateinit var configuredToken: String
-
     @BeforeEach
     fun setUpBase() {
-        SecurityContextHolder.getContext().authentication = bypassTokenManager.tokenBypassCredentials
-        SecurityContextHolder.getContext().authentication.isAuthenticated = true
-        userEntity = userService.userEntity()
+//        RestAssured.authentication = oauth2("Bearer nutterbutters")
         RestAssured.port = port
         RestAssured.basePath = "/rest"
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
+        userEntity = retrieveBypassUser()
+    }
+
+    private fun retrieveBypassUser(): UserEntity {
+        val response = withBypassToken()
+                .`when`().get("/users/current")
+                .then().statusCode(HttpStatus.SC_OK)
+                .extract().response()
+        val id = response.jsonPath().getUUID("data.id")
+        return userRepository.findById(id).orElseThrow { InvalidStateException("Something went wrong trying to retrieve a bypass token for testing") }
     }
 
     @AfterEach
@@ -66,7 +72,7 @@ abstract class AbstractBypassTokenIntegrationTest {
 
     protected fun withBypassToken(): RequestSpecification {
         return RestAssured.given()
-                .header("Authorization", "Bearer $configuredToken")
+                .header("Authorization", "Bearer ${jwsConfig.bypassToken.token}")
                 .contentType(ContentType.JSON)
     }
 }
