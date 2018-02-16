@@ -4,7 +4,7 @@ server:
   port: 443
 info:
   app:
-    name: @project.name@
+    name: @project.artifactId@
     version: @project.version@
 
 spring:

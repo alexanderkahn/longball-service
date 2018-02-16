@@ -3,9 +3,9 @@ package net.alexanderkahn.longball.presentation.rest.controller
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.service.commons.firebaseauth.jws.JwsAuthentication
-import net.alexanderkahn.service.commons.firebaseauth.jws.JwsCredentials
-import net.alexanderkahn.service.commons.firebaseauth.jws.JwsUserDetails
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsAuthentication
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsCredentials
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsUserDetails
 import net.alexanderkahn.service.commons.model.exception.InvalidStateException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows

@@ -52,7 +52,7 @@
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <testResources>
             <testResource>
-                <directory>src/main/resources</directory>
+                <directory>src/test/resources</directory>
                 <filtering>true</filtering>
             </testResource>
         </testResources>

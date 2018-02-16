@@ -17,10 +17,6 @@
             <artifactId>kotlin-maven-noarg</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jre8</artifactId>
-        </dependency>
-        <dependency>
             <groupId>net.alexanderkahn.longball</groupId>
             <artifactId>longball-model</artifactId>
         </dependency>
@@ -30,17 +26,11 @@
         </dependency>
         <dependency>
             <groupId>net.alexanderkahn.service.commons</groupId>
-            <artifactId>firebase-jws</artifactId>
+            <artifactId>jws-authenticator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <!--FIXME remove this after migration-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-properties-migrator</artifactId>
-            <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

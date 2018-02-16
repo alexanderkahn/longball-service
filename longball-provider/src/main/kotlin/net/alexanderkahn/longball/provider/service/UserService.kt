@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.model.dto.ResponseUser
 import net.alexanderkahn.longball.model.dto.UserAttributes
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
-import net.alexanderkahn.service.commons.firebaseauth.jws.JwsAuthentication
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsAuthentication
 import net.alexanderkahn.service.commons.model.exception.InvalidStateException
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import org.springframework.beans.factory.annotation.Autowired

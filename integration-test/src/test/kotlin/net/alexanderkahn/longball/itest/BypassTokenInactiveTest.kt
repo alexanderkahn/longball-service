@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.itest
 
 import junit.framework.TestCase.assertTrue
-import net.alexanderkahn.service.commons.firebaseauth.jws.filter.config.FirebaseJwsConfig
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.config.JwsConfig
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension::class)
 @ActiveProfiles("test")
-class BypassTokenInactiveTest(@Autowired private val config: FirebaseJwsConfig) {
+class BypassTokenInactiveTest(@Autowired private val config: JwsConfig) {
 
     @Test
     fun bypassTokenConfigurationEmpty() {

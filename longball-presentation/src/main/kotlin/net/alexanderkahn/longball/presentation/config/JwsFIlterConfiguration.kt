@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.presentation.config
 
-import net.alexanderkahn.service.commons.firebaseauth.jws.filter.ExceptionResponseWriter
-import net.alexanderkahn.service.commons.firebaseauth.jws.filter.JwsAuthenticationFilter
-import net.alexanderkahn.service.commons.firebaseauth.jws.filter.config.FirebaseJwsConfig
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.ExceptionResponseWriter
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.JwsAuthenticationFilter
+import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.config.JwsConfig
 import net.alexanderkahn.service.commons.model.exception.UnauthenticatedException
 import net.alexanderkahn.service.commons.model.response.body.ErrorResponse
 import net.alexanderkahn.service.commons.model.response.body.error.ResponseError
@@ -29,19 +29,19 @@ open class JwsFIlterConfiguration {
     //Hopefully fixed for SB 2.1. See: https://github.com/spring-projects/spring-boot/issues/8762
     @ConfigurationProperties(prefix = "oauth")
     @Component
-    open class LongballFirebaseJwsConfig : FirebaseJwsConfig {
+    open class LongballFirebaseJwsConfig : JwsConfig {
 
-        override var issuer = object : FirebaseJwsConfig.JwsIssuerConfig {
+        override var issuer = object : JwsConfig.JwsIssuerConfig {
             override var algorithm = ""
-            override var claims = object: FirebaseJwsConfig.JwsIssuerConfig.Claims {
+            override var claims = object: JwsConfig.JwsIssuerConfig.Claims {
                 override var audience = ""
                 override var issuer = ""
             }
-            override var  keystore = object: FirebaseJwsConfig.JwsIssuerConfig.Keystore {
+            override var  keystore = object: JwsConfig.JwsIssuerConfig.Keystore {
                 override var url = ""
             }
         }
-        override var bypassToken = object : FirebaseJwsConfig.BypassTokenConfig {
+        override var bypassToken = object : JwsConfig.BypassTokenConfig {
             override var token = ""
         }
         override var unauthenticatedPaths = mutableSetOf<String>()
