@@ -39,6 +39,7 @@ class UnauthenticatedPathIntegrationTest {
         println(info.prettify())
         assertTrue(info.getString("app.name").isNotBlank())
         assertTrue(info.getString("app.version").isNotBlank())
+        assertTrue(info.getString("app.buildDate").isNotBlank())
     }
 
     @Test

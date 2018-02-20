@@ -3,6 +3,7 @@ info:
   app:
     name: @project.artifactId@
     version: @project.version@
+    buildDate: @buildDate@
 spring:
   jpa.properties.hibernate.jdbc.time_zone: UTC
   datasource.generate-unique-name: true

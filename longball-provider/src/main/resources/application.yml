@@ -6,6 +6,7 @@ info:
   app:
     name: @project.artifactId@
     version: @project.version@
+    buildDate: @buildDate@
 
 spring:
   jpa.properties.hibernate:
