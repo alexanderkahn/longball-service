@@ -17,11 +17,6 @@
             <groupId>net.alexanderkahn.longball</groupId>
             <artifactId>longball-model</artifactId>
         </dependency>
-        <!--TODO: find a better way to get pageable/page on the classpath-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
