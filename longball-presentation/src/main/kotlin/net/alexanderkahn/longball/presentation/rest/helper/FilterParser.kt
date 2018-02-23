@@ -57,7 +57,6 @@ fun getSearch(queryParams: MultiValueMap<String, String>?, allowedFields: Collec
     return searches.singleOrNull()
 }
 
-//TODO: should this throw an exception or just ignore the param?
 private fun assertValidFilters(filter: List<RequestResourceFilter>, validFields: Collection<String>) {
     filter.forEach {
         if (!validFields.contains(it.filterField)) {
