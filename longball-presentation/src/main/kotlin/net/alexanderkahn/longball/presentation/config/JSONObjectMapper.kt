@@ -1,25 +1,25 @@
 package net.alexanderkahn.longball.presentation.config
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
+import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
+import net.alexanderkahn.service.commons.model.response.body.ObjectResponse
+import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
+import net.alexanderkahn.service.commons.model.response.body.meta.CollectionResponseMeta
+import net.alexanderkahn.service.commons.model.response.body.meta.ObjectResponseMeta
 import org.springframework.stereotype.Component
-import java.util.*
 
 @Component
-open class JsonObjectMapper(
-        @Autowired(required = false) mixins: Optional<Collection<JsonMixin>>) : ObjectMapper() {
-
-    private val logger = LoggerFactory.getLogger(JsonObjectMapper::class.java)
+open class JsonObjectMapper : ObjectMapper() {
 
     init {
         configureMapper()
-        mixins.ifPresent({ this.configureMixins(it) })
+        configureMixins()
     }
 
     private fun configureMapper() {
@@ -34,17 +34,32 @@ open class JsonObjectMapper(
         configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
     }
 
-    private fun configureMixins(mixins: Collection<JsonMixin>) {
-        for ((target, source) in mixins) {
-            addMixIn(target, source)
-        }
+    private fun configureMixins() {
+        configureResponseObjectPropertyOrder()
+    }
 
-        logger.info("Configured REST mapping with mixins: " +
-                "[${mixins.joinToString { "${it::class.simpleName}[${it.source} -> ${it.target}]" }}]")
+    private fun configureResponseObjectPropertyOrder() {
+        // Set the order on response objects so they're consistent across the application
+        // This doesn't matter in terms of application contract, but it's a nice convenience for human readers
+        addMixIn(ResourceObject::class.java, PropertyOrderMixins.ResourceObjectMixin::class.java)
+        addMixIn(ObjectResponse::class.java, PropertyOrderMixins.OkResponseMixin::class.java)
+        addMixIn(CollectionResponse::class.java, PropertyOrderMixins.OkResponseMixin::class.java)
+        addMixIn(ObjectResponseMeta::class.java, PropertyOrderMixins.ObjectResponseMetaMixin::class.java)
+        addMixIn(CollectionResponseMeta::class.java, PropertyOrderMixins.CollectionResponseMetaMixin::class.java)
+    }
+
+    private class PropertyOrderMixins {
+
+        @JsonPropertyOrder("type", "id", "meta", "attributes", "relationships")
+        abstract class ResourceObjectMixin
+
+        @JsonPropertyOrder("meta", "data", "included")
+        abstract class OkResponseMixin
+
+        @JsonPropertyOrder("status", "time")
+        abstract class ObjectResponseMetaMixin
+
+        @JsonPropertyOrder("status", "time", "page")
+        abstract class CollectionResponseMetaMixin
     }
 }
-
-
-//TODO: create a mixin for ResponseResourceObject
-//@JsonPropertyOrder("type", "id", "meta", "attributes", "relationships")
-data class JsonMixin(val target: Class<*>, val source: Class<*>)
