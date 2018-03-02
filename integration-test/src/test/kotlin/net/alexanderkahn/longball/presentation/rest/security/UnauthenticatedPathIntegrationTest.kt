@@ -34,7 +34,6 @@ class UnauthenticatedPathIntegrationTest {
 
     @Test
     fun allowInfoEndpointUnauthenticated() {
-        //TODO: since this application.yml file is totally different from the actual production one, this doesn't really test much
         val info = RestAssured.`when`().get("/actuator/info").then().statusCode(HttpStatus.SC_OK).extract().response().jsonPath()
         println(info.prettify())
         assertTrue(info.getString("app.name").isNotBlank())
