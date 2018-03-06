@@ -12,11 +12,11 @@ data class RequestRosterPosition(
         override val attributes: RosterPositionAttributes,
         override val relationships: RosterPositionRelationships) : RequestResourceObject {
 
-
-    override fun validate() {
-        assertType(ModelTypes.ROSTER_POSITIONS)
-        relationships.player.data.assertType(ModelTypes.PEOPLE)
-    }
+    //FIXME reimplement validation
+//    override fun validate() {
+//        assertType(ModelTypes.ROSTER_POSITIONS)
+//        relationships.player.data.assertType(ModelTypes.PEOPLE)
+//    }
 }
 
 data class ResponseRosterPosition(

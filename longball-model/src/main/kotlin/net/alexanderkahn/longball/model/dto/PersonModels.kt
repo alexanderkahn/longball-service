@@ -10,9 +10,10 @@ data class RequestPerson(
         override val attributes: PersonAttributes) : RequestResourceObject {
     override val relationships = null
 
-    override fun validate() {
-        assertType(ModelTypes.PEOPLE)
-    }
+    //FIXME reimplement validation
+//    override fun validate() {
+//        assertType(ModelTypes.PEOPLE)
+//    }
 }
 
 data class ResponsePerson(

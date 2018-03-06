@@ -35,7 +35,7 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): ObjectCreatedResponse<ResponseLeague> {
-        leagueRequest.data.validate()
+//        leagueRequest.data.validate()
         val created = leagueService.save(leagueRequest.data)
         return ObjectCreatedResponse(created)
     }

@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.provider.assembler.LeagueAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
-import net.alexanderkahn.service.commons.model.exception.NotFoundException
+import net.alexanderkahn.longball.api.exception.NotFoundException
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page

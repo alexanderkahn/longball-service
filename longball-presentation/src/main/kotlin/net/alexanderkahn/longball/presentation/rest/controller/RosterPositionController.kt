@@ -34,7 +34,7 @@ class RosterPositionController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun post(@RequestBody rosterRequest: ObjectRequest<RequestRosterPosition>): ObjectCreatedResponse<ResponseRosterPosition> {
-        rosterRequest.data.validate()
+//        rosterRequest.data.validate()
         val created = rosterPositionService.save(rosterRequest.data)
         return ObjectCreatedResponse(created)
     }

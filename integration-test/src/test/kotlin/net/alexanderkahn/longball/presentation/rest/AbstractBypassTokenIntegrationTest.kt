@@ -9,7 +9,7 @@ import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.repository.UserRepository
-import net.alexanderkahn.service.commons.model.exception.InvalidStateException
+import net.alexanderkahn.longball.api.exception.InvalidStateException
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach

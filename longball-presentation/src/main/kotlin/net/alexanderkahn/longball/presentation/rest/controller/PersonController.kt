@@ -28,7 +28,7 @@ class PersonController(@Autowired private val personService: IPersonService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun post(@RequestBody personRequest: ObjectRequest<RequestPerson>): ObjectCreatedResponse<ResponsePerson> {
-        personRequest.data.validate()
+//        personRequest.data.validate()
         val created = personService.save(personRequest.data)
         return ObjectCreatedResponse(created)
     }

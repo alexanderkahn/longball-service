@@ -1,11 +1,11 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
+import net.alexanderkahn.longball.api.exception.BadRequestException
+import net.alexanderkahn.longball.api.exception.ConflictException
 import net.alexanderkahn.longball.api.service.ILeagueService
 import net.alexanderkahn.longball.model.dto.LeagueAttributes
 import net.alexanderkahn.longball.model.dto.ModelTypes
 import net.alexanderkahn.longball.model.dto.RequestLeague
-import net.alexanderkahn.service.commons.model.exception.BadRequestException
-import net.alexanderkahn.service.commons.model.exception.ConflictException
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.Assertions.assertThrows

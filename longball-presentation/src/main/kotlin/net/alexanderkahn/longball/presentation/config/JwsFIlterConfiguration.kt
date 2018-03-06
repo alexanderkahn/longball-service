@@ -3,11 +3,9 @@ package net.alexanderkahn.longball.presentation.config
 import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.ExceptionResponseWriter
 import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.JwsAuthenticationFilter
 import net.alexanderkahn.service.commons.jwsauthenticator.jws.filter.config.JwsConfig
-import net.alexanderkahn.service.commons.model.exception.UnauthenticatedException
-import net.alexanderkahn.service.commons.model.response.body.ErrorResponse
+import net.alexanderkahn.service.commons.model.response.body.ErrorsResponse
 import net.alexanderkahn.service.commons.model.response.body.error.ResponseError
-import net.alexanderkahn.service.commons.model.response.body.meta.ObjectResponseMeta
-import net.alexanderkahn.service.commons.model.response.body.meta.ResponseStatus
+import net.alexanderkahn.service.commons.model.response.body.meta.ResourceStatus
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -50,8 +48,8 @@ open class JwsFIlterConfiguration {
     @Component
     open class RestErrorResponseWriter(private val jsonObjectMapper: JsonObjectMapper) : ExceptionResponseWriter {
         override fun writeExceptionResponse(exception: Exception, response: ServletResponse) {
-            val status = ResponseStatus.UNAUTHORIZED
-            val payload = ErrorResponse(ObjectResponseMeta(status), ResponseError(UnauthenticatedException(exception.message.orEmpty())))
+            val status = ResourceStatus.UNAUTHORIZED
+            val payload = ErrorsResponse(ResponseError(status, exception))
             (response as? HttpServletResponse)?.apply {
                 setStatus(status.statusCode)
                 contentType = "application/json"

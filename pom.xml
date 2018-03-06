@@ -74,7 +74,7 @@
             <dependency>
                 <groupId>net.alexanderkahn.service.commons</groupId>
                 <artifactId>json-api-model</artifactId>
-                <version>0.0.14</version>
+                <version>0.0.14-SNAPSHOT</version>
             </dependency>
 
             <dependency>

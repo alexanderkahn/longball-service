@@ -10,10 +10,12 @@ data class RequestTeam(
         override val type: String,
         override val attributes: TeamAttributes,
         override val relationships: TeamRelationships) : RequestResourceObject {
-    override fun validate() {
-        assertType(ModelTypes.TEAMS)
-        relationships.league.data.assertType(ModelTypes.LEAGUES)
-    }
+
+    //FIXME reimplement validation
+//    override fun validate() {
+//        assertType(ModelTypes.TEAMS)
+//        relationships.league.data.assertType(ModelTypes.LEAGUES)
+//    }
 }
 
 data class ResponseTeam(

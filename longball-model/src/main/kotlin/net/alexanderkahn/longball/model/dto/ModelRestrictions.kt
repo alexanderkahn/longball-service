@@ -1,10 +1,8 @@
 package net.alexanderkahn.longball.model.dto
 
-import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
-import net.alexanderkahn.service.commons.model.response.body.data.ResourceIdentifier
-
-fun RequestResourceObject.assertType(type: ModelTypes) = assertType(type.display)
-fun ResourceIdentifier.assertType(type: ModelTypes) = assertType(type.display)
+//FIXME re-implement this stuff
+//fun RequestResourceObject.assertType(type: ModelTypes) = assertType(type.display)
+//fun ResourceIdentifier.assertType(type: ModelTypes) = assertType(type.display)
 
 const val MIN_NAME_FIELD_SIZE = 3
 const val MAX_NAME_FIELD_SIZE = 255

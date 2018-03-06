@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.service.commons.model.exception.NotFoundException
+import net.alexanderkahn.longball.api.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.service.commons.model.exception.NotFoundException
+import net.alexanderkahn.longball.api.exception.NotFoundException
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import org.springframework.beans.factory.annotation.Autowired
