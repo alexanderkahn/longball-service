@@ -51,7 +51,7 @@ open class JwsFIlterConfiguration {
             val status = ResourceStatus.UNAUTHORIZED
             val payload = ErrorsResponse(ResponseError(status, exception))
             (response as? HttpServletResponse)?.apply {
-                setStatus(status.statusCode)
+                setStatus(status.statusCode.toInt())
                 contentType = "application/json"
                 characterEncoding = "UTF-8"
                 writer.write(jsonObjectMapper.writeValueAsString(payload))

@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.util.MultiValueMap
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/leagues")
@@ -34,8 +35,7 @@ class LeagueController(@Autowired private val leagueService: ILeagueService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun addLeague(@RequestBody leagueRequest: ObjectRequest<RequestLeague>): ObjectCreatedResponse<ResponseLeague> {
-//        leagueRequest.data.validate()
+    fun postLeague(@Valid @RequestBody leagueRequest: ObjectRequest<RequestLeague>): ObjectCreatedResponse<ResponseLeague> {
         val created = leagueService.save(leagueRequest.data)
         return ObjectCreatedResponse(created)
     }

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito.mock
 
 internal class LeagueControllerTest {
@@ -25,21 +26,21 @@ internal class LeagueControllerTest {
         @Test
         fun withWrongType() {
             val wrongTypeLeague = RequestLeague("lugs", LeagueAttributes(RandomStringUtils.randomAlphanumeric(20)))
-            val exception = assertThrows(ConflictException::class.java, { subject.addLeague(ObjectRequest( wrongTypeLeague)) })
+            val exception = assertThrows(ConflictException::class.java, { subject.postLeague(ObjectRequest( wrongTypeLeague)) })
             assertTrue(exception.message!!.contains("Invalid type: lugs"))
         }
 
         @Test
         fun withShortName() {
             val shortNameLeague = RequestLeague(ModelTypes.LEAGUES.display, LeagueAttributes(""))
-            val exception = assertThrows(BadRequestException::class.java, { subject.addLeague(ObjectRequest( shortNameLeague)) })
+            val exception = assertThrows(BadRequestException::class.java, { subject.postLeague(ObjectRequest( shortNameLeague)) })
             assertTrue(exception.message!!.contains("Invalid value for field: name"))
         }
 
         @Test
         fun withLongName() {
             val shortNameLeague = RequestLeague(ModelTypes.LEAGUES.display, LeagueAttributes(RandomStringUtils.randomAlphanumeric(300)))
-            val exception = assertThrows(BadRequestException::class.java, { subject.addLeague(ObjectRequest( shortNameLeague)) })
+            val exception = assertThrows(BadRequestException::class.java, { subject.postLeague(ObjectRequest( shortNameLeague)) })
             assertTrue(exception.message!!.contains("Invalid value for field: name"))
         }
     }

@@ -1,16 +1,20 @@
-package net.alexanderkahn.longball.itest
+package net.alexanderkahn.longball.presentation.rest.controller
 
 
-import junit.framework.TestCase.*
+import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.model.dto.LeagueAttributes
 import net.alexanderkahn.longball.model.dto.RequestLeague
 import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.body.error.ResponseError
+import net.alexanderkahn.service.commons.model.response.body.meta.ResourceStatus
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -36,17 +40,6 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     }
 
     @Test
-    fun postLeague() {
-        val league = RequestLeague("leagues", LeagueAttributes(RandomStringUtils.randomAlphabetic(10)))
-        val response = withBypassToken().body(ObjectRequest(league))
-                .`when`().post("/leagues")
-                .then().statusCode(HttpStatus.SC_CREATED)
-                .extract().response()
-        val leagueId = response.jsonPath().getUUID("data.id")
-        assertTrue(leagueRepository.existsById(leagueId))
-    }
-
-    @Test
     fun getLeague() {
         val league = LeagueEntity(RandomStringUtils.randomAlphabetic(5), userEntity)
         leagueRepository.save(league)
@@ -58,7 +51,6 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
         assertEquals(league.id, responseBody.getUUID("data.id"))
         assertEquals(league.name, responseBody.getString("data.attributes.name"))
-
     }
 
     @Test
@@ -75,10 +67,58 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
-    @Test
-    fun addLeagueWrongType() {
-        withBypassToken().body(ObjectRequest(RequestLeague("otherType", LeagueAttributes("name"))))
-                .`when`().post("/leagues")
-                .then().statusCode(HttpStatus.SC_CONFLICT)
+    @Nested inner class PostLeague {
+
+        @Test
+        fun validData() {
+            val league = RequestLeague("leagues", LeagueAttributes(RandomStringUtils.randomAlphabetic(10)))
+            val response = withBypassToken().body(ObjectRequest(league))
+                    .`when`().post("/leagues")
+                    .then().statusCode(HttpStatus.SC_CREATED)
+                    .extract().response()
+            val leagueId = response.jsonPath().getUUID("data.id")
+            assertTrue(leagueRepository.existsById(leagueId))
+        }
+
+        @Test
+        fun invalidType() {
+            val response = withBypassToken().body(ObjectRequest(RequestLeague("otherType", LeagueAttributes("name"))))
+                    .`when`().post("/leagues")
+                    .then().statusCode(HttpStatus.SC_CONFLICT)
+                    .extract().jsonPath()
+            val errors = response.getList("errors", ResponseError::class.java)
+            assertTrue(ResourceStatus.CONFLICT.statusCode.equals(response.getString("meta.status"), true))
+            assertEquals(1, errors.size)
+            assertEquals(HttpStatus.SC_CONFLICT.toString(), errors[0].status.statusCode)
+        }
+
+        @Test
+        fun invalidAttributeLength() {
+            val response = withBypassToken().body(ObjectRequest(RequestLeague("leagues", LeagueAttributes("n"))))
+                    .`when`().post("/leagues")
+                    .then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                    .extract().jsonPath()
+            val errors = response.getList("errors", ResponseError::class.java)
+            assertTrue(ResourceStatus.BAD_REQUEST.statusCode.equals(response.getString("meta.status"), true))
+            assertEquals(1, errors.size)
+            assertEquals(HttpStatus.SC_BAD_REQUEST.toString(), errors[0].status.statusCode)
+        }
+
+        @Test
+        fun invalidTypeAndAttributeLength() {
+            val response = withBypassToken().body(ObjectRequest(RequestLeague("otherType", LeagueAttributes("n"))))
+                    .`when`().post("/leagues")
+                    .then().statusCode(HttpStatus.SC_BAD_REQUEST)
+                    .extract().jsonPath()
+            val errors = response.getList("errors", ResponseError::class.java)
+            assertEquals(2, errors.size)
+            assertTrue(ResourceStatus.BAD_REQUEST.statusCode.equals(response.getString("meta.status"), true))
+            assertEquals(HttpStatus.SC_BAD_REQUEST.toString(), errors[0].status.statusCode)
+            assertEquals(HttpStatus.SC_CONFLICT.toString(), errors[1].status.statusCode)
+        }
     }
+
+
+
+
 }

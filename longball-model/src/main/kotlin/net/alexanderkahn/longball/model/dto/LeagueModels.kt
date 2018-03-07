@@ -1,25 +1,24 @@
 package net.alexanderkahn.longball.model.dto
 
 import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
+import net.alexanderkahn.service.commons.model.request.validation.ExpectedType
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
+import javax.validation.Valid
+import javax.validation.constraints.Size
 
-data class RequestLeague(override val type: String, override val attributes: LeagueAttributes) : RequestResourceObject {
-    override val relationships = null
 
-    //FIXME reimplement
-//    override fun validate() {
-//        assertType(ModelTypes.LEAGUES)
-//        if (attributes.name.length < MIN_NAME_FIELD_SIZE || attributes.name.length > MAX_NAME_FIELD_SIZE) {
-//            throw BadRequestException(invalidFieldLengthMessage("name"))
-//        }
-//    }
+data class RequestLeague(
+        @field:ExpectedType("leagues") override val type: String,
+        @field:Valid override val attributes: LeagueAttributes
+) : RequestResourceObject {
+    override val relationships: Nothing? = null
 }
 
 data class ResponseLeague(override val id: UUID, override val meta: ModifiableResourceMeta, override val attributes: LeagueAttributes) : ResourceObject {
     override val type = ModelTypes.LEAGUES.display
-    override val relationships = null
+    override val relationships: Nothing? = null
 }
 
-data class LeagueAttributes(val name: String)
+data class LeagueAttributes(@field:Size(min = MIN_NAME_FIELD_SIZE, max = MAX_NAME_FIELD_SIZE) val name: String)

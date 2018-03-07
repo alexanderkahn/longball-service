@@ -4,12 +4,12 @@ import com.google.gson.*
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
+import net.alexanderkahn.longball.api.exception.InvalidStateException
 import net.alexanderkahn.longball.presentation.config.JwsFIlterConfiguration
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.repository.UserRepository
-import net.alexanderkahn.longball.api.exception.InvalidStateException
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -66,7 +66,7 @@ abstract class AbstractBypassTokenIntegrationTest {
         leagueRepository.deleteAll()
     }
 
-    protected val gson = GsonBuilder()
+    protected val gson: Gson = GsonBuilder()
             .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
             .create()
 
