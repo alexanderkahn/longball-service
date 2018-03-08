@@ -11,11 +11,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
-import org.springframework.validation.ObjectError
-import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import javax.validation.ConstraintViolation
+import javax.validation.ConstraintViolationException
 import javax.validation.constraints.Size
 
 @RestControllerAdvice
@@ -54,11 +54,19 @@ class ServiceExceptionControllerAdvice {
         return ErrorsResponse(ResponseError(ResourceStatus.CONFLICT, "Conflict", e.message.orEmpty()))
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleInvalidArguments(e: MethodArgumentNotValidException): ResponseEntity<ErrorsResponse> {
-        val errors = e.bindingResult.allErrors.map { toResponseError(it) }.sortedBy { it.status }
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintViolation(e: ConstraintViolationException): ResponseEntity<ErrorsResponse> {
+        val errors = e.constraintViolations.map { toResponseError(it) }.sortedBy { it.status.statusCode }
         val responseBody = ErrorsResponse(ObjectResponseMeta(getCommonStatus(errors.map { it.status })), errors)
         return ResponseEntity(responseBody, HttpStatus.valueOf(responseBody.meta.status.statusCode.toInt()))
+    }
+
+    private fun toResponseError(violation: ConstraintViolation<*>): ResponseError {
+        return when(violation.constraintDescriptor.annotation.annotationClass) {
+            ExpectedType::class -> ResponseError(ResourceStatus.CONFLICT, "Unexpected type", violation.message.orEmpty())
+            Size::class -> ResponseError(ResourceStatus.BAD_REQUEST, "Invalid attribute length", violation.message.orEmpty())
+            else -> ResponseError(ResourceStatus.INTERNAL_SERVER_ERROR, "Unknown error", violation.message.orEmpty())
+        }
     }
 
     private fun getCommonStatus(errorStatuses: List<ResourceStatus>): ResourceStatus {
@@ -84,11 +92,6 @@ class ServiceExceptionControllerAdvice {
         return ErrorsResponse(ResponseError(ResourceStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", e.message.orEmpty()))
     }
 
-    private fun toResponseError(error: ObjectError): ResponseError {
-        return when (error.code) {
-            ExpectedType::class.simpleName -> ResponseError(ResourceStatus.CONFLICT, "Conflict", error.defaultMessage.orEmpty())
-            Size::class.simpleName -> ResponseError(ResourceStatus.BAD_REQUEST, "Bad Request", error.defaultMessage.orEmpty())
-            else -> ResponseError(ResourceStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", error.defaultMessage.orEmpty())
-        }
-    }
+    //TODO add handlers for unsupported media type, method not allowed, and malformed POST bodies. Maybe enforce strict typing on requests.
+
 }

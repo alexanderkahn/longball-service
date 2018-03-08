@@ -117,8 +117,4 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
             assertEquals(HttpStatus.SC_CONFLICT.toString(), errors[1].status.statusCode)
         }
     }
-
-
-
-
 }
