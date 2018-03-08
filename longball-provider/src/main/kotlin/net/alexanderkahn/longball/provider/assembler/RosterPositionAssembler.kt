@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.model.dto.RequestRosterPosition
+import net.alexanderkahn.longball.api.model.RequestRosterPosition
 import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository

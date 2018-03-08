@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.service.IRosterPositionService
-import net.alexanderkahn.longball.model.dto.RequestRosterPosition
-import net.alexanderkahn.longball.model.dto.ResponseRosterPosition
+import net.alexanderkahn.longball.api.model.RequestRosterPosition
+import net.alexanderkahn.longball.api.model.ResponseRosterPosition
 import net.alexanderkahn.longball.provider.assembler.RosterPositionAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.RosterPositionRepository

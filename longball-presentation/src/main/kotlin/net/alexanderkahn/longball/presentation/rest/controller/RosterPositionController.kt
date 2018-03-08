@@ -1,10 +1,10 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
 import net.alexanderkahn.longball.api.service.IRosterPositionService
-import net.alexanderkahn.longball.model.dto.ModelTypes
-import net.alexanderkahn.longball.model.dto.RequestRosterPosition
-import net.alexanderkahn.longball.model.dto.ResponseRosterPosition
-import net.alexanderkahn.longball.model.dto.toCollectionResponse
+import net.alexanderkahn.longball.api.model.ModelTypes
+import net.alexanderkahn.longball.api.model.RequestRosterPosition
+import net.alexanderkahn.longball.api.model.ResponseRosterPosition
+import net.alexanderkahn.longball.api.model.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.IncludeHelper
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import net.alexanderkahn.service.commons.model.response.body.CollectionResponse

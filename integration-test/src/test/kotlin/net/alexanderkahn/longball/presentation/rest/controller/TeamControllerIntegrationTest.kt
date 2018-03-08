@@ -1,11 +1,11 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
 import junit.framework.TestCase.assertEquals
+import net.alexanderkahn.longball.api.model.RequestTeam
+import net.alexanderkahn.longball.api.model.ResponseTeam
+import net.alexanderkahn.longball.api.model.TeamAttributes
+import net.alexanderkahn.longball.api.model.TeamRelationships
 import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
-import net.alexanderkahn.longball.model.dto.RequestTeam
-import net.alexanderkahn.longball.model.dto.ResponseTeam
-import net.alexanderkahn.longball.model.dto.TeamAttributes
-import net.alexanderkahn.longball.model.dto.TeamRelationships
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository

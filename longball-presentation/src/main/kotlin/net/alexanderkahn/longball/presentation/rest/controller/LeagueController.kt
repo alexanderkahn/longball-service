@@ -1,10 +1,10 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
+import net.alexanderkahn.longball.api.model.LeagueAttributes
+import net.alexanderkahn.longball.api.model.RequestLeague
+import net.alexanderkahn.longball.api.model.ResponseLeague
+import net.alexanderkahn.longball.api.model.toCollectionResponse
 import net.alexanderkahn.longball.api.service.ILeagueService
-import net.alexanderkahn.longball.model.dto.LeagueAttributes
-import net.alexanderkahn.longball.model.dto.RequestLeague
-import net.alexanderkahn.longball.model.dto.ResponseLeague
-import net.alexanderkahn.longball.model.dto.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch
 import net.alexanderkahn.longball.presentation.rest.helper.getSearchableFieldsFor
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest

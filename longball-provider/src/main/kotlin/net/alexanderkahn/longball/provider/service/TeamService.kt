@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.NotFoundException
+import net.alexanderkahn.longball.api.model.RequestTeam
+import net.alexanderkahn.longball.api.model.ResponseTeam
 import net.alexanderkahn.longball.api.service.ITeamService
-import net.alexanderkahn.longball.model.dto.RequestTeam
-import net.alexanderkahn.longball.model.dto.ResponseTeam
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.TeamEntity

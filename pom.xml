@@ -10,7 +10,6 @@
 
     <modules>
         <module>longball-api</module>
-        <module>longball-model</module>
         <module>longball-presentation</module>
         <module>longball-provider</module>
         <module>integration-test</module>
@@ -48,11 +47,6 @@
             <dependency>
                 <groupId>net.alexanderkahn.longball</groupId>
                 <artifactId>longball-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.alexanderkahn.longball</groupId>
-                <artifactId>longball-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

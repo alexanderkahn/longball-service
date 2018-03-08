@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.NotFoundException
+import net.alexanderkahn.longball.api.model.RequestLeague
+import net.alexanderkahn.longball.api.model.ResponseLeague
 import net.alexanderkahn.longball.api.service.ILeagueService
-import net.alexanderkahn.longball.model.dto.RequestLeague
-import net.alexanderkahn.longball.model.dto.ResponseLeague
 import net.alexanderkahn.longball.provider.assembler.LeagueAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.LeagueEntity

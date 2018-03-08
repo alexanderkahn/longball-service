@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.api.service
 
-import net.alexanderkahn.longball.model.dto.RequestTeam
-import net.alexanderkahn.longball.model.dto.ResponseTeam
+import net.alexanderkahn.longball.api.model.RequestTeam
+import net.alexanderkahn.longball.api.model.ResponseTeam
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import org.springframework.data.domain.Page

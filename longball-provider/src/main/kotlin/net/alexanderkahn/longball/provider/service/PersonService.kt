@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.service.IPersonService
-import net.alexanderkahn.longball.model.dto.RequestPerson
-import net.alexanderkahn.longball.model.dto.ResponsePerson
+import net.alexanderkahn.longball.api.model.RequestPerson
+import net.alexanderkahn.longball.api.model.ResponsePerson
 import net.alexanderkahn.longball.provider.assembler.PersonAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.PersonRepository

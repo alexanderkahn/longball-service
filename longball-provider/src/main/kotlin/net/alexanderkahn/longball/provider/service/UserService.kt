@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.service.IUserService
-import net.alexanderkahn.longball.model.dto.ResponseUser
-import net.alexanderkahn.longball.model.dto.UserAttributes
+import net.alexanderkahn.longball.api.model.ResponseUser
+import net.alexanderkahn.longball.api.model.UserAttributes
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsAuthentication
@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(@Autowired private val userRepository: UserRepository) : IUserService {
     override fun currentUser(): ResponseUser = with(getUserFromContext()) {
-        ResponseUser(id, ModifiableResourceMeta(created, lastModified), UserAttributes(issuer, username, displayName)) }
+        ResponseUser(id, ModifiableResourceMeta(created, lastModified), UserAttributes(issuer, username, displayName))
+    }
 
     fun userEntity(): UserEntity = getUserFromContext()
 

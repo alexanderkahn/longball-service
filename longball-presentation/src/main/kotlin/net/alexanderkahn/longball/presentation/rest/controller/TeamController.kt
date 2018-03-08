@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
+import net.alexanderkahn.longball.api.model.*
 import net.alexanderkahn.longball.api.service.ITeamService
-import net.alexanderkahn.longball.model.dto.*
 import net.alexanderkahn.longball.presentation.rest.helper.getFilterableFieldsFor
 import net.alexanderkahn.longball.presentation.rest.helper.getFilters
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch

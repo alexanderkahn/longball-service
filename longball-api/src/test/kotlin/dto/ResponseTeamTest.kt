@@ -1,5 +1,8 @@
-package net.alexanderkahn.longball.model.dto
+package dto
 
+import net.alexanderkahn.longball.api.model.RequestTeam
+import net.alexanderkahn.longball.api.model.TeamAttributes
+import net.alexanderkahn.longball.api.model.TeamRelationships
 import net.alexanderkahn.service.commons.model.request.validation.ExpectedType
 import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import org.junit.jupiter.api.BeforeEach

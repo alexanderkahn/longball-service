@@ -1,10 +1,10 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.model.dto.RequestTeam
+import net.alexanderkahn.longball.api.exception.NotFoundException
+import net.alexanderkahn.longball.api.model.RequestTeam
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.service.UserService
-import net.alexanderkahn.longball.api.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

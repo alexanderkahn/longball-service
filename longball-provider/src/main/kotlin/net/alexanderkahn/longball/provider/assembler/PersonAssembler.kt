@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.model.dto.RequestPerson
+import net.alexanderkahn.longball.api.model.RequestPerson
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.service.UserService
 import org.springframework.beans.factory.annotation.Autowired

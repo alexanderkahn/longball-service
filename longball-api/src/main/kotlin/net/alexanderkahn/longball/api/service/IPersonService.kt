@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.api.service
 
-import net.alexanderkahn.longball.model.dto.RequestPerson
-import net.alexanderkahn.longball.model.dto.ResponsePerson
+import net.alexanderkahn.longball.api.model.RequestPerson
+import net.alexanderkahn.longball.api.model.ResponsePerson
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import java.util.*

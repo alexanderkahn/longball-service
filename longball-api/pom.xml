@@ -14,8 +14,34 @@
     <dependencies>
 
         <dependency>
-            <groupId>net.alexanderkahn.longball</groupId>
-            <artifactId>longball-model</artifactId>
+            <groupId>net.alexanderkahn.service.commons</groupId>
+            <artifactId>json-api-model</artifactId>
+        </dependency>
+
+        <!--FIXME: move this down into the service layer. API shouldn't know about Spring-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.4.1.Final</version>
         </dependency>
     </dependencies>
 

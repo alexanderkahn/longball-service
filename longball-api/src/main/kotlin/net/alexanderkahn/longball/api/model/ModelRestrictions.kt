@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.model.dto
+package net.alexanderkahn.longball.api.model
 
 //FIXME re-implement this stuff
 //fun RequestResourceObject.assertType(type: ModelTypes) = assertType(type.display)

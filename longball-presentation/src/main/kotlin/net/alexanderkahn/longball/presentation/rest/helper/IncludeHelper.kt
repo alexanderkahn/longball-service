@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.presentation.rest.helper
 
 import net.alexanderkahn.longball.api.service.IPersonService
-import net.alexanderkahn.longball.model.dto.ModelTypes
-import net.alexanderkahn.longball.model.dto.ModelTypes.PEOPLE
+import net.alexanderkahn.longball.api.model.ModelTypes
+import net.alexanderkahn.longball.api.model.ModelTypes.PEOPLE
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

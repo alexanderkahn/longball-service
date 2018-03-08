@@ -14,10 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>net.alexanderkahn.longball</groupId>
-            <artifactId>longball-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.alexanderkahn.longball</groupId>
             <artifactId>longball-api</artifactId>
         </dependency>
         <dependency>

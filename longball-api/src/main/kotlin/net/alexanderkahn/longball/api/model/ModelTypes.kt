@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.model.dto
+package net.alexanderkahn.longball.api.model
 
 enum class ModelTypes(val display: String) {
     LEAGUES("leagues"),

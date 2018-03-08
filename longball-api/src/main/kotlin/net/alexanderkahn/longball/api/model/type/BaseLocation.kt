@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.model.type
+package net.alexanderkahn.longball.api.model.type
 
 enum class BaseLocation {
     FIRST,

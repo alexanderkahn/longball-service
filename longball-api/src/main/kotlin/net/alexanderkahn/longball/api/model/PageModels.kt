@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.model.dto
+package net.alexanderkahn.longball.api.model
 
 import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
