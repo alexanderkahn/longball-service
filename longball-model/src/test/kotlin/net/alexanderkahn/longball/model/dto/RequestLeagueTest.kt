@@ -25,6 +25,13 @@ internal class RequestLeagueTest {
         }
 
         @Test
+        internal fun validRequest() {
+            val league = RequestLeague("leagues", LeagueAttributes("hello there"))
+            val violations = validator.validate(league)
+            assertEquals(0, violations.size)
+        }
+
+        @Test
         internal fun incorrectType() {
             val invalidType = "large"
             val league = RequestLeague(invalidType, LeagueAttributes("hello there"))

@@ -1,21 +1,17 @@
 package net.alexanderkahn.longball.model.dto
 
 import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
+import net.alexanderkahn.service.commons.model.request.validation.ExpectedType
 import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
+import javax.validation.Valid
 
 data class RequestTeam(
-        override val type: String,
-        override val attributes: TeamAttributes,
-        override val relationships: TeamRelationships) : RequestResourceObject {
-
-    //FIXME reimplement validation
-//    override fun validate() {
-//        assertType(ModelTypes.TEAMS)
-//        relationships.league.data.assertType(ModelTypes.LEAGUES)
-//    }
+        @field:ExpectedType("teams") override val type: String,
+        @field:Valid override val attributes: TeamAttributes,
+        @field:Valid override val relationships: TeamRelationships) : RequestResourceObject {
 }
 
 data class ResponseTeam(
@@ -26,8 +22,10 @@ data class ResponseTeam(
     override val type = ModelTypes.TEAMS.display
 }
 
+//TODO: figure out what validation is needed for these
 data class TeamAttributes(val abbreviation: String, val location: String, val nickname: String)
 
-data class TeamRelationships(val league: RelationshipObject) {
+//TODO: validate relationships exist
+data class TeamRelationships(@ExpectedType("leagues") val league: RelationshipObject) {
     constructor(leagueId: UUID): this(RelationshipObject(ModelTypes.LEAGUES.display, leagueId))
 }

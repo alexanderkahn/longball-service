@@ -1,6 +1,7 @@
-package net.alexanderkahn.longball.itest
+package net.alexanderkahn.longball.presentation.rest.controller
 
 import junit.framework.TestCase.assertEquals
+import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.model.dto.PersonAttributes
 import net.alexanderkahn.longball.model.dto.RequestPerson
 import net.alexanderkahn.longball.model.dto.ResponsePerson

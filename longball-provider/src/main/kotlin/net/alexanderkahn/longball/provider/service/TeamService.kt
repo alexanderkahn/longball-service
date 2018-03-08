@@ -1,5 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
+import net.alexanderkahn.longball.api.exception.NotFoundException
 import net.alexanderkahn.longball.api.service.ITeamService
 import net.alexanderkahn.longball.model.dto.RequestTeam
 import net.alexanderkahn.longball.model.dto.ResponseTeam
@@ -7,17 +8,19 @@ import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.TeamRepository
-import net.alexanderkahn.longball.api.exception.NotFoundException
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.validation.annotation.Validated
 import java.util.*
+import javax.validation.Valid
 
 @Service
-class TeamService @Autowired constructor(
+@Validated
+open class TeamService @Autowired constructor(
         private val userService: UserService,
         private val teamRepository: TeamRepository,
         private val teamAssembler: TeamAssembler) : ITeamService {
@@ -37,7 +40,7 @@ class TeamService @Autowired constructor(
         return team?.toResponse() ?: throw NotFoundException("players", id)
     }
 
-    override fun save(team: RequestTeam): ResponseTeam {
+    override fun save(@Valid team: RequestTeam): ResponseTeam {
         val entity = teamAssembler.toEntity(team)
         teamRepository.save(entity)
         return entity.toResponse()
