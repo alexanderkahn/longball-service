@@ -1,8 +1,10 @@
 package net.alexanderkahn.longball.api.exception
 
+import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ResourceStatus
 import java.util.*
 
+//TODO: I don't think I'm using this status anymore, can delete ResourceStatusException
 class BadRequestException : ResourceStatusException {
     constructor() : super()
     constructor(message: String) : super(message)
@@ -47,6 +49,13 @@ class ConflictException: ResourceStatusException {
     constructor(message: String) : super(message)
 
     override val status: ResourceStatus = ResourceStatus.CONFLICT
+}
+
+class InvalidRelationshipException: ResourceStatusException {
+    constructor(identifier: RelationshipObject.RelationshipObjectIdentifier)
+            : super("No entity of type ${identifier.type} found with ID ${identifier.id}")
+
+    override val status: ResourceStatus = ResourceStatus.UNPROCESSABLE_ENTITY
 }
 
 abstract class ResourceStatusException : RuntimeException {

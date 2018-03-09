@@ -42,7 +42,6 @@ class TeamController(@Autowired private val teamService: ITeamService) {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun post(@RequestBody teamRequest: ObjectRequest<RequestTeam>): ObjectCreatedResponse<ResponseTeam> {
-//        teamRequest.data.validate()
         val created = teamService.save(teamRequest.data)
         return ObjectCreatedResponse(created)
     }

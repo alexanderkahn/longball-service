@@ -54,6 +54,12 @@ class ServiceExceptionControllerAdvice {
         return ErrorsResponse(ResponseError(ResourceStatus.CONFLICT, "Conflict", e.message.orEmpty()))
     }
 
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(InvalidRelationshipException::class)
+    fun handleUnprocessable(e: InvalidRelationshipException): ErrorsResponse {
+        return ErrorsResponse(ResponseError(ResourceStatus.UNPROCESSABLE_ENTITY, "Invalid Relationship", e.message.orEmpty()))
+    }
+
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolation(e: ConstraintViolationException): ResponseEntity<ErrorsResponse> {
         val errors = e.constraintViolations.map { toResponseError(it) }.sortedBy { it.status.statusCode }
