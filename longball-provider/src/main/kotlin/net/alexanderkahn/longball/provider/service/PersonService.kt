@@ -1,20 +1,23 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.api.service.IPersonService
+import net.alexanderkahn.longball.api.exception.NotFoundException
 import net.alexanderkahn.longball.api.model.RequestPerson
 import net.alexanderkahn.longball.api.model.ResponsePerson
+import net.alexanderkahn.longball.api.service.IPersonService
 import net.alexanderkahn.longball.provider.assembler.PersonAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.PersonRepository
-import net.alexanderkahn.longball.api.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.validation.annotation.Validated
 import java.util.*
+import javax.validation.Valid
 
 @Service
-class PersonService @Autowired constructor(
+@Validated
+open class PersonService @Autowired constructor(
         private val userService: UserService,
         private val personRepository: PersonRepository,
         private val personAssembler: PersonAssembler
@@ -30,7 +33,7 @@ class PersonService @Autowired constructor(
         return player?.toResponse() ?: throw NotFoundException("players", id)
     }
 
-    override fun save(person: RequestPerson): ResponsePerson {
+    override fun save(@Valid person: RequestPerson): ResponsePerson {
         val entity = personAssembler.toEntity(person)
         personRepository.save(entity)
         return entity.toResponse()

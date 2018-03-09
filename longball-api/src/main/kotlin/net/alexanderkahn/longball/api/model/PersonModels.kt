@@ -1,19 +1,15 @@
 package net.alexanderkahn.longball.api.model
 
 import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
+import net.alexanderkahn.service.commons.model.request.validation.ExpectedType
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 
 data class RequestPerson(
-        override val type: String,
+        @ExpectedType("people") override val type: String,
         override val attributes: PersonAttributes) : RequestResourceObject {
-    override val relationships = null
-
-    //FIXME reimplement validation
-//    override fun validate() {
-//        assertType(ModelTypes.PEOPLE)
-//    }
+    override val relationships: Nothing? = null
 }
 
 data class ResponsePerson(
