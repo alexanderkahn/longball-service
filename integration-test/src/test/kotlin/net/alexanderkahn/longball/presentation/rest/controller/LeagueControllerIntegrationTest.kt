@@ -9,7 +9,6 @@ import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import net.alexanderkahn.service.commons.model.response.body.error.ResponseError
-import net.alexanderkahn.service.commons.model.response.body.meta.ResourceStatus
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
@@ -87,7 +86,6 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
                     .then().statusCode(HttpStatus.SC_CONFLICT)
                     .extract().jsonPath()
             val errors = response.getList("errors", ResponseError::class.java)
-            assertTrue(ResourceStatus.CONFLICT.statusCode.equals(response.getString("meta.status"), true))
             assertEquals(1, errors.size)
             assertEquals(HttpStatus.SC_CONFLICT.toString(), errors[0].status.statusCode)
         }
@@ -99,7 +97,6 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
                     .then().statusCode(HttpStatus.SC_BAD_REQUEST)
                     .extract().jsonPath()
             val errors = response.getList("errors", ResponseError::class.java)
-            assertTrue(ResourceStatus.BAD_REQUEST.statusCode.equals(response.getString("meta.status"), true))
             assertEquals(1, errors.size)
             assertEquals(HttpStatus.SC_BAD_REQUEST.toString(), errors[0].status.statusCode)
         }
@@ -112,7 +109,6 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
                     .extract().jsonPath()
             val errors = response.getList("errors", ResponseError::class.java)
             assertEquals(2, errors.size)
-            assertTrue(ResourceStatus.BAD_REQUEST.statusCode.equals(response.getString("meta.status"), true))
             assertEquals(HttpStatus.SC_BAD_REQUEST.toString(), errors[0].status.statusCode)
             assertEquals(HttpStatus.SC_CONFLICT.toString(), errors[1].status.statusCode)
         }

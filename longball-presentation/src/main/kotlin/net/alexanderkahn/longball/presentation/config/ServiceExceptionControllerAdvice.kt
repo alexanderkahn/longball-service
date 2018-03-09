@@ -63,8 +63,8 @@ class ServiceExceptionControllerAdvice {
     @ExceptionHandler(ConstraintViolationException::class)
     fun handleConstraintViolation(e: ConstraintViolationException): ResponseEntity<ErrorsResponse> {
         val errors = e.constraintViolations.map { toResponseError(it) }.sortedBy { it.status.statusCode }
-        val responseBody = ErrorsResponse(ObjectResponseMeta(getCommonStatus(errors.map { it.status })), errors)
-        return ResponseEntity(responseBody, HttpStatus.valueOf(responseBody.meta.status.statusCode.toInt()))
+        val responseBody = ErrorsResponse(ObjectResponseMeta(), errors)
+        return ResponseEntity(responseBody, getHttpStatus(errors))
     }
 
     private fun toResponseError(violation: ConstraintViolation<*>): ResponseError {
@@ -75,7 +75,12 @@ class ServiceExceptionControllerAdvice {
         }
     }
 
-    private fun getCommonStatus(errorStatuses: List<ResourceStatus>): ResourceStatus {
+    private fun getHttpStatus(errors: List<ResponseError>): HttpStatus {
+        return HttpStatus.valueOf(getCommonStatus(errors).statusCode.toInt()) ?: HttpStatus.INTERNAL_SERVER_ERROR
+    }
+
+    private fun getCommonStatus(errors: List<ResponseError>): ResourceStatus {
+        val errorStatuses = errors.map { it.status }
         return when {
             errorStatuses.isEmpty() -> ResourceStatus.INTERNAL_SERVER_ERROR
             errorStatuses.distinct().size == 1 -> errorStatuses.single()
