@@ -1,4 +1,4 @@
-package dto
+package net.alexanderkahn.longball.api.model
 
 import net.alexanderkahn.longball.api.model.LeagueAttributes
 import net.alexanderkahn.longball.api.model.RequestLeague
