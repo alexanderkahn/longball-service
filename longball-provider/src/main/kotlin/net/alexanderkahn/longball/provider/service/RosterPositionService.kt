@@ -1,20 +1,23 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.api.service.IRosterPositionService
+import net.alexanderkahn.longball.api.exception.NotFoundException
 import net.alexanderkahn.longball.api.model.RequestRosterPosition
 import net.alexanderkahn.longball.api.model.ResponseRosterPosition
+import net.alexanderkahn.longball.api.service.IRosterPositionService
 import net.alexanderkahn.longball.provider.assembler.RosterPositionAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse
 import net.alexanderkahn.longball.provider.repository.RosterPositionRepository
-import net.alexanderkahn.longball.api.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.validation.annotation.Validated
 import java.util.*
+import javax.validation.Valid
 
 @Service
-class RosterPositionService @Autowired constructor(
+@Validated
+open class RosterPositionService @Autowired constructor(
         private val userService: UserService,
         private val rosterPositionRepository: RosterPositionRepository,
         private val rosterPositionAssembler: RosterPositionAssembler) : IRosterPositionService {
@@ -29,7 +32,7 @@ class RosterPositionService @Autowired constructor(
         return position?.toResponse() ?: throw NotFoundException("rosterpositions", id)
     }
 
-    override fun save(rosterPosition: RequestRosterPosition): ResponseRosterPosition {
+    override fun save(@Valid rosterPosition: RequestRosterPosition): ResponseRosterPosition {
         val entity = rosterPositionAssembler.toEntity(rosterPosition)
         rosterPositionRepository.save(entity)
         return entity.toResponse()

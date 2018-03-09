@@ -8,6 +8,7 @@ import javax.validation.Validator
 import kotlin.test.assertEquals
 
 internal class RequestPersonTest {
+
     @Nested
     inner class Validates {
 
