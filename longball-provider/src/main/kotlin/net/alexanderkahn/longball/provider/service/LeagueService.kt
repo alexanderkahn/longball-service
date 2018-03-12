@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.api.exception.NotFoundException
+import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
 import net.alexanderkahn.longball.api.model.RequestLeague
 import net.alexanderkahn.longball.api.model.ResponseLeague
 import net.alexanderkahn.longball.api.service.ILeagueService
@@ -27,7 +27,7 @@ open class LeagueService @Autowired constructor(
 
     override fun get(id: UUID): ResponseLeague {
         val league = leagueRepository.findByIdAndOwner(id, userService.userEntity())
-        return league?.toResponse() ?: throw NotFoundException("leagues", id)
+        return league?.toResponse() ?: throw ResourceNotFoundException("leagues", id)
     }
 
     override fun getAll(pageable: Pageable, search: RequestResourceSearch?): Page<ResponseLeague> {
@@ -48,7 +48,7 @@ open class LeagueService @Autowired constructor(
 
     override fun delete(id: UUID) {
         if (!leagueRepository.existsById(id)) {
-            throw NotFoundException("leagues", id)
+            throw ResourceNotFoundException("leagues", id)
         }
         leagueRepository.deleteById(id)
     }

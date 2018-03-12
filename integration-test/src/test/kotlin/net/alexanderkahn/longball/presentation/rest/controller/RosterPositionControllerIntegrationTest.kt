@@ -83,7 +83,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace(babe.team.id.toString(), UUID.randomUUID().toString())
         withBypassToken().body(badRequest)
                 .`when`().post("/rosterpositions")
-                .then().statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     @Test
@@ -91,7 +91,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace(babe.player.id.toString(), UUID.randomUUID().toString())
         withBypassToken().body(badRequest)
                 .`when`().post("/rosterpositions")
-                .then().statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     @Test

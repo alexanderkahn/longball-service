@@ -71,7 +71,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
         val badIdTeam = gson.toJson(requestTeam).replace(requestTeam.data.relationships.league.data.id.toString(), UUID.randomUUID().toString())
         withBypassToken().body(badIdTeam)
                 .`when`().post("/teams")
-                .then().statusCode(HttpStatus.SC_UNPROCESSABLE_ENTITY)
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     @Test

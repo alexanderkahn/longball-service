@@ -37,9 +37,16 @@ class ServiceExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException::class)
+    @ExceptionHandler(ResourceNotFoundException::class)
     fun handleNotFound(e: ResourceStatusException): ErrorsResponse {
-        return ErrorsResponse(ResponseError(ResourceStatus.NOT_FOUND, "Not Found", e.message.orEmpty()))
+        return ErrorsResponse(ResponseError(ResourceStatus.NOT_FOUND, "Resource not found", e.message.orEmpty()))
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(InvalidRelationshipsException::class)
+    fun handleInvalidRelationships(e: InvalidRelationshipsException): ErrorsResponse {
+        val responseErrors = e.invalidIdentifiers.map { ResponseError(ResourceStatus.NOT_FOUND, "Related resource not found", "No entity of type ${it.type} found with ID ${it.id}") }
+        return ErrorsResponse(ObjectResponseMeta(), responseErrors)
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -52,13 +59,6 @@ class ServiceExceptionControllerAdvice {
     @ExceptionHandler(ConflictException::class)
     fun handleConflict(e: ResourceStatusException): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.CONFLICT, "Conflict", e.message.orEmpty()))
-    }
-
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(InvalidRelationshipsException::class)
-    fun handleInvalidRelationships(e: InvalidRelationshipsException): ErrorsResponse {
-        val responseErrors = e.invalidIdentifiers.map { ResponseError(ResourceStatus.UNPROCESSABLE_ENTITY, "Invalid Relationship", "No entity of type ${it.type} found with ID ${it.id}") }
-        return ErrorsResponse(ObjectResponseMeta(), responseErrors)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)

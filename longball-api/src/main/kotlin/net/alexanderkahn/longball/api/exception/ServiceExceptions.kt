@@ -20,7 +20,7 @@ class InvalidStateException : ResourceStatusException {
 
 }
 
-class NotFoundException : ResourceStatusException {
+class ResourceNotFoundException : ResourceStatusException {
     constructor() : super()
     constructor(message: String) : super(message)
     constructor(type: String, id: UUID) : this("No object found of type $type with ID $id")
@@ -54,7 +54,7 @@ class ConflictException: ResourceStatusException {
 class InvalidRelationshipsException(val invalidIdentifiers: List<RelationshipObject.RelationshipObjectIdentifier>)
     : ResourceStatusException("Related entities not found: $invalidIdentifiers") {
 
-    override val status: ResourceStatus = ResourceStatus.UNPROCESSABLE_ENTITY
+    override val status: ResourceStatus = ResourceStatus.NOT_FOUND
 }
 
 abstract class ResourceStatusException : RuntimeException {

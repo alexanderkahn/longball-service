@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.api.exception.NotFoundException
+import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
 import net.alexanderkahn.longball.api.model.RequestTeam
 import net.alexanderkahn.longball.api.model.ResponseTeam
 import net.alexanderkahn.longball.api.service.ITeamService
@@ -37,7 +37,7 @@ open class TeamService @Autowired constructor(
 
     override fun get(id: UUID): ResponseTeam {
         val team = teamRepository.findByIdAndOwner(id, userService.userEntity())
-        return team?.toResponse() ?: throw NotFoundException("players", id)
+        return team?.toResponse() ?: throw ResourceNotFoundException("players", id)
     }
 
     override fun save(@Valid team: RequestTeam): ResponseTeam {
@@ -48,7 +48,7 @@ open class TeamService @Autowired constructor(
 
     override fun delete(id: UUID) {
         if (!teamRepository.existsById(id)) {
-            throw NotFoundException("leagues", id)
+            throw ResourceNotFoundException("leagues", id)
         }
         teamRepository.deleteById(id)
     }

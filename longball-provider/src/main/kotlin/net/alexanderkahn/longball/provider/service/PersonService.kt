@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.service
 
-import net.alexanderkahn.longball.api.exception.NotFoundException
+import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
 import net.alexanderkahn.longball.api.model.RequestPerson
 import net.alexanderkahn.longball.api.model.ResponsePerson
 import net.alexanderkahn.longball.api.service.IPersonService
@@ -30,7 +30,7 @@ open class PersonService @Autowired constructor(
 
     override fun get(id: UUID): ResponsePerson {
         val player = personRepository.findByIdAndOwner(id, userService.userEntity())
-        return player?.toResponse() ?: throw NotFoundException("players", id)
+        return player?.toResponse() ?: throw ResourceNotFoundException("players", id)
     }
 
     override fun save(@Valid person: RequestPerson): ResponsePerson {
@@ -41,7 +41,7 @@ open class PersonService @Autowired constructor(
 
     override fun delete(id: UUID) {
         if (!personRepository.existsById(id)) {
-            throw NotFoundException("people", id)
+            throw ResourceNotFoundException("people", id)
         }
         personRepository.deleteById(id)
     }
