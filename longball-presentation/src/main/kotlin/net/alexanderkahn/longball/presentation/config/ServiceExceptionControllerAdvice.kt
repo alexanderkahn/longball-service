@@ -25,20 +25,20 @@ class ServiceExceptionControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException::class, HttpMessageNotReadableException::class)
-    fun handleBadRequest(e: ResourceStatusException): ErrorsResponse {
+    fun handleBadRequest(e: Exception): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.BAD_REQUEST, "Bad Request", e.message.orEmpty()))
     }
 
     @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
     @ExceptionHandler(InvalidStateException::class, NotImplementedException::class)
-    fun handleServerException(e: ResourceStatusException): ErrorsResponse {
+    fun handleServerException(e: Exception): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.NOT_IMPLEMENTED, "Not Implemented", e.message.orEmpty()))
 
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException::class)
-    fun handleNotFound(e: ResourceStatusException): ErrorsResponse {
+    fun handleNotFound(e: Exception): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.NOT_FOUND, "Resource not found", e.message.orEmpty()))
     }
 
@@ -51,13 +51,13 @@ class ServiceExceptionControllerAdvice {
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthenticatedException::class)
-    fun handleUnauthorized(e: ResourceStatusException): ErrorsResponse {
+    fun handleUnauthorized(e: Exception): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.UNAUTHORIZED, "Unauthorized", e.message.orEmpty()))
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictException::class)
-    fun handleConflict(e: ResourceStatusException): ErrorsResponse {
+    fun handleConflict(e: Exception): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.CONFLICT, "Conflict", e.message.orEmpty()))
     }
 
