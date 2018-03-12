@@ -55,9 +55,10 @@ class ServiceExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(InvalidRelationshipException::class)
-    fun handleUnprocessable(e: InvalidRelationshipException): ErrorsResponse {
-        return ErrorsResponse(ResponseError(ResourceStatus.UNPROCESSABLE_ENTITY, "Invalid Relationship", e.message.orEmpty()))
+    @ExceptionHandler(InvalidRelationshipsException::class)
+    fun handleInvalidRelationships(e: InvalidRelationshipsException): ErrorsResponse {
+        val responseErrors = e.invalidIdentifiers.map { ResponseError(ResourceStatus.UNPROCESSABLE_ENTITY, "Invalid Relationship", "No entity of type ${it.type} found with ID ${it.id}") }
+        return ErrorsResponse(ObjectResponseMeta(), responseErrors)
     }
 
     @ExceptionHandler(ConstraintViolationException::class)

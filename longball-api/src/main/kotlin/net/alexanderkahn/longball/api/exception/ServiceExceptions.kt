@@ -51,9 +51,8 @@ class ConflictException: ResourceStatusException {
     override val status: ResourceStatus = ResourceStatus.CONFLICT
 }
 
-class InvalidRelationshipException: ResourceStatusException {
-    constructor(identifier: RelationshipObject.RelationshipObjectIdentifier)
-            : super("No entity of type ${identifier.type} found with ID ${identifier.id}")
+class InvalidRelationshipsException(val invalidIdentifiers: List<RelationshipObject.RelationshipObjectIdentifier>)
+    : ResourceStatusException("Related entities not found: $invalidIdentifiers") {
 
     override val status: ResourceStatus = ResourceStatus.UNPROCESSABLE_ENTITY
 }

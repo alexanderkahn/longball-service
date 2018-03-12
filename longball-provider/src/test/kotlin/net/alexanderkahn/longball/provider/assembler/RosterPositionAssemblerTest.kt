@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.api.exception.InvalidRelationshipException
+import net.alexanderkahn.longball.api.exception.InvalidRelationshipsException
 import net.alexanderkahn.longball.api.model.RequestRosterPosition
 import net.alexanderkahn.longball.api.model.RosterPositionAttributes
 import net.alexanderkahn.longball.api.model.RosterPositionRelationships
@@ -8,6 +8,7 @@ import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService
 import net.alexanderkahn.longball.provider.test.TestSubjects
+import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -15,6 +16,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import java.time.LocalDate
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 internal class RosterPositionAssemblerTest {
 
@@ -51,12 +53,28 @@ internal class RosterPositionAssemblerTest {
     @Test
     fun notFoundPlayerThrowsMissingRelationshipException() {
         `when`(personRepository.findByIdAndOwner(position.player.id, owner)).thenReturn(null)
-        assertThrows(InvalidRelationshipException::class.java, { subject.toEntity(request) })
+        val result = assertThrows(InvalidRelationshipsException::class.java, { subject.toEntity(request) })
+        assertEquals(1, result.invalidIdentifiers.size)
+        assertTrue(result.invalidIdentifiers.contains(RelationshipObject.RelationshipObjectIdentifier("people", position.player.id)))
     }
 
     @Test
     fun notFoundTeamThrowsMissingRelationshipException() {
         `when`(teamRepository.findByIdAndOwner(position.team.id, owner)).thenReturn(null)
-        assertThrows(InvalidRelationshipException::class.java, { subject.toEntity(request) })
+        val result = assertThrows(InvalidRelationshipsException::class.java, { subject.toEntity(request) })
+        assertEquals(1, result.invalidIdentifiers.size)
+        assertTrue(result.invalidIdentifiers.contains(RelationshipObject.RelationshipObjectIdentifier("teams", position.team.id)))
+    }
+
+    @Test
+    fun notFoundTeamAndPlayerReportsBothRelationships() {
+        `when`(teamRepository.findByIdAndOwner(position.team.id, owner)).thenReturn(null)
+        `when`(personRepository.findByIdAndOwner(position.player.id, owner)).thenReturn(null)
+        val result = assertThrows(InvalidRelationshipsException::class.java, { subject.toEntity(request) })
+        assertEquals(2, result.invalidIdentifiers.size)
+        assertTrue(result.invalidIdentifiers.containsAll(setOf(
+                RelationshipObject.RelationshipObjectIdentifier("teams", position.team.id),
+                RelationshipObject.RelationshipObjectIdentifier("people", position.player.id)
+        )))
     }
 }

@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.api.exception.InvalidRelationshipException
+import net.alexanderkahn.longball.api.exception.InvalidRelationshipsException
 import net.alexanderkahn.longball.api.model.RequestTeam
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
@@ -15,7 +15,7 @@ class TeamAssembler @Autowired constructor(
 
     fun toEntity(team: RequestTeam): TeamEntity {
         val owner = userService.userEntity()
-        val league = team.relationships.league.data.let { leagueRepository.findByIdAndOwner(it.id, owner) ?: throw InvalidRelationshipException(it) }
+        val league = team.relationships.league.data.let { leagueRepository.findByIdAndOwner(it.id, owner) ?: throw InvalidRelationshipsException(listOf(it)) }
         return with(team.attributes) {TeamEntity(league, abbreviation, location, nickname, owner) }
     }
 }
