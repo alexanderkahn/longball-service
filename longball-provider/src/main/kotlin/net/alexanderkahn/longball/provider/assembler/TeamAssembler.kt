@@ -14,7 +14,8 @@ class TeamAssembler @Autowired constructor(
         private val leagueRepository: LeagueRepository) {
 
     fun toEntity(team: RequestTeam): TeamEntity {
-        val league = team.relationships.league.data.let { leagueRepository.findById(it.id).orElseThrow { InvalidRelationshipException(it) } }
-        return with(team.attributes) {TeamEntity(league, abbreviation, location, nickname, userService.userEntity()) }
+        val owner = userService.userEntity()
+        val league = team.relationships.league.data.let { leagueRepository.findByIdAndOwner(it.id, owner) ?: throw InvalidRelationshipException(it) }
+        return with(team.attributes) {TeamEntity(league, abbreviation, location, nickname, owner) }
     }
 }
