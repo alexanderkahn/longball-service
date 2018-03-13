@@ -31,25 +31,21 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
     @Autowired private lateinit var teamRepository: TeamRepository
     @Autowired private lateinit var rosterPositionRepository: RosterPositionRepository
 
+    private lateinit var team: TeamEntity
+    private lateinit var league: LeagueEntity
     private lateinit var babe: RosterPositionEntity
 
     @BeforeEach
     fun setUp() {
-        val league = LeagueEntity("MLB", userEntity)
-        val team = TeamEntity(league, "HOU", "Houston", "Astros", userEntity) //that's right. Babe Ruth, the famous Astro.
+        league = LeagueEntity("MLB", userEntity)
+        team = TeamEntity(league, "HOU", "Houston", "Astros", userEntity) //that's right. Babe Ruth, the famous Astro.
         leagueRepository.save(league)
         teamRepository.save(team)
 
         babe = getTestRosterPosition("Babe", "Ruth")
     }
 
-    @AfterEach
-    fun tearDown() {
-        rosterPositionRepository.deleteAll()
-        teamRepository.deleteAll()
-        personRepository.deleteAll()
-        leagueRepository.deleteAll()
-    }
+    @AfterEach fun tearDown() = clearRepositories(rosterPositionRepository, teamRepository, personRepository, leagueRepository)
 
     @Test
     fun post() {
@@ -130,7 +126,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollection() {
-        rosterPositionRepository.saveAll(mutableListOf(babe, getTestRosterPosition("Mickey", "Mantle")))
+        listOf(babe, getTestRosterPosition("Mickey", "Mantle")).forEach { rosterPositionRepository.save(it) }
         val getResponse = withBypassToken().`when`().get("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()
@@ -140,7 +136,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollectionWithIncluded() {
-        rosterPositionRepository.saveAll(mutableListOf(babe, getTestRosterPosition("Hank", "Aaron")))
+        listOf(babe, getTestRosterPosition("Hank", "Aaron")).forEach { rosterPositionRepository.save(it)}
         val getResponse = withBypassToken().`when`().get("/rosterpositions?include=player")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()
@@ -151,7 +147,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
     private fun getTestRosterPosition(first: String, last: String): RosterPositionEntity {
         val person = PersonEntity(first, last, userEntity)
         personRepository.save(person)
-        return RosterPositionEntity(teamRepository.findAll().first(), person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5).toPersistence(), LocalDate.now().toPersistence(), userEntity)
+        return RosterPositionEntity(team, person, RandomUtils.nextInt(1, 99), LocalDate.now().minusYears(5).toPersistence(), LocalDate.now().toPersistence(), userEntity)
 
 
     }

@@ -13,7 +13,10 @@ import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
 object SpecificationBuilder {
-    fun <T : BaseEntity> build(owner: UserEntity, filterParams: Collection<RequestResourceFilter>, searchParams: RequestResourceSearch?): Specification<T> {
+    fun <T : BaseEntity> build(owner: UserEntity,
+                               filterParams: Collection<RequestResourceFilter> = emptySet(),
+                               searchParams: RequestResourceSearch? = null
+    ): Specification<T> {
         return Specification { root, _, cb ->
             val restrictions = mutableSetOf<Predicate>()
             restrictions.add(cb.equal(root.get<UserEntity>("owner"), owner))

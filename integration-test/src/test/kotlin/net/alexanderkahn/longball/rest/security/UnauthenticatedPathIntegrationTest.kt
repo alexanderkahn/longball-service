@@ -1,7 +1,7 @@
-package net.alexanderkahn.longball.itest
+package net.alexanderkahn.longball.rest.security
 
 import io.restassured.RestAssured
-import junit.framework.Assert.assertTrue
+import junit.framework.TestCase.assertTrue
 import org.apache.http.HttpStatus
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.BeforeEach

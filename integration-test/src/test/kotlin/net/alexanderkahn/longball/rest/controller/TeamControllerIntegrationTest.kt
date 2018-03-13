@@ -32,11 +32,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
         leagueRepository.save(parentLeague)
     }
 
-    @AfterEach
-    fun tearDown() {
-        teamRepository.deleteAll()
-        leagueRepository.deleteAll()
-    }
+    @AfterEach fun tearDown() = clearRepositories(teamRepository, leagueRepository)
 
     @Test
     fun post() {

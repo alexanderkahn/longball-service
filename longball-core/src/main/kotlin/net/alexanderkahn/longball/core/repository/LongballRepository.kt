@@ -16,9 +16,4 @@ interface LongballRepository<Entity: BaseEntity>: Repository<Entity, UUID>, JpaS
     fun findByIdAndOwner(id: UUID, currentUser: UserEntity): Entity?
     fun findByOwnerOrderByCreated(currentUser: UserEntity, pageable: Pageable): Page<Entity>
     fun deleteById(id: UUID)
-
-    //TODO These are just for tests. Should probably refactor the tests and get rid of these.
-    fun findAll(): MutableIterable<Entity>
-    fun deleteAll()
-    fun <S : Entity> saveAll(p0: MutableIterable<S>?): MutableIterable<S>
 }

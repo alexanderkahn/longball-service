@@ -7,6 +7,7 @@ import net.alexanderkahn.longball.model.ResponseLeague
 import net.alexanderkahn.longball.rest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.core.entity.LeagueEntity
 import net.alexanderkahn.longball.core.repository.LeagueRepository
+import net.alexanderkahn.longball.core.service.SpecificationBuilder
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import net.alexanderkahn.service.commons.model.response.body.error.ResponseError
 import org.apache.commons.lang3.RandomStringUtils
@@ -22,9 +23,7 @@ class LeagueControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     @Autowired lateinit var leagueRepository: LeagueRepository
 
     @AfterEach
-    fun tearDown() {
-        leagueRepository.deleteAll()
-    }
+    fun tearDown() = clearRepositories(leagueRepository)
 
     @Test
     fun getLeagues() {

@@ -8,6 +8,7 @@ import net.alexanderkahn.longball.model.ResponsePerson
 import net.alexanderkahn.longball.model.ResponseTeam
 import net.alexanderkahn.longball.core.entity.PersonEntity
 import net.alexanderkahn.longball.core.repository.PersonRepository
+import net.alexanderkahn.longball.core.service.SpecificationBuilder
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.BeforeEach
@@ -21,7 +22,7 @@ class PersonControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
     @BeforeEach
     fun setUp() {
-        personRepository.deleteAll()
+        personRepository.findAll(SpecificationBuilder.build(userEntity)).forEach { personRepository.deleteById(it.id) }
     }
 
     @Test
