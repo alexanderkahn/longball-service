@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.presentation.rest.assembler
 
 import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
 import net.alexanderkahn.service.commons.model.response.body.data.ResourceObject

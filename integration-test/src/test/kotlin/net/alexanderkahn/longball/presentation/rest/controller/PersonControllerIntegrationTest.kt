@@ -2,10 +2,10 @@ package net.alexanderkahn.longball.presentation.rest.controller
 
 import junit.framework.TestCase.assertEquals
 import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
-import net.alexanderkahn.longball.api.model.PersonAttributes
-import net.alexanderkahn.longball.api.model.RequestPerson
-import net.alexanderkahn.longball.api.model.ResponsePerson
-import net.alexanderkahn.longball.api.model.ResponseTeam
+import net.alexanderkahn.longball.model.PersonAttributes
+import net.alexanderkahn.longball.model.RequestPerson
+import net.alexanderkahn.longball.model.ResponsePerson
+import net.alexanderkahn.longball.model.ResponseTeam
 import net.alexanderkahn.longball.provider.entity.PersonEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest

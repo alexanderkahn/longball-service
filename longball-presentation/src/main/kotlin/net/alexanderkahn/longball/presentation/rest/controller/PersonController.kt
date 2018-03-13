@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
 import net.alexanderkahn.longball.api.service.IPersonService
-import net.alexanderkahn.longball.api.model.RequestPerson
-import net.alexanderkahn.longball.api.model.ResponsePerson
-import net.alexanderkahn.longball.api.model.toCollectionResponse
+import net.alexanderkahn.longball.model.RequestPerson
+import net.alexanderkahn.longball.model.ResponsePerson
+import net.alexanderkahn.longball.presentation.rest.assembler.toCollectionResponse
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import net.alexanderkahn.service.commons.model.response.body.CollectionResponse
 import net.alexanderkahn.service.commons.model.response.body.DeletedResponse

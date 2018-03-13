@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.model
 
 import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import org.junit.jupiter.api.BeforeEach

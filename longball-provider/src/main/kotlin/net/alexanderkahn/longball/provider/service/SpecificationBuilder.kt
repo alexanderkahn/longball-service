@@ -27,7 +27,6 @@ object SpecificationBuilder {
         }
     }
 
-    //TODO: would be fun to allow for case sensitivity. Lots of stuff you could do here to make search more robust.
     private fun getConcatenatedFields(cb: CriteriaBuilder, root: Root<*>, fields: List<String>): Expression<String> {
         var expression: Expression<String> = root.get<String>(fields.get(0))
         for (field: String in fields.drop(1)) {

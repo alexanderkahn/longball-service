@@ -1,7 +1,7 @@
 package net.alexanderkahn.longball.api.service
 
-import net.alexanderkahn.longball.api.model.RequestLeague
-import net.alexanderkahn.longball.api.model.ResponseLeague
+import net.alexanderkahn.longball.model.RequestLeague
+import net.alexanderkahn.longball.model.ResponseLeague
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable

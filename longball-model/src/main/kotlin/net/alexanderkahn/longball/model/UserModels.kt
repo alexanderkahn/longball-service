@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.model
 
 import net.alexanderkahn.service.commons.model.response.body.data.ModifiableResourceObject
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta

@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
-import net.alexanderkahn.longball.api.model.ModelTypes
-import net.alexanderkahn.longball.api.model.RequestRosterPosition
-import net.alexanderkahn.longball.api.model.ResponseRosterPosition
+import net.alexanderkahn.longball.model.ModelTypes
+import net.alexanderkahn.longball.model.RequestRosterPosition
+import net.alexanderkahn.longball.model.ResponseRosterPosition
 import net.alexanderkahn.longball.api.service.IRosterPositionService
 import net.alexanderkahn.longball.provider.assembler.RosterPositionAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse

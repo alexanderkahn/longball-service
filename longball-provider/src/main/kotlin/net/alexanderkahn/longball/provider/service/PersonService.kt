@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
-import net.alexanderkahn.longball.api.model.ModelTypes
-import net.alexanderkahn.longball.api.model.RequestPerson
-import net.alexanderkahn.longball.api.model.ResponsePerson
+import net.alexanderkahn.longball.model.ModelTypes
+import net.alexanderkahn.longball.model.RequestPerson
+import net.alexanderkahn.longball.model.ResponsePerson
 import net.alexanderkahn.longball.api.service.IPersonService
 import net.alexanderkahn.longball.provider.assembler.PersonAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse

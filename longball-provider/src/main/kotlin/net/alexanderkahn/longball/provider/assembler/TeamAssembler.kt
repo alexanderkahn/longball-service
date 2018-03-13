@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.provider.assembler
 
 import net.alexanderkahn.longball.api.exception.InvalidRelationshipsException
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
-import net.alexanderkahn.longball.api.model.RequestTeam
+import net.alexanderkahn.longball.model.RequestTeam
 import net.alexanderkahn.longball.provider.entity.TeamEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository
 import net.alexanderkahn.longball.provider.service.UserService

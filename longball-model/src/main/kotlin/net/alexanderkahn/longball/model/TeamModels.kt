@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.model
 
 import net.alexanderkahn.service.commons.model.request.body.RequestResourceObject
 import net.alexanderkahn.service.commons.model.request.validation.ExpectedType

@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.api.model.*
+import net.alexanderkahn.longball.model.*
 import net.alexanderkahn.longball.provider.entity.*
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 

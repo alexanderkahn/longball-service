@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.presentation.rest.controller
 
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
-import net.alexanderkahn.longball.api.model.*
+import net.alexanderkahn.longball.model.*
 import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.provider.assembler.toPersistence
 import net.alexanderkahn.longball.provider.assembler.toResponse

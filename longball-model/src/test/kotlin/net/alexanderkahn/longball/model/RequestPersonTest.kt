@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.model
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

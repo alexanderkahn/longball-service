@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.presentation.rest.helper
 
-import net.alexanderkahn.longball.api.model.ModelTypes
+import net.alexanderkahn.longball.model.ModelTypes
 import net.alexanderkahn.longball.api.service.IPersonService
 import net.alexanderkahn.service.commons.model.response.body.data.ModifiableResourceObject
 import org.springframework.beans.factory.annotation.Autowired

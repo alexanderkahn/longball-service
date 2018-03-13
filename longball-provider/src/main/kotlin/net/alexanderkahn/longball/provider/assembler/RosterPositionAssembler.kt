@@ -2,7 +2,7 @@ package net.alexanderkahn.longball.provider.assembler
 
 import net.alexanderkahn.longball.api.exception.InvalidRelationshipsException
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
-import net.alexanderkahn.longball.api.model.RequestRosterPosition
+import net.alexanderkahn.longball.model.RequestRosterPosition
 import net.alexanderkahn.longball.provider.entity.BaseEntity
 import net.alexanderkahn.longball.provider.entity.RosterPositionEntity
 import net.alexanderkahn.longball.provider.repository.PersonRepository

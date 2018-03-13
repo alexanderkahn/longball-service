@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.service.IUserService
-import net.alexanderkahn.longball.api.model.ResponseUser
-import net.alexanderkahn.longball.api.model.UserAttributes
+import net.alexanderkahn.longball.model.ResponseUser
+import net.alexanderkahn.longball.model.UserAttributes
 import net.alexanderkahn.longball.provider.entity.UserEntity
 import net.alexanderkahn.longball.provider.repository.UserRepository
 import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsAuthentication

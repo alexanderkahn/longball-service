@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.model
 
 const val MIN_NAME_FIELD_SIZE = 3
 const val MAX_NAME_FIELD_SIZE = 255

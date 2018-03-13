@@ -1,7 +1,11 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
-import net.alexanderkahn.longball.api.model.*
 import net.alexanderkahn.longball.api.service.ITeamService
+import net.alexanderkahn.longball.model.RequestTeam
+import net.alexanderkahn.longball.model.ResponseTeam
+import net.alexanderkahn.longball.model.TeamAttributes
+import net.alexanderkahn.longball.model.TeamRelationships
+import net.alexanderkahn.longball.presentation.rest.assembler.toCollectionResponse
 import net.alexanderkahn.longball.presentation.rest.helper.getFilterableFieldsFor
 import net.alexanderkahn.longball.presentation.rest.helper.getFilters
 import net.alexanderkahn.longball.presentation.rest.helper.getSearch

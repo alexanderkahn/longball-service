@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.provider.assembler
 
-import net.alexanderkahn.longball.api.model.RequestLeague
+import net.alexanderkahn.longball.model.RequestLeague
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.service.UserService
 import org.springframework.beans.factory.annotation.Autowired

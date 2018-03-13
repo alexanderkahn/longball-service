@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.provider.assembler
 
 import net.alexanderkahn.longball.api.exception.InvalidRelationshipsException
-import net.alexanderkahn.longball.api.model.RequestRosterPosition
-import net.alexanderkahn.longball.api.model.RosterPositionAttributes
-import net.alexanderkahn.longball.api.model.RosterPositionRelationships
+import net.alexanderkahn.longball.model.RequestRosterPosition
+import net.alexanderkahn.longball.model.RosterPositionAttributes
+import net.alexanderkahn.longball.model.RosterPositionRelationships
 import net.alexanderkahn.longball.provider.repository.PersonRepository
 import net.alexanderkahn.longball.provider.repository.TeamRepository
 import net.alexanderkahn.longball.provider.service.UserService

@@ -1,9 +1,9 @@
 package net.alexanderkahn.longball.presentation.rest.controller
 
 
-import net.alexanderkahn.longball.api.model.LeagueAttributes
-import net.alexanderkahn.longball.api.model.RequestLeague
-import net.alexanderkahn.longball.api.model.ResponseLeague
+import net.alexanderkahn.longball.model.LeagueAttributes
+import net.alexanderkahn.longball.model.RequestLeague
+import net.alexanderkahn.longball.model.ResponseLeague
 import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.provider.entity.LeagueEntity
 import net.alexanderkahn.longball.provider.repository.LeagueRepository

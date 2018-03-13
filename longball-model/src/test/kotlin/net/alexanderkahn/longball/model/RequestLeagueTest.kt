@@ -1,7 +1,5 @@
-package net.alexanderkahn.longball.api.model
+package net.alexanderkahn.longball.model
 
-import net.alexanderkahn.longball.api.model.LeagueAttributes
-import net.alexanderkahn.longball.api.model.RequestLeague
 import net.alexanderkahn.service.commons.model.request.validation.ExpectedType
 import org.apache.commons.lang3.RandomStringUtils
 import org.junit.jupiter.api.BeforeEach

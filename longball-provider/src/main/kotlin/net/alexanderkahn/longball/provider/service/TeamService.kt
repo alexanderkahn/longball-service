@@ -1,8 +1,8 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
-import net.alexanderkahn.longball.api.model.RequestTeam
-import net.alexanderkahn.longball.api.model.ResponseTeam
+import net.alexanderkahn.longball.model.RequestTeam
+import net.alexanderkahn.longball.model.ResponseTeam
 import net.alexanderkahn.longball.api.service.ITeamService
 import net.alexanderkahn.longball.provider.assembler.TeamAssembler
 import net.alexanderkahn.longball.provider.assembler.toResponse

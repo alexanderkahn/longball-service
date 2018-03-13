@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.api.model.type
+package net.alexanderkahn.longball.model.type
 
 enum class PitchType {
     BALL,
