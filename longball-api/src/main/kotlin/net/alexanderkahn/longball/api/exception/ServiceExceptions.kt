@@ -7,9 +7,9 @@ class BadRequestException(message: String) : RuntimeException(message)
 
 class InvalidStateException(message: String) : RuntimeException(message)
 
-class ResourceNotFoundException : RuntimeException {
-    constructor(message: String) : super(message)
-    constructor(type: String, id: UUID) : this("No object found of type $type with ID $id")
+class ResourceNotFoundException(val missingResource: RelationshipObject.RelationshipObjectIdentifier) : RuntimeException() {
+    constructor(type: String, id: UUID) : this(RelationshipObject.RelationshipObjectIdentifier(type, id))
+    override val message: String = "No entity of type ${missingResource.type} found with ID ${missingResource.id}"
 }
 
 class NotImplementedException(message: String) : RuntimeException(message)
@@ -18,5 +18,6 @@ class UnauthenticatedException(message: String) : RuntimeException(message)
 
 class ConflictException(message: String) : RuntimeException(message)
 
-class InvalidRelationshipsException(val invalidIdentifiers: List<RelationshipObject.RelationshipObjectIdentifier>)
-    : RuntimeException("Related entities not found: $invalidIdentifiers")
+class InvalidRelationshipsException(val causes: List<ResourceNotFoundException>)
+    : RuntimeException("Related entities not found: ${causes.map { it.message }}") {
+}

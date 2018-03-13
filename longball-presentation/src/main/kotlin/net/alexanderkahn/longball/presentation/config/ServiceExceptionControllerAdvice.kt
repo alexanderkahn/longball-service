@@ -45,7 +45,7 @@ class ServiceExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(InvalidRelationshipsException::class)
     fun handleInvalidRelationships(e: InvalidRelationshipsException): ErrorsResponse {
-        val responseErrors = e.invalidIdentifiers.map { ResponseError(ResourceStatus.NOT_FOUND, "Related resource not found", "No entity of type ${it.type} found with ID ${it.id}") }
+        val responseErrors = e.causes.map { ResponseError(ResourceStatus.NOT_FOUND, "Related resource not found", it.message) }
         return ErrorsResponse(ObjectResponseMeta(), responseErrors)
     }
 

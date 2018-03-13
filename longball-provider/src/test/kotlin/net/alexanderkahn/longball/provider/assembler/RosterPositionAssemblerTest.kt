@@ -54,16 +54,16 @@ internal class RosterPositionAssemblerTest {
     fun notFoundPlayerThrowsMissingRelationshipException() {
         `when`(personRepository.findByIdAndOwner(position.player.id, owner)).thenReturn(null)
         val result = assertThrows(InvalidRelationshipsException::class.java, { subject.toEntity(request) })
-        assertEquals(1, result.invalidIdentifiers.size)
-        assertTrue(result.invalidIdentifiers.contains(RelationshipObject.RelationshipObjectIdentifier("people", position.player.id)))
+        assertEquals(1, result.causes.size)
+        assertTrue(result.causes.map { it.missingResource }.contains(RelationshipObject.RelationshipObjectIdentifier("people", position.player.id)))
     }
 
     @Test
     fun notFoundTeamThrowsMissingRelationshipException() {
         `when`(teamRepository.findByIdAndOwner(position.team.id, owner)).thenReturn(null)
         val result = assertThrows(InvalidRelationshipsException::class.java, { subject.toEntity(request) })
-        assertEquals(1, result.invalidIdentifiers.size)
-        assertTrue(result.invalidIdentifiers.contains(RelationshipObject.RelationshipObjectIdentifier("teams", position.team.id)))
+        assertEquals(1, result.causes.size)
+        assertTrue(result.causes.map { it.missingResource }.contains(RelationshipObject.RelationshipObjectIdentifier("teams", position.team.id)))
     }
 
     @Test
@@ -71,8 +71,8 @@ internal class RosterPositionAssemblerTest {
         `when`(teamRepository.findByIdAndOwner(position.team.id, owner)).thenReturn(null)
         `when`(personRepository.findByIdAndOwner(position.player.id, owner)).thenReturn(null)
         val result = assertThrows(InvalidRelationshipsException::class.java, { subject.toEntity(request) })
-        assertEquals(2, result.invalidIdentifiers.size)
-        assertTrue(result.invalidIdentifiers.containsAll(setOf(
+        assertEquals(2, result.causes.size)
+        assertTrue(result.causes.map { it.missingResource }.containsAll(setOf(
                 RelationshipObject.RelationshipObjectIdentifier("teams", position.team.id),
                 RelationshipObject.RelationshipObjectIdentifier("people", position.player.id)
         )))
