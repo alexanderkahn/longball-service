@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
+import net.alexanderkahn.longball.api.model.ModelTypes
 import net.alexanderkahn.longball.api.model.RequestRosterPosition
 import net.alexanderkahn.longball.api.model.ResponseRosterPosition
 import net.alexanderkahn.longball.api.service.IRosterPositionService
@@ -29,7 +30,7 @@ open class RosterPositionService @Autowired constructor(
 
     override fun get(id: UUID): ResponseRosterPosition {
         val position = rosterPositionRepository.findByIdAndOwner(id, userService.userEntity())
-        return position?.toResponse() ?: throw ResourceNotFoundException("rosterpositions", id)
+        return position?.toResponse() ?: throw ResourceNotFoundException(ModelTypes.ROSTER_POSITIONS, id)
     }
 
     override fun save(@Valid rosterPosition: RequestRosterPosition): ResponseRosterPosition {
@@ -40,7 +41,7 @@ open class RosterPositionService @Autowired constructor(
 
     override fun delete(id: UUID) {
         if (!rosterPositionRepository.existsById(id)) {
-            throw ResourceNotFoundException("rosterpositions", id)
+            throw ResourceNotFoundException(ModelTypes.ROSTER_POSITIONS, id)
         }
         rosterPositionRepository.deleteById(id)
     }

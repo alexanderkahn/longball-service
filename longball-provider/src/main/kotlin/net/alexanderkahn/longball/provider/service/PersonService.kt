@@ -1,6 +1,7 @@
 package net.alexanderkahn.longball.provider.service
 
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
+import net.alexanderkahn.longball.api.model.ModelTypes
 import net.alexanderkahn.longball.api.model.RequestPerson
 import net.alexanderkahn.longball.api.model.ResponsePerson
 import net.alexanderkahn.longball.api.service.IPersonService
@@ -41,7 +42,7 @@ open class PersonService @Autowired constructor(
 
     override fun delete(id: UUID) {
         if (!personRepository.existsById(id)) {
-            throw ResourceNotFoundException("people", id)
+            throw ResourceNotFoundException(ModelTypes.PEOPLE, id)
         }
         personRepository.deleteById(id)
     }
