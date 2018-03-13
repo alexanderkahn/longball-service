@@ -11,6 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 open class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http?.headers()?.cacheControl() //this disables the basic-auth login BS that you get with spring security
-        http?.csrf()?.disable() //TODO: this leaves me open to an attack I guess!
+        http?.csrf()?.disable()
     }
 }

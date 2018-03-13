@@ -1,12 +1,12 @@
 package net.alexanderkahn.longball.core.service
 
+import net.alexanderkahn.longball.api.exception.InvalidStateException
 import net.alexanderkahn.longball.api.service.IUserService
-import net.alexanderkahn.longball.model.ResponseUser
-import net.alexanderkahn.longball.model.UserAttributes
 import net.alexanderkahn.longball.core.entity.UserEntity
 import net.alexanderkahn.longball.core.repository.UserRepository
+import net.alexanderkahn.longball.model.ResponseUser
+import net.alexanderkahn.longball.model.UserAttributes
 import net.alexanderkahn.service.commons.jwsauthenticator.jws.JwsAuthentication
-import net.alexanderkahn.longball.api.exception.InvalidStateException
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -20,7 +20,6 @@ class UserService(@Autowired private val userRepository: UserRepository) : IUser
 
     fun userEntity(): UserEntity = getUserFromContext()
 
-    //TODO: this probably needs to be synchronized
     private fun getUserFromContext(): UserEntity {
         val auth = SecurityContextHolder.getContext().authentication as? JwsAuthentication ?: throw InvalidStateException("No current user set")
         val principal = auth.principal
