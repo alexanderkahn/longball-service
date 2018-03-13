@@ -9,11 +9,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>longball-api</module>
-        <module>longball-presentation</module>
-        <module>longball-provider</module>
-        <module>integration-test</module>
         <module>longball-model</module>
+        <module>longball-api</module>
+        <module>longball-rest</module>
+        <module>longball-core</module>
+        <module>integration-test</module>
     </modules>
 
     <properties>
@@ -57,12 +57,12 @@
             </dependency>
             <dependency>
                 <groupId>net.alexanderkahn.longball</groupId>
-                <artifactId>longball-presentation</artifactId>
+                <artifactId>longball-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.alexanderkahn.longball</groupId>
-                <artifactId>longball-provider</artifactId>
+                <artifactId>longball-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

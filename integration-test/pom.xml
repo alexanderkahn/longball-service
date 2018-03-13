@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>net.alexanderkahn.longball</groupId>
-            <artifactId>longball-provider</artifactId>
+            <artifactId>longball-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
