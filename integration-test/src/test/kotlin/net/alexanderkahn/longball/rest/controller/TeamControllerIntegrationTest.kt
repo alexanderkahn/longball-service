@@ -5,7 +5,7 @@ import net.alexanderkahn.longball.model.RequestTeam
 import net.alexanderkahn.longball.model.ResponseTeam
 import net.alexanderkahn.longball.model.TeamAttributes
 import net.alexanderkahn.longball.model.TeamRelationships
-import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
+import net.alexanderkahn.longball.rest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.core.entity.LeagueEntity
 import net.alexanderkahn.longball.core.entity.TeamEntity
 import net.alexanderkahn.longball.core.repository.LeagueRepository

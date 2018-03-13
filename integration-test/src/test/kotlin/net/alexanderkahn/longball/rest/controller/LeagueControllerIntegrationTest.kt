@@ -4,7 +4,7 @@ package net.alexanderkahn.longball.rest.controller
 import net.alexanderkahn.longball.model.LeagueAttributes
 import net.alexanderkahn.longball.model.RequestLeague
 import net.alexanderkahn.longball.model.ResponseLeague
-import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
+import net.alexanderkahn.longball.rest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.core.entity.LeagueEntity
 import net.alexanderkahn.longball.core.repository.LeagueRepository
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest

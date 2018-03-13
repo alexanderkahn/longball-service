@@ -6,20 +6,19 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor
 import org.springframework.data.repository.NoRepositoryBean
-import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.repository.Repository
 import java.util.*
 
-//TODO: At some point, limit these repositories so they can't access findAll() etc anymore.
-// This should work for free with a "base" interface, but may be broken by the kotlin -> java compilation
-// (apparently depends on exact method signature match). https://spring.io/blog/2011/07/27/fine-tuning-spring-data-repositories/
-
 @NoRepositoryBean
-interface LongballRepository<Entity: BaseEntity>: PagingAndSortingRepository<Entity, UUID>, JpaSpecificationExecutor<Entity> {
-
-    override fun <S : Entity> save(entity: S): S
-
+interface LongballRepository<Entity: BaseEntity>: Repository<Entity, UUID>, JpaSpecificationExecutor<Entity> {
+    fun <S : Entity> save(entity: S): S
+    fun existsById(id: UUID): Boolean
     fun findByIdAndOwner(id: UUID, currentUser: UserEntity): Entity?
-
     fun findByOwnerOrderByCreated(currentUser: UserEntity, pageable: Pageable): Page<Entity>
+    fun deleteById(id: UUID)
 
+    //TODO These are just for tests. Should probably refactor the tests and get rid of these.
+    fun findAll(): MutableIterable<Entity>
+    fun deleteAll()
+    fun <S : Entity> saveAll(p0: MutableIterable<S>?): MutableIterable<S>
 }

@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.itest
+package net.alexanderkahn.longball.rest
 
 import com.google.gson.*
 import io.restassured.RestAssured

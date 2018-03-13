@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.rest.controller
 import junit.framework.TestCase
 import junit.framework.TestCase.assertEquals
 import net.alexanderkahn.longball.model.*
-import net.alexanderkahn.longball.itest.AbstractBypassTokenIntegrationTest
+import net.alexanderkahn.longball.rest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.longball.core.assembler.toPersistence
 import net.alexanderkahn.longball.core.assembler.toResponse
 import net.alexanderkahn.longball.core.entity.LeagueEntity
@@ -130,7 +130,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollection() {
-        rosterPositionRepository.saveAll(listOf(babe, getTestRosterPosition("Mickey", "Mantle")))
+        rosterPositionRepository.saveAll(mutableListOf(babe, getTestRosterPosition("Mickey", "Mantle")))
         val getResponse = withBypassToken().`when`().get("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()
@@ -140,7 +140,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollectionWithIncluded() {
-        rosterPositionRepository.saveAll(listOf(babe, getTestRosterPosition("Hank", "Aaron")))
+        rosterPositionRepository.saveAll(mutableListOf(babe, getTestRosterPosition("Hank", "Aaron")))
         val getResponse = withBypassToken().`when`().get("/rosterpositions?include=player")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()
