@@ -25,4 +25,6 @@ data class ResponseLeague(
     override val relationships: Nothing? = null
 }
 
-data class LeagueAttributes(@field:Size(min = MIN_NAME_FIELD_SIZE, max = MAX_NAME_FIELD_SIZE) val name: String)
+data class LeagueAttributes(
+        @field:Size(min = MIN_NAME_FIELD_SIZE, max = MAX_NAME_FIELD_SIZE) val name: String
+)

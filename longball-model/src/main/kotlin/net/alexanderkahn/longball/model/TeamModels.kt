@@ -7,6 +7,7 @@ import net.alexanderkahn.service.commons.model.response.body.data.RelationshipOb
 import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableResourceMeta
 import java.util.*
 import javax.validation.Valid
+import javax.validation.constraints.Size
 
 data class RequestTeam(
         @field:ExpectedType(ModelTypes.TEAMS) override val type: String,
@@ -22,9 +23,14 @@ data class ResponseTeam(
     override val type = ModelTypes.TEAMS
 }
 
-//TODO: figure out what validation is needed for these
-data class TeamAttributes(val abbreviation: String, val location: String, val nickname: String)
+data class TeamAttributes(
+        @field:Size(min = 3, max = 5) val abbreviation: String,
+        @field:Size(min = 3, max = 25) val location: String,
+        @field:Size(min = 3, max = 25) val nickname: String
+)
 
-data class TeamRelationships(@ExpectedType(ModelTypes.LEAGUES) val league: RelationshipObject) {
+data class TeamRelationships(@ExpectedType(
+        ModelTypes.LEAGUES) val league: RelationshipObject
+) {
     constructor(leagueId: UUID): this(RelationshipObject(ModelTypes.LEAGUES, leagueId))
 }

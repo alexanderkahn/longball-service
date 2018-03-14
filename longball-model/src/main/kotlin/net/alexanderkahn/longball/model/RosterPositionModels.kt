@@ -8,12 +8,13 @@ import net.alexanderkahn.service.commons.model.response.body.meta.ModifiableReso
 import java.time.LocalDate
 import java.util.*
 import javax.validation.Valid
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 data class RequestRosterPosition(
         @ExpectedType(ModelTypes.ROSTER_POSITIONS) override val type: String,
-        override val attributes: RosterPositionAttributes,
-        @field:Valid override val relationships: RosterPositionRelationships) : RequestResourceObject {
-}
+        @field:Valid override val attributes: RosterPositionAttributes,
+        @field:Valid override val relationships: RosterPositionRelationships) : RequestResourceObject
 
 data class ResponseRosterPosition(
         override val id: UUID,
@@ -23,7 +24,10 @@ data class ResponseRosterPosition(
     override val type = ModelTypes.ROSTER_POSITIONS
 }
 
-data class RosterPositionAttributes(val jerseyNumber: Int, val startDate: LocalDate, val endDate: LocalDate? = null)
+data class RosterPositionAttributes(
+        @field:Min(0) @field:Max(99) val jerseyNumber: Int,
+        val startDate: LocalDate,
+        val endDate: LocalDate? = null)
 
 data class RosterPositionRelationships(
         @ExpectedType(ModelTypes.TEAMS) val team: RelationshipObject,
