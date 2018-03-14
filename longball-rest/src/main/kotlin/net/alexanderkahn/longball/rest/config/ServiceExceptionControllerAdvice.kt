@@ -11,9 +11,12 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.HttpMediaTypeNotSupportedException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.NoHandlerFoundException
 import javax.validation.ConstraintViolation
 import javax.validation.ConstraintViolationException
 import javax.validation.constraints.Size
@@ -26,18 +29,29 @@ class ServiceExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException::class, HttpMessageNotReadableException::class)
     fun handleBadRequest(e: Exception): ErrorsResponse {
-        return ErrorsResponse(ResponseError(ResourceStatus.BAD_REQUEST, "Bad Request", e.message.orEmpty()))
+        return ErrorsResponse(ResponseError(ResourceStatus.BAD_REQUEST, "Bad request", e.message.orEmpty()))
+    }
+
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun handleMethodNotAllowed(e: Exception): ErrorsResponse {
+        return ErrorsResponse(ResponseError(ResourceStatus.METHOD_NOT_ALLOWED, "Method not allowed", e.message.orEmpty()))
+    }
+
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
+    fun handleUnsupportedMediaType(e: Exception): ErrorsResponse {
+        return ErrorsResponse(ResponseError(ResourceStatus.UNSUPPORTED_MEDIA_TYPE, "Unsupported media type", e.message.orEmpty()))
     }
 
     @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
     @ExceptionHandler(InvalidStateException::class, NotImplementedException::class)
     fun handleServerException(e: Exception): ErrorsResponse {
-        return ErrorsResponse(ResponseError(ResourceStatus.NOT_IMPLEMENTED, "Not Implemented", e.message.orEmpty()))
-
+        return ErrorsResponse(ResponseError(ResourceStatus.NOT_IMPLEMENTED, "Not implemented", e.message.orEmpty()))
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(ResourceNotFoundException::class)
+    @ExceptionHandler(ResourceNotFoundException::class, NoHandlerFoundException::class)
     fun handleNotFound(e: Exception): ErrorsResponse {
         return ErrorsResponse(ResponseError(ResourceStatus.NOT_FOUND, "Resource not found", e.message.orEmpty()))
     }
@@ -101,9 +115,6 @@ class ServiceExceptionControllerAdvice {
     @ExceptionHandler(Exception::class)
     fun handleDefault(e: Exception): ErrorsResponse {
         logger.warn("Unexpected exception!", e)
-        return ErrorsResponse(ResponseError(ResourceStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", e.message.orEmpty()))
+        return ErrorsResponse(ResponseError(ResourceStatus.INTERNAL_SERVER_ERROR, "Internal server error", e.message.orEmpty()))
     }
-
-    //TODO add handlers for unsupported media type, method not allowed, and malformed POST bodies. Maybe enforce strict typing on requests.
-
 }
