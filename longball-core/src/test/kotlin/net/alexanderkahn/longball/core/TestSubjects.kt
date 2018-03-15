@@ -1,4 +1,4 @@
-package net.alexanderkahn.longball.core.test
+package net.alexanderkahn.longball.core
 
 import net.alexanderkahn.longball.core.entity.*
 import java.time.LocalDateTime

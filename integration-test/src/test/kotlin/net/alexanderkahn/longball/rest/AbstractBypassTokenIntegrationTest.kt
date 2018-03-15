@@ -5,13 +5,12 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.specification.RequestSpecification
 import net.alexanderkahn.longball.api.exception.InvalidStateException
-import net.alexanderkahn.longball.core.entity.BaseEntity
+import net.alexanderkahn.longball.core.entity.OwnedEntity
 import net.alexanderkahn.longball.core.entity.UserEntity
 import net.alexanderkahn.longball.core.repository.LeagueRepository
 import net.alexanderkahn.longball.core.repository.LongballRepository
 import net.alexanderkahn.longball.core.repository.TeamRepository
 import net.alexanderkahn.longball.core.repository.UserRepository
-import net.alexanderkahn.longball.core.service.SpecificationBuilder
 import net.alexanderkahn.longball.rest.config.JwsFIlterConfiguration
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
@@ -61,7 +60,7 @@ abstract class AbstractBypassTokenIntegrationTest {
 
     @AfterEach fun tearDownBase() = clearRepositories(teamRepository, leagueRepository)
 
-    protected fun <T : LongballRepository<out BaseEntity>>clearRepositories(vararg repositories: T) {
+    protected fun <T : LongballRepository<out OwnedEntity>>clearRepositories(vararg repositories: T) {
         repositories.forEach { repo -> repo.findAll(null).forEach { repo.deleteById(it.id) } }
     }
 

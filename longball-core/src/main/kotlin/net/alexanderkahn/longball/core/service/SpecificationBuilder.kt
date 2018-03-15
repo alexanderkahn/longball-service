@@ -1,6 +1,6 @@
 package net.alexanderkahn.longball.core.service
 
-import net.alexanderkahn.longball.core.entity.BaseEntity
+import net.alexanderkahn.longball.core.entity.OwnedEntity
 import net.alexanderkahn.longball.core.entity.UserEntity
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceFilter
 import net.alexanderkahn.service.commons.model.request.parameter.RequestResourceSearch
@@ -13,14 +13,14 @@ import javax.persistence.criteria.Predicate
 import javax.persistence.criteria.Root
 
 object SpecificationBuilder {
-    fun <T : BaseEntity> build(owner: UserEntity,
-                               filterParams: Collection<RequestResourceFilter> = emptySet(),
-                               searchParams: RequestResourceSearch? = null
+    fun <T : OwnedEntity> build(owner: UserEntity,
+                                filterParams: Collection<RequestResourceFilter> = emptySet(),
+                                searchParams: RequestResourceSearch? = null
     ): Specification<T> {
         return Specification { root, _, cb ->
             val restrictions = mutableSetOf<Predicate>()
             restrictions.add(cb.equal(root.get<UserEntity>("owner"), owner))
-            restrictions.addAll(filterParams.map { root.get<BaseEntity>(it.filterField).get<UUID>("id").`in`(it.filterTerms) })
+            restrictions.addAll(filterParams.map { root.get<OwnedEntity>(it.filterField).get<UUID>("id").`in`(it.filterTerms) })
             if (searchParams != null) {
                 val pattern = "%${searchParams.searchTerm.toLowerCase()}%"
                 val concatenatedFields = getConcatenatedFields(cb, root, searchParams.searchFields)

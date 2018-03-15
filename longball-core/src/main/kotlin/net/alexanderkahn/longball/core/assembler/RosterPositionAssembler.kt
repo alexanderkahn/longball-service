@@ -3,7 +3,7 @@ package net.alexanderkahn.longball.core.assembler
 import net.alexanderkahn.longball.api.exception.InvalidRelationshipsException
 import net.alexanderkahn.longball.api.exception.ResourceNotFoundException
 import net.alexanderkahn.longball.model.RequestRosterPosition
-import net.alexanderkahn.longball.core.entity.BaseEntity
+import net.alexanderkahn.longball.core.entity.OwnedEntity
 import net.alexanderkahn.longball.core.entity.RosterPositionEntity
 import net.alexanderkahn.longball.core.repository.PersonRepository
 import net.alexanderkahn.longball.core.repository.TeamRepository
@@ -28,5 +28,5 @@ open class RosterPositionAssembler @Autowired constructor(
         return with(rosterPosition.attributes) { RosterPositionEntity(team.entity, player.entity, jerseyNumber, startDate.toPersistence(), endDate?.toPersistence(), owner) }
     }
 
-    data class EntityValidator<out T : BaseEntity>(val identifier: RelationshipObject.RelationshipObjectIdentifier, val entity: T?)
+    data class EntityValidator<out T : OwnedEntity>(val identifier: RelationshipObject.RelationshipObjectIdentifier, val entity: T?)
 }

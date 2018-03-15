@@ -6,6 +6,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity(name = "roster_position")
+@EntityListeners(UpdateLastModifiedListener::class)
 class RosterPositionEntity(
 
         @ManyToOne
@@ -25,7 +26,7 @@ class RosterPositionEntity(
         override val owner: UserEntity,
 
         @Column(nullable = false) override val created: OffsetDateTime = OffsetDateTime.now(),
-        @Column(nullable = false) override val lastModified: OffsetDateTime = created,
+        @Column(nullable = false) override var lastModified: OffsetDateTime = created,
         @Id override val id: UUID = UUID.randomUUID()
 
-) : BaseEntity
+) : OwnedEntity

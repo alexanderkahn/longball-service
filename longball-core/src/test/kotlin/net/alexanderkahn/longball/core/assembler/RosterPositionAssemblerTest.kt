@@ -7,7 +7,7 @@ import net.alexanderkahn.longball.model.RosterPositionRelationships
 import net.alexanderkahn.longball.core.repository.PersonRepository
 import net.alexanderkahn.longball.core.repository.TeamRepository
 import net.alexanderkahn.longball.core.service.UserService
-import net.alexanderkahn.longball.core.test.TestSubjects
+import net.alexanderkahn.longball.core.TestSubjects
 import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach

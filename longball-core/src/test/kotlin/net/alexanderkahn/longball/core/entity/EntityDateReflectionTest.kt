@@ -1,9 +1,8 @@
-
+package net.alexanderkahn.longball.core.entity
+import net.alexanderkahn.longball.core.getEntityClasses
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
-import org.reflections.Reflections
 import java.time.LocalDate
-import javax.persistence.Entity
 
 
 /*
@@ -18,11 +17,8 @@ class EntityDateReflectionTest {
     @Test
     fun entitiesContainNoLocalDateFields() {
         val classesToScan = getEntityClasses()
-        if (classesToScan === null || classesToScan.isEmpty()) {
-            throw RuntimeException("Found no persistence entities to scan. Something has gone wrong!")
-        }
-
         val failedFields = mutableListOf<String>()
+
         classesToScan.forEach { clazz ->
             clazz.declaredFields.forEach { field ->
                 if (field.type in disallowedTypes) {
@@ -34,10 +30,5 @@ class EntityDateReflectionTest {
         if (failedFields.isNotEmpty()) {
             fail<String>("Found entity fields of restricted types: ${failedFields.joinToString()}" )
         }
-    }
-
-    private fun getEntityClasses(): MutableSet<Class<*>>? {
-        return Reflections("net.alexanderkahn.longball")
-                .getTypesAnnotatedWith(Entity::class.java)
     }
 }

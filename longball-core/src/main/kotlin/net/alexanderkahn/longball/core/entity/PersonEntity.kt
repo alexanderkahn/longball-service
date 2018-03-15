@@ -5,6 +5,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity(name = "person")
+@EntityListeners(UpdateLastModifiedListener::class)
 data class PersonEntity(
 
         @Column(nullable = false) val first: String,
@@ -15,7 +16,7 @@ data class PersonEntity(
         override val owner: UserEntity,
 
         @Column(nullable = false) override val created: OffsetDateTime = OffsetDateTime.now(),
-        @Column(nullable = false) override val lastModified: OffsetDateTime = created,
+        @Column(nullable = false) override var lastModified: OffsetDateTime = created,
         @Id override val id: UUID = UUID.randomUUID()
 
-) : BaseEntity
+) : OwnedEntity

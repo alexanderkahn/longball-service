@@ -5,6 +5,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity(name = "team")
+@EntityListeners(UpdateLastModifiedListener::class)
 data class TeamEntity(
 
         @ManyToOne
@@ -20,7 +21,7 @@ data class TeamEntity(
         override val owner: UserEntity,
 
         @Column(nullable = false) override val created: OffsetDateTime = OffsetDateTime.now(),
-        @Column(nullable = false) override val lastModified: OffsetDateTime = created,
+        @Column(nullable = false) override var lastModified: OffsetDateTime = created,
         @Id override val id: UUID = UUID.randomUUID()
 
-) : BaseEntity
+) : OwnedEntity

@@ -27,6 +27,6 @@ fun TeamEntity.toResponse(): ResponseTeam {
     return ResponseTeam(id, toMeta(), attributes, relationships)
 }
 
-fun BaseEntity.toMeta(): ModifiableResourceMeta {
+fun OwnedEntity.toMeta(): ModifiableResourceMeta {
     return ModifiableResourceMeta(created, lastModified)
 }
