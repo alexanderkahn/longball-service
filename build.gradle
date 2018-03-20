@@ -1,12 +1,17 @@
+apply plugin: 'kotlin'
+
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext {
+        springBootVersion = '2.0.0.RELEASE'
+        kotlinVersion = '1.2.30'
+    }
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 
@@ -48,8 +53,8 @@ subprojects {
 
 
     dependencies {
-        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.2.30'
-        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.30'
+        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
+        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: kotlinVersion
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.0.0'
         testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0'
     }
