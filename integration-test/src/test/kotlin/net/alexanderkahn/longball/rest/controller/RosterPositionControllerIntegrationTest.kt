@@ -15,6 +15,7 @@ import net.alexanderkahn.longball.core.repository.TeamRepository
 import net.alexanderkahn.longball.model.*
 import net.alexanderkahn.longball.rest.AbstractBypassTokenIntegrationTest
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
+import net.alexanderkahn.service.commons.model.response.body.data.RelationshipObject
 import org.apache.commons.lang3.RandomUtils
 import org.apache.http.HttpStatus
 import org.junit.jupiter.api.AfterEach
@@ -26,10 +27,14 @@ import java.util.*
 
 class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
-    @Autowired private lateinit var personRepository: PersonRepository
-    @Autowired private lateinit var leagueRepository: LeagueRepository
-    @Autowired private lateinit var teamRepository: TeamRepository
-    @Autowired private lateinit var rosterPositionRepository: RosterPositionRepository
+    @Autowired
+    private lateinit var personRepository: PersonRepository
+    @Autowired
+    private lateinit var leagueRepository: LeagueRepository
+    @Autowired
+    private lateinit var teamRepository: TeamRepository
+    @Autowired
+    private lateinit var rosterPositionRepository: RosterPositionRepository
 
     private lateinit var team: TeamEntity
     private lateinit var league: LeagueEntity
@@ -45,7 +50,8 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
         babe = getTestRosterPosition("Babe", "Ruth")
     }
 
-    @AfterEach fun tearDown() = clearRepositories(rosterPositionRepository, teamRepository, personRepository, leagueRepository)
+    @AfterEach
+    fun tearDown() = clearRepositories(rosterPositionRepository, teamRepository, personRepository, leagueRepository)
 
     @Test
     fun post() {
@@ -60,32 +66,47 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun postWrongType() {
-        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace("rosterpositions", "romperpartitions")
-        withBypassToken().body(badRequest)
+        val badRequest = babeRequest().copy(type = "romperpartitions")
+        withBypassToken().body(ObjectRequest(badRequest))
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
     }
 
     @Test
     fun postWrongRelationshipType() {
-        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace("people", "pringle")
-        withBypassToken().body(badRequest)
+        val babeRequest = babeRequest()
+        val badRequest = babeRequest.copy(
+                relationships = babeRequest.relationships.copy(
+                        player = RelationshipObject("pringle", babeRequest.relationships.player.data.id)
+                )
+        )
+        withBypassToken().body(ObjectRequest(badRequest))
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
     }
 
     @Test
     fun postBadTeamId() {
-        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace(babe.team.id.toString(), UUID.randomUUID().toString())
-        withBypassToken().body(badRequest)
+        val babeRequest = babeRequest()
+        val badRequest = babeRequest.copy(
+                relationships = babeRequest.relationships.copy(
+                        team = RelationshipObject(babeRequest.relationships.team.data.type, UUID.randomUUID())
+                )
+        )
+        withBypassToken().body(ObjectRequest(badRequest))
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
 
     @Test
     fun postBadPersonId() {
-        val badRequest = gson.toJson(ObjectRequest(babeRequest())).replace(babe.player.id.toString(), UUID.randomUUID().toString())
-        withBypassToken().body(badRequest)
+        val babeRequest = babeRequest()
+        val badRequest = babeRequest.copy(
+                relationships = babeRequest.relationships.copy(
+                        player = RelationshipObject(babeRequest.relationships.player.data.type, UUID.randomUUID())
+                )
+        )
+        withBypassToken().body(ObjectRequest(badRequest))
                 .`when`().post("/rosterpositions")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
@@ -136,7 +157,7 @@ class RosterPositionControllerIntegrationTest : AbstractBypassTokenIntegrationTe
 
     @Test
     fun getCollectionWithIncluded() {
-        listOf(babe, getTestRosterPosition("Hank", "Aaron")).forEach { rosterPositionRepository.save(it)}
+        listOf(babe, getTestRosterPosition("Hank", "Aaron")).forEach { rosterPositionRepository.save(it) }
         val getResponse = withBypassToken().`when`().get("/rosterpositions?include=player")
                 .then().statusCode(HttpStatus.SC_OK)
                 .extract().response().jsonPath()

@@ -1,0 +1,9 @@
+
+description = ''
+dependencies {
+    compile group: 'net.alexanderkahn.service.commons', name: 'json-api-model', version:'0.0.15'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.7'
+    compile group: 'org.glassfish', name: 'javax.el', version:'3.0.1-b09'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.0.0'
+    testCompile group: 'org.hibernate', name: 'hibernate-validator', version:'5.4.1.Final'
+}

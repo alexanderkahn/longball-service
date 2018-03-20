@@ -1,0 +1,13 @@
+rootProject.name = 'longball-service'
+
+include ':longball-model'
+include ':longball-api'
+include ':longball-rest'
+include ':longball-core'
+include ':integration-test'
+
+project(':longball-model').projectDir = "$rootDir/longball-model" as File
+project(':longball-api').projectDir = "$rootDir/longball-api" as File
+project(':longball-rest').projectDir = "$rootDir/longball-rest" as File
+project(':longball-core').projectDir = "$rootDir/longball-core" as File
+project(':integration-test').projectDir = "$rootDir/integration-test" as File

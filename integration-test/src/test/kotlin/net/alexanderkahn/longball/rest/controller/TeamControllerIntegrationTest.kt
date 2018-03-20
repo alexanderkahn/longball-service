@@ -1,15 +1,15 @@
 package net.alexanderkahn.longball.rest.controller
 
 import junit.framework.TestCase.assertEquals
+import net.alexanderkahn.longball.core.entity.LeagueEntity
+import net.alexanderkahn.longball.core.entity.TeamEntity
+import net.alexanderkahn.longball.core.repository.LeagueRepository
+import net.alexanderkahn.longball.core.repository.TeamRepository
 import net.alexanderkahn.longball.model.RequestTeam
 import net.alexanderkahn.longball.model.ResponseTeam
 import net.alexanderkahn.longball.model.TeamAttributes
 import net.alexanderkahn.longball.model.TeamRelationships
 import net.alexanderkahn.longball.rest.AbstractBypassTokenIntegrationTest
-import net.alexanderkahn.longball.core.entity.LeagueEntity
-import net.alexanderkahn.longball.core.entity.TeamEntity
-import net.alexanderkahn.longball.core.repository.LeagueRepository
-import net.alexanderkahn.longball.core.repository.TeamRepository
 import net.alexanderkahn.service.commons.model.request.body.ObjectRequest
 import org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import org.apache.http.HttpStatus
@@ -21,8 +21,10 @@ import java.util.*
 
 class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
 
-    @Autowired private lateinit var leagueRepository: LeagueRepository
-    @Autowired private lateinit var teamRepository: TeamRepository
+    @Autowired
+    private lateinit var leagueRepository: LeagueRepository
+    @Autowired
+    private lateinit var teamRepository: TeamRepository
 
     private lateinit var parentLeague: LeagueEntity
 
@@ -32,31 +34,39 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
         leagueRepository.save(parentLeague)
     }
 
-    @AfterEach fun tearDown() = clearRepositories(teamRepository, leagueRepository)
+    @AfterEach
+    fun tearDown() = clearRepositories(teamRepository, leagueRepository)
 
     @Test
     fun post() {
         val requestTeam = buildRequestTeam()
-        val response = withBypassToken().body(requestTeam)
+        val response = withBypassToken().body(ObjectRequest(requestTeam))
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_CREATED)
                 .extract().response().jsonPath().getObject("data", ResponseTeam::class.java)
-        assertEquals(requestTeam.data.attributes, response.attributes)
-        assertEquals(requestTeam.data.relationships, response.relationships)
+        assertEquals(requestTeam.attributes, response.attributes)
+        assertEquals(requestTeam.relationships, response.relationships)
     }
 
     @Test
     fun postWrongType() {
-        val requestPayload = gson.toJson(buildRequestTeam()).replace("teams", "tames")
-        withBypassToken().body(requestPayload)
+        val requestPayload = buildRequestTeam().copy(type = "tames")
+        withBypassToken().body(ObjectRequest(requestPayload))
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
     }
 
     @Test
     fun postWrongRelationshipType() {
-        val requestPayload = gson.toJson(buildRequestTeam()).replace("leagues", "legumes")
-        withBypassToken().body(requestPayload)
+        val requestTeam = buildRequestTeam()
+        val requestPayload = requestTeam.copy(
+                relationships = requestTeam.relationships.copy(
+                        league = requestTeam.relationships.league.copy(
+                                data = requestTeam.relationships.league.data.copy(type = "legumes")
+                        )
+                )
+        )
+        withBypassToken().body(ObjectRequest(requestPayload))
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_CONFLICT)
     }
@@ -64,8 +74,14 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     @Test
     fun postBadLeagueId() {
         val requestTeam = buildRequestTeam()
-        val badIdTeam = gson.toJson(requestTeam).replace(requestTeam.data.relationships.league.data.id.toString(), UUID.randomUUID().toString())
-        withBypassToken().body(badIdTeam)
+        val requestPayload = requestTeam.copy(
+                relationships = requestTeam.relationships.copy(
+                        league = requestTeam.relationships.league.copy(
+                                data = requestTeam.relationships.league.data.copy(id = UUID.randomUUID())
+                        )
+                )
+        )
+        withBypassToken().body(ObjectRequest(requestPayload))
                 .`when`().post("/teams")
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
     }
@@ -74,6 +90,7 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
     fun delete() {
         val team = TeamEntity(parentLeague, randomAlphabetic(3), "location", "nickname", userEntity)
         teamRepository.save(team)
+
         withBypassToken()
                 .`when`().delete("/teams/${team.id}")
                 .then().statusCode(HttpStatus.SC_OK)
@@ -111,10 +128,10 @@ class TeamControllerIntegrationTest : AbstractBypassTokenIntegrationTest() {
         assertEquals(2, getResponse.getList<ResponseTeam>("data").size)
     }
 
-    private fun buildRequestTeam(): ObjectRequest<RequestTeam> {
+    private fun buildRequestTeam(): RequestTeam {
         val attributes = TeamAttributes(randomAlphabetic(3).toUpperCase(), randomAlphabetic(10), randomAlphabetic(10))
         val relationships = TeamRelationships(parentLeague.id)
-        return ObjectRequest(RequestTeam("teams", attributes, relationships))
+        return RequestTeam("teams", attributes, relationships)
     }
 
 }

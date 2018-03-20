@@ -1,0 +1,58 @@
+buildscript {
+    ext.kotlin_version = '1.2.30'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    group = 'net.alexanderkahn.longball'
+    version = '0.0.1-SNAPSHOT'
+}
+
+subprojects {
+
+    apply plugin: 'maven'
+    apply plugin: 'kotlin'
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            javaParameters = true
+        }
+    }
+
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            javaParameters = true
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events "PASSED", "FAILED", "SKIPPED"
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+
+    dependencies {
+        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.2.30'
+        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: '1.2.30'
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version:'5.0.0'
+        testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0'
+    }
+
+
+}
