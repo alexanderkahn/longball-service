@@ -6,19 +6,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
 description = ''
 
 apply plugin: 'kotlin-jpa'
-apply plugin: 'org.springframework.boot'
-
-buildscript {
-
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-noarg:1.2.30"
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
-    }
-}
 
 processResources {
     from('src/main/resources') {
@@ -29,15 +16,6 @@ processResources {
                 'buildDate': OffsetDateTime.now(ZoneId.of("Z")).format(DateTimeFormatter.ISO_OFFSET_DATE)
         ])
     }
-}
-
-bootRun {
-    main = 'net.alexanderkahn.longball.LongballServiceApplication'
-    systemProperties = System.properties //pass through profiles from command line
-}
-
-bootJar {
-    mainClassName = 'net.alexanderkahn.longball.LongballServiceApplication'
 }
 
 dependencies {
