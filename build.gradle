@@ -29,8 +29,6 @@ allprojects {
 
 subprojects {
 
-    apply plugin: 'maven'
-
     compileKotlin {
         kotlinOptions {
             jvmTarget = "1.8"
@@ -50,6 +48,15 @@ subprojects {
         testLogging {
             events "PASSED", "FAILED", "SKIPPED"
         }
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives sourcesJar
     }
 
     apply from: "$rootProject.projectDir/dependencies.gradle"
