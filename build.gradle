@@ -1,4 +1,3 @@
-apply plugin: 'kotlin'
 apply plugin: 'org.springframework.boot'
 
 buildscript {
@@ -14,20 +13,11 @@ buildscript {
     }
 }
 
-dependencies {
-    runtime project(':longball-core')
-}
-
-springBoot {
-    mainClassName = 'net.alexanderkahn.longball.LongballServiceApplication'
-}
-
-bootRun {
-    systemProperties = System.properties //pass through profiles from command line
-}
-
-
 allprojects {
+
+    apply plugin: 'kotlin'
+    apply plugin: 'maven'
+
     group = 'net.alexanderkahn.longball'
     version = '0.0.1-SNAPSHOT'
 
@@ -40,7 +30,6 @@ allprojects {
 subprojects {
 
     apply plugin: 'maven'
-    apply plugin: 'kotlin'
 
     compileKotlin {
         kotlinOptions {
@@ -63,71 +52,17 @@ subprojects {
         }
     }
 
-    configurations {
-        jsonApiModel
-        jwsAuthenticator
+    apply from: "$rootProject.projectDir/dependencies.gradle"
+}
 
-        commonsLang3
-        h2
-        hibernateJava8
-        hibernateValidator
-        jacksonDatatypeJsr310
-        jacksonModuleKotlin
-        javaxEl
-        junitJupiterApi
-        junitJupiterEngine
-        kotlinStdlibJava8
-        kotlinTest
-        liquibaseCore
-        mockitoCore
-        postgresql
-        reflections
-        restAssured
-        springBootStarterActuator
-        springBootStarterDataJpa
-        springBootStarterSecurity
-        springBootStarterTest
-        springBootStarterWeb
-        springfoxSwagger2
-        springfoxSwaggerUi
-    }
+dependencies {
+    runtime project(':longball-core')
+}
 
-    dependencies {
-        //Dependencies shared across all projects
+springBoot {
+    mainClassName = 'net.alexanderkahn.longball.LongballServiceApplication'
+}
 
-        compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
-        testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test', version: kotlinVersion
-        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
-        testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
-
-        //Configuration dependency management
-
-        jsonApiModel group: 'net.alexanderkahn.service.commons', name: 'json-api-model', version: jsonApiModelVersion
-        jwsAuthenticator group: 'net.alexanderkahn.service.commons', name: 'jws-authenticator', version: jwsAuthenticatorVersion
-
-        commonsLang3 group: 'org.apache.commons', name: 'commons-lang3', version: commonsVersion
-        h2 group: 'com.h2database', name: 'h2', version: h2Version
-        hibernateJava8 group: 'org.hibernate', name: 'hibernate-java8', version: hibernateJava8Version
-        hibernateValidator group: 'org.hibernate', name: 'hibernate-validator', version: hibernateValidatorVersion
-        jacksonDatatypeJsr310 group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
-        jacksonModuleKotlin group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: jacksonVersion
-        javaxEl group: 'org.glassfish', name: 'javax.el', version: javaxElVersion
-        liquibaseCore group: 'org.liquibase', name: 'liquibase-core', version: liquibaseVersion
-        mockitoCore group: 'org.mockito', name: 'mockito-core', version: mockitoVersion
-        postgresql group: 'org.postgresql', name: 'postgresql', version: postgresqlVersion
-        reflections group: 'org.reflections', name: 'reflections', version: reflectionsVersion
-        restAssured group: 'io.rest-assured', name: 'rest-assured', version: restAssuredVersion
-        springBootStarterActuator group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
-        springBootStarterDataJpa group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion
-        springBootStarterSecurity group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
-        springBootStarterTest(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion)
-        springBootStarterWeb group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
-        springfoxSwagger2(group: 'io.springfox', name: 'springfox-swagger2', version: springfoxVersion) {
-            exclude(module: 'spring-beans')
-            exclude(module: 'spring-context')
-        }
-        springfoxSwaggerUi group: 'io.springfox', name: 'springfox-swagger-ui', version: springfoxVersion
-    }
-
-
+bootRun {
+    systemProperties = System.properties //pass through profiles from command line
 }
