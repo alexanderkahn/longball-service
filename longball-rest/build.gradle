@@ -1,18 +1,19 @@
 description = ''
+
+configurations {
+    compile.extendsFrom(jwsAuthenticator)
+    compile.extendsFrom(jacksonDatatypeJsr310)
+    compile.extendsFrom(jacksonModuleKotlin)
+    compile.extendsFrom(springBootStarterActuator)
+    compile.extendsFrom(springBootStarterSecurity)
+    compile.extendsFrom(springBootStarterWeb)
+    compile.extendsFrom(springfoxSwagger2)
+    compile.extendsFrom(srpingfoxSwaggerUi)
+
+    testCompile.extendsFrom(commonsLang3)
+    testCompile.extendsFrom(mockitoCore)
+}
+
 dependencies {
     compile project(':longball-api')
-    compile group: 'net.alexanderkahn.service.commons', name: 'jws-authenticator', version: '0.0.14-SNAPSHOT'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.0.0.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.0.0.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.0.0.RELEASE'
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.9.2'
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
-    compile(group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0') {
-        exclude(module: 'spring-beans')
-        exclude(module: 'spring-context')
-    }
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.0'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.10.0'
-    testCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 }

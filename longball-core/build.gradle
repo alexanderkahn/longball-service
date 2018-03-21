@@ -18,17 +18,20 @@ processResources {
     }
 }
 
+configurations {
+    compile.extendsFrom(jwsAuthenticator)
+    compile.extendsFrom(hibernateJava8)
+    compile.extendsFrom(springBootStarterDataJpa)
+
+    runtime.extendsFrom(liquibaseCore)
+    runtime.extendsFrom(postgresql)
+
+    testCompile.extendsFrom(mockitoCore)
+    testCompile.extendsFrom(reflections)
+    testCompile.extendsFrom(springBootStarterTest)
+}
+
 dependencies {
     compile project(':longball-api')
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-maven-noarg', version: '1.2.30'
-    compile group: 'net.alexanderkahn.service.commons', name: 'jws-authenticator', version: '0.0.14-SNAPSHOT'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.0.0.RELEASE'
-    compile group: 'org.hibernate', name: 'hibernate-java8', version: '5.0.12.Final'
-    runtime group: 'org.liquibase', name: 'liquibase-core', version: '3.5.3'
-    runtime group: 'org.postgresql', name: 'postgresql', version: '42.0.0'
     runtime project(':longball-rest')
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.0.0'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.10.0'
-    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.0.0.RELEASE')
-    testCompile group: 'org.reflections', name: 'reflections', version: '0.9.11'
 }
