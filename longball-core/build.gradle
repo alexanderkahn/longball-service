@@ -20,7 +20,6 @@ processResources {
 
 configurations {
     compile.extendsFrom(jwsAuthenticator)
-    compile.extendsFrom(hibernateJava8)
     compile.extendsFrom(springBootStarterDataJpa)
 
     runtime.extendsFrom(liquibaseCore)

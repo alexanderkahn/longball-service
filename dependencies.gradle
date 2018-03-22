@@ -4,7 +4,6 @@ configurations {
 
     commonsLang3
     h2
-    hibernateJava8
     hibernateValidator
     jacksonDatatypeJsr310
     jacksonModuleKotlin
@@ -41,7 +40,6 @@ dependencies {
 
     commonsLang3 group: 'org.apache.commons', name: 'commons-lang3', version: commonsVersion
     h2 group: 'com.h2database', name: 'h2', version: h2Version
-    hibernateJava8 group: 'org.hibernate', name: 'hibernate-java8', version: hibernateJava8Version
     hibernateValidator group: 'org.hibernate', name: 'hibernate-validator', version: hibernateValidatorVersion
     jacksonDatatypeJsr310 group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
     jacksonModuleKotlin group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: jacksonVersion
