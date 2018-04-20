@@ -22,7 +22,7 @@ allprojects {
     apply plugin: 'maven'
 
     group = 'net.alexanderkahn.longball'
-    version = '0.0.1-SNAPSHOT'
+    version = properties.version
 
     repositories {
         mavenLocal()
